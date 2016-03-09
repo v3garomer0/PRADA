@@ -50,12 +50,44 @@ def myCurve(x0=0,y0=0,np=3,A=5,side="lower"):
     return points
 
 
+dList=[(79.35,0,"lower","on"),#this
+              (49.35,0,"lower","off"),
+              (34.35,0,"lower","off"),
+              (2.5,2.5,"left","off"),#corner
+              (0,35,"left","off"),
+              (2.5,67.5,"left","off"),#corner
+              (34.35,70,"upper","off"),
+              (49.35,70,"upper","off"),
+              (79.35,70,"upper","on"),#this
+              (109.35,70,"upper","off"),
+              (124.35,70,"upper","off"),
+              (156.35,67.5,"upper","off"),#corner
+              (158.7,35,"right","off"),
+              (156.2,2.5,"right","off"),#corner
+              (124.35,0,"lower","off"),
+              (109.35,0,"lower","off")]
+
 def plotGeometry():
+    
+    A=2000
+    polypoints=100
+
+    dPoints=[] #detector points
+    convexPoints=[]
+    for e in dList:
+        dPoints.append(myCurve(e[0],e[1],polypoints,A,e[2]))
+
+
+    for i in range(len(dList)):
+        convexPoints.append(0)
+        if dList[i][3]=="on":
+            convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
+    
     
     
     #define los puntos de los poligonos generados para cada detector
     
-    points1=myCurve(2,0,100,5,"lower")
+    #points1=myCurve(79.35,0,polypoints,A,"lower")
     #points2=myCurve(2,0,100,5,"lower")
     
     #points1=myCurve(0,0,100,5,"left")
@@ -65,14 +97,16 @@ def plotGeometry():
     #points2=myCurve(0,2,100,5,"right")
     
     #points1=myCurve(0,0,100,5,"upper")
-    points2=myCurve(2,4,100,5,"upper")
+    #points2=myCurve(79.35,70,polypoints,A,"upper")
     
     
-    convexPoints1=list(MultiPoint(points1).convex_hull.exterior.coords)
-    convexPoints2=list(MultiPoint(points2).convex_hull.exterior.coords)
+    #convexPoints1=list(MultiPoint(dPoints[0]).convex_hull.exterior.coords)
+    #convexPoints2=list(MultiPoint(dPoints[8]).convex_hull.exterior.coords)
 
-    polygon1=Polygon(convexPoints1)
-    polygon2=Polygon(convexPoints2)
+
+
+    polygon1=Polygon(convexPoints[0])
+    polygon2=Polygon(convexPoints[8])
 
     poly1Coords=list(polygon1.exterior.coords)
     poly2Coords=list(polygon2.exterior.coords)
