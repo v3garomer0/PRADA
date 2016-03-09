@@ -10,43 +10,36 @@ def myCurve(x0=0,y0=0,np=3,A=5,side="lower"):
     points=[]
     
     dang=pi/np
+    ang=0
     
     #Para el barrido angular de los detectores de la parte inferior
     if side=="lower":
-        ang=0
-        ang0=0
         for i in range(np):
-            r=(A*sin(ang-ang0))**(1.0/2)
-            points.append((x0+r*cos(ang-ang0),y0+r*sin(ang-ang0)))
+            r=(A*sin(ang))**(1.0/2)
+            points.append((x0+r*cos(ang),y0+r*sin(ang)))
             ang += dang
 
 
     #Para el barrido angular de los detectores de la parte izquierda
     elif side=="left":
-        ang=(3*pi)/2
-        ang0=(3*pi)/2
         for i in range(np):
-            r=(A*sin(ang-ang0))**(1.0/2)
-            points.append((x0+r*sin(ang-ang0),y0+r*cos(ang-ang0)))
+            r=(A*sin(ang))**(1.0/2)
+            points.append((x0+r*sin(ang),y0+r*cos(ang)))
             ang += dang
 
 
     #Para el barrido angular de los detectores de la parte derecha
     elif side=="right":
-        ang=pi/2
-        ang0=pi/2
         for i in range(np):
-            r=(A*sin(ang-ang0))**(1.0/2)
-            points.append((x0-r*sin(ang-ang0),y0+r*cos(ang-ang0)))
+            r=(A*sin(ang))**(1.0/2)
+            points.append((x0-r*sin(ang),y0+r*cos(ang)))
             ang += dang
 
     #Para el barrido angular de los detectores de la parte superior
     elif side=="upper":
-        ang=pi
-        ang0=pi
         for i in range(np):
-            r=(A*sin(ang-ang0))**(1.0/2)
-            points.append((x0+r*cos(ang-ang0),y0-r*sin(ang-ang0)))
+            r=(A*sin(ang))**(1.0/2)
+            points.append((x0+r*cos(ang),y0-r*sin(ang)))
             ang += dang
 
 
