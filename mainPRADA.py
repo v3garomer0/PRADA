@@ -110,7 +110,7 @@ def plotGeometry():
     
     counter=0
 
-    sList=getSignals(dList,80,35)
+    sList=getSignals(dList,80,55)
     
     
     for e in dList:
@@ -140,6 +140,8 @@ def plotGeometry():
     
         convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
 
+        #generating the polygons properly
+
         polygons[i]=Polygon(convexPoints[i])
 
         polyCoords[i]=list(polygons[i].exterior.coords)
@@ -153,6 +155,24 @@ def plotGeometry():
         plt.gca().add_patch(pltPoly[i])
 
 
+    interPol=polygons[0]
+
+    for p in polygons:
+        interPol=interPol.intersection(p)
+
+#        centroidCoord=list(interPol.centroid.coords)[0]
+        interPolList=list(interPol.exterior.coords)
+
+    centroidCoord=list(interPol.centroid.coords)[0]
+    print "Centroid = ",centroidCoord
+    pIx=[x[0] for x in interPolList]
+    pIy=[y[1] for y in interPolList]
+
+    plt.plot(pIx,pIy,'go')
+
+    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
+    
+    plt.gca().add_patch(pltPolyIntersect)
 
 
 #    if polygon2.intersects(polygon1):
