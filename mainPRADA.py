@@ -6,7 +6,7 @@ from math import *
 
 
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
-def myCurve(x0=0,y0=0,np=50,A=5,S=1,side="lower"):
+def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     def getR(A,S,ang,gamma):
         return (A/S*sin(ang))**(1.0/gamma)
     points=[]
@@ -97,7 +97,7 @@ dList=[(79.35,0,"lower","on"),
 
 def plotGeometry():
     
-    A=2000
+    A=10
     polypoints=100
 
     dPoints=[] #detector points
@@ -110,7 +110,7 @@ def plotGeometry():
     
     counter=0
 
-    sList=getSignals(dList,90,50)
+    sList=getSignals(dList,80,35)
     
     
     for e in dList:
@@ -119,7 +119,7 @@ def plotGeometry():
         
         print counter,S
 
-        S=S-0.01*S
+        S=S-0.1*S
         dPoints.append(myCurve(e[0],e[1],polypoints,A,S,e[2]))
         polygons.append(0)
         polyCoords.append(0)
@@ -242,11 +242,12 @@ def getSignals(dList,x,y):
     sList=[]
 
     A=10
+    gamma=2.0
 
     for e in rTList:
         r=e[0]
         theta=e[1]
-        S=A*sin(theta)/r
+        S=A*sin(theta)/r**gamma
         sList.append(S)
 
 
