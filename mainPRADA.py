@@ -6,9 +6,9 @@ from math import *
 
 
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
-def myCurve(x0=0,y0=0,np=50,A=5,side="lower"):
-    def getR(A,ang,gamma):
-        return (A*sin(ang))**(1.0/gamma)
+def myCurve(x0=0,y0=0,np=50,A=5,S=1,side="lower"):
+    def getR(A,S,ang,gamma):
+        return (A/S*sin(ang))**(1.0/gamma)
     points=[]
     
     dang=pi/np
@@ -19,7 +19,7 @@ def myCurve(x0=0,y0=0,np=50,A=5,side="lower"):
     #Para el barrido angular de los detectores de la parte inferior
     if side=="lower":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang),y0+r*sin(ang)))
             ang += dang
 
@@ -27,7 +27,7 @@ def myCurve(x0=0,y0=0,np=50,A=5,side="lower"):
     #Para el barrido angular de los detectores de la parte izquierda
     elif side=="left":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*sin(ang),y0+r*cos(ang)))
             ang += dang
 
@@ -35,42 +35,42 @@ def myCurve(x0=0,y0=0,np=50,A=5,side="lower"):
     #Para el barrido angular de los detectores de la parte derecha
     elif side=="right":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0-r*sin(ang),y0+r*cos(ang)))
             ang += dang
 
     #Para el barrido angular de los detectores de la parte superior
     elif side=="upper":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang),y0-r*sin(ang)))
             ang += dang
 
     #Para el barrido angular de los detectores de esquina superior izquierda
     elif side=="ulc":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang-pi/4.),y0-r*sin(ang-pi/4.)))
             ang += dang
 
     #Para el barrido angular de los detectores de esquina superior derecha
     elif side=="urc":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang+pi/4.),y0-r*sin(ang+pi/4.)))
             ang += dang
 
     #Para el barrido angular de los detectores de esquina inferior izquierda
     elif side=="llc":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang-pi/4.),y0+r*sin(ang-pi/4.)))
             ang += dang
 
     #Para el barrido angular de los detectores de esquina inferior derecha
     elif side=="lrc":
         for i in range(np):
-            r=getR(A,ang,gamma)
+            r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang+pi/4.),y0+r*sin(ang+pi/4.)))
             ang += dang
 
@@ -107,15 +107,29 @@ def plotGeometry():
     polyCoords=[]
     px,py=[],[]
     pltPoly=[]
+    
+    counter=0
 
+    sList=getSignals(dList,90,50)
+    
+    
     for e in dList:
-        dPoints.append(myCurve(e[0],e[1],polypoints,A,e[2]))
+        
+        S=sList[counter]
+        
+        print counter,S
+
+        S=S-0.01*S
+        dPoints.append(myCurve(e[0],e[1],polypoints,A,S,e[2]))
         polygons.append(0)
         polyCoords.append(0)
         px.append(0)
         py.append(0)
         pltPoly.append(0)
         convexPoints.append(0)
+    
+        
+        counter+=1
 
     for i in range(len(dList)):
         if dList[i][3]=="off":
@@ -169,58 +183,17 @@ def plotGeometry():
 #    pInterCentroid=list(interPol.centroid.coords)[0]
 #    plt.plot(pInterCentroid[0], pInterCentroid[1], "rs")
 
+
+#    plt.xlim(-200,200)
+#    plt.ylim(-200,200)
+
+
     plt.show()
 
 
-plotGeometry()
+
 #myCurve(5)
 
-
-#Para obtener las r s
-def getRs(dList,x,y):
-    rList=[]
-    for i in dList:
-        r=sqrt((i[0]-x)**2+(i[1]-y)**2)
-        rList.append(r)
-
-    return rList
-
-
-#Para obtener las thetas
-def getThetas(dList,x,y):
-    ThList=[]
-    for i in dList:
-        side=i[2]
-        #translating the origin to the position of the detector
-        xl=x-i[0]
-        yl=y-i[1]
-        if side=="lower":
-            v=(1,0)
-        elif side=="right":
-            v=(0,1)
-        elif side=="upper":
-            v=(-1,0)
-        elif side=="left":
-            v=(0,-1)
-        elif side=="llc":
-            v=(1/sqrt(2),-1/sqrt(2))
-        elif side=="lrc":
-            v=(1/sqrt(2),1/sqrt(2))
-        elif side=="urc":
-            v=(-1/sqrt(2),1/sqrt(2))
-        elif side=="ulc":
-            v=(-1/sqrt(2),-1/sqrt(2))
-        else:
-            print "Entered else "+ side
-            v=(0,0)
-
-        cosTheta=(xl*v[0]+yl*v[1])/sqrt(xl**2+yl**2)
-
-        theta=acos(cosTheta)
-        print theta
-        ThList.append(theta)
-
-    return ThList
 
 def getRandTheta(dList,x,y):
 
@@ -279,8 +252,14 @@ def getSignals(dList,x,y):
 
     return sList
 
+
+
+#For proving its correct
+
 def getPointBack(dList,x,y):
     rTList=getRandTheta(dList,x,y)
+   
+
     counter=0
     
     
@@ -298,34 +277,29 @@ def getPointBack(dList,x,y):
         yd=dList[counter][1]
         
         if side=="lower":
-            sign1x=1
-            sign1y=1
-            sign2x=1
-            sign2y=1
+            x=xl+xd
+            y=yl+yd
 
         elif side=="upper":
-            sign1x=1
-            sign1y=1
-            sign2x=1
-            sign2y=-1
+            x=-xl+xd
+            y=-yl+yd
         
         elif side=="left":
-            sign1x=1
-            sign1y=1
-            sign2x=1
-            sign2y=1
+            x=yl-xd
+            y=-xl+yd
         
         elif side=="right":
-            sign1x=1
-            sign1y=1
-            sign2x=1
-            sign2y=1
+            x=-yl+xd
+            y=xl+yd
 
-        x=xl*sign1x+xd*sign2x
-        y=yl*sign1y+yd*sign2y
+        else:
+            print "Its a corner" + dList[counter][2]
+
+
+
 
         print x,y
         counter+=1
 
-
+plotGeometry()
 
