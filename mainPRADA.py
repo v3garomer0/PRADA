@@ -5,6 +5,7 @@ import random
 from math import *
 
 
+
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     def getR(A,S,ang,gamma):
@@ -135,8 +136,8 @@ def plotGeometry():
         if dList[i][3]=="off":
             continue
     
-        if dList[i][2]=="lower":
-            ldetector=Polygon([(e[0]-2.23,e[1]),(e[0]+2.23,e[1]),(e[0]+2.23,e[1]-20.8),(e[0]-2.23,e[1]-20.8)])
+        #if dList[i][2]=="lower":
+        #ldetector=Polygon([(e[0]-2.23,e[1]),(e[0]+2.23,e[1]),(e[0]+2.23,e[1]-20.8),(e[0]-2.23,e[1]-20.8)])
     
         convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
 
@@ -165,6 +166,11 @@ def plotGeometry():
 
     centroidCoord=list(interPol.centroid.coords)[0]
     print "Centroid = ",centroidCoord
+
+    AreaPol=interPol.area
+    
+    print "Area Intersection= ",AreaPol
+
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
 
@@ -206,6 +212,12 @@ def plotGeometry():
 
 #    plt.xlim(-200,200)
 #    plt.ylim(-200,200)
+
+
+    plt.plot([0,160],[0,0],"y",linewidth=4.0)
+    plt.plot([160,160],[0,70],"y",linewidth=4.0)
+    plt.plot([160,0],[70,70],"y",linewidth=4.0)
+    plt.plot([0,0],[70,0],"y",linewidth=4.0)
 
 
     plt.show()
