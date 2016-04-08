@@ -334,5 +334,28 @@ def getPointBack(dList,x,y):
         print x,y
         counter+=1
 
+def getAngerPos(dList,x,y):
+    S=getSignals(dList,x,y)
+
+    xSum,ySum=0,0
+    
+
+    for e in dList:
+        xSum+=e[0]
+        ySum+=e[1]
+
+    print xSum,ySum
+
+    
+
+
+
+
+
 plotGeometry()
+
+
+#comparing with ANGER
+
+
 
