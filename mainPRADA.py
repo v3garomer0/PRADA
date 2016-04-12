@@ -356,7 +356,6 @@ def getAngerPos(dList,x,y):
         yP+=e*dList[counter][1]/sSum
 
         counter+=1
-        print e
 
     print xP,yP
 
