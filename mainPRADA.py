@@ -136,9 +136,6 @@ def plotGeometry():
         if dList[i][3]=="off":
             continue
     
-        #if dList[i][2]=="lower":
-        #ldetector=Polygon([(e[0]-2.23,e[1]),(e[0]+2.23,e[1]),(e[0]+2.23,e[1]-20.8),(e[0]-2.23,e[1]-20.8)])
-    
         convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
 
         #generating the polygons properly
@@ -214,10 +211,48 @@ def plotGeometry():
 #    plt.ylim(-200,200)
 
 
-    plt.plot([0,160],[0,0],"y",linewidth=4.0)
-    plt.plot([160,160],[0,70],"y",linewidth=4.0)
-    plt.plot([160,0],[70,70],"y",linewidth=4.0)
-    plt.plot([0,0],[70,0],"y",linewidth=4.0)
+#Plotting MONDEs perimeter
+    plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
+    plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
+    plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
+    plt.plot([158.7,153.7],[65,70],"y",linewidth=2.0)
+    plt.plot([153.7,5],[70,70],"y",linewidth=2.0)
+    plt.plot([5,0],[70,65],"y",linewidth=2.0)
+    plt.plot([0,0],[65,5],"y",linewidth=2.0)
+    plt.plot([0,5],[5,0],"y",linewidth=2.0)
+
+
+#Generating each photomultiplier tube
+    counter=0
+    for i in range(len(dList)):
+        if dList[i][3]=="off":
+            continue
+        
+        if dList[i][2]=="lower":
+            plt.plot([dList[counter][0],dList[counter][0]],[dList[counter][1]-2,dList[counter][1]-17],"k",linewidth=10.0)
+
+        if dList[i][2]=="upper":
+            plt.plot([dList[counter][0],dList[counter][0]],[dList[counter][1]+2,dList[counter][1]+17],"k",linewidth=10.0)
+
+        if dList[i][2]=="right":
+            plt.plot([dList[counter][0]+2,dList[counter][0]+17],[dList[counter][1],dList[counter][1]],"k",linewidth=10.0)
+
+        if dList[i][2]=="left":
+            plt.plot([dList[counter][0]-2,dList[counter][0]-17],[dList[counter][1],dList[counter][1]],"k",linewidth=10.0)
+
+        if dList[i][2]=="llc":
+            plt.plot([dList[counter][0]-1.41,dList[counter][0]-10.61],[dList[counter][1]-1.41,dList[counter][1]-10.61],"k",linewidth=10.0)
+
+        if dList[i][2]=="ulc":
+            plt.plot([dList[counter][0]-1.41,dList[counter][0]-10.61],[dList[counter][1]+1.41,dList[counter][1]+10.61],"k",linewidth=10.0)
+
+        if dList[i][2]=="lrc":
+            plt.plot([dList[counter][0]+1.41,dList[counter][0]+10.61],[dList[counter][1]-1.41,dList[counter][1]-10.61],"k",linewidth=10.0)
+
+        if dList[i][2]=="urc":
+            plt.plot([dList[counter][0]+1.41,dList[counter][0]+10.61],[dList[counter][1]+1.41,dList[counter][1]+10.61],"k",linewidth=10.0)
+
+        counter+=1
 
 
     plt.show()
