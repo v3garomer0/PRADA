@@ -80,21 +80,59 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
 
 dList=[(79.35,0,"lower","on"),
-              (49.35,0,"lower","on"),
-              (34.35,0,"lower","on"),
-              (2.5,2.5,"llc","on"),#corner
-              (0,35,"left","on"),
-              (2.5,67.5,"ulc","on"),#corner
-              (34.35,70,"upper","on"),
-              (49.35,70,"upper","on"),
-              (79.35,70,"upper","on"),
-              (109.35,70,"upper","on"),
-              (124.35,70,"upper","on"),
-              (156.35,67.5,"urc","on"),#corner
-              (158.7,35,"right","on"),
-              (156.2,2.5,"lrc","on"),#corner
-              (124.35,0,"lower","on"),
-              (109.35,0,"lower","on")]
+       (49.35,0,"lower","o"),
+       (34.35,0,"lower","off"),
+       (2.5,2.5,"llc","off"),#corner
+       (0,35,"left","off"),
+       (2.5,67.5,"ulc","off"),#corner
+       (34.35,70,"upper","off"),
+       (49.35,70,"upper","off"),
+       (79.35,70,"upper","off"),
+       (109.35,70,"upper","off"),
+       (124.35,70,"upper","off"),
+       (156.35,67.5,"urc","off"),#corner
+       (158.7,35,"right","off"),
+       (156.2,2.5,"lrc","off"),#corner
+       (124.35,0,"lower","off"),
+       (109.35,0,"lower","off")]
+
+
+plateList=[(0,5),
+       (5,0),
+       (153.7,0),
+       (158.7,5),
+       (158.7,65),
+       (153.7,70),
+       (5,70),
+       (0,65)]
+
+platePolygon=Polygon(plateList)
+
+#checking if the point is inside the plate
+
+def checkIfInPlate(platePolygon,x,y):
+
+    point=Point(x,y)
+
+    return platePolygon.contains(point)
+
+def getRandomInPlate(platePolygon):
+    x=random.uniform(0,158.7)
+    y=random.uniform(0,70)
+    
+
+    while not checkIfInPlate(platePolygon,x,y):
+        x=random.uniform(0,158.7)
+        y=random.uniform(0,70)
+
+    return x,y
+
+
+def getMaxDetector(dList,x,y):
+    sList=getSignals(dList,x,y)
+
+    return sList.index(max(sList))
+
 
 def plotGeometry():
     
@@ -133,8 +171,6 @@ def plotGeometry():
         counter+=1
 
     for i in range(len(dList)):
-        if dList[i][3]=="off":
-            continue
     
         convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
 
@@ -143,6 +179,9 @@ def plotGeometry():
         polygons[i]=Polygon(convexPoints[i])
 
         polyCoords[i]=list(polygons[i].exterior.coords)
+
+        if dList[i][3]=="off":
+            continue
 
         px[i]=[x[0] for x in polyCoords[i]]
         py[i]=[y[1] for y in polyCoords[i]]
@@ -154,10 +193,12 @@ def plotGeometry():
 
 
     interPol=polygons[0]
-
+    counter = 0
     for p in polygons:
-        interPol=interPol.intersection(p)
-
+        if dList[counter][3]=="on":
+            print "dList val", dList[counter][3]
+            interPol=interPol.intersection(p)
+        counter+=1
 #        centroidCoord=list(interPol.centroid.coords)[0]
         interPolList=list(interPol.exterior.coords)
 
@@ -171,7 +212,7 @@ def plotGeometry():
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
 
-    plt.plot(pIx,pIy,'go')
+#    plt.plot(pIx,pIy,'go')
 
     pltPolyIntersect = plt.Polygon(interPolList, fc='g')
     
@@ -222,37 +263,37 @@ def plotGeometry():
     plt.plot([0,5],[5,0],"y",linewidth=2.0)
 
 
+
 #Generating each photomultiplier tube
-    counter=0
-    for i in range(len(dList)):
-        if dList[i][3]=="off":
+
+    for e in dList:
+        if e[3]=="off":
             continue
-        
-        if dList[i][2]=="lower":
-            plt.plot([dList[counter][0],dList[counter][0]],[dList[counter][1]-2,dList[counter][1]-17],"k",linewidth=10.0)
 
-        if dList[i][2]=="upper":
-            plt.plot([dList[counter][0],dList[counter][0]],[dList[counter][1]+2,dList[counter][1]+17],"k",linewidth=10.0)
+        if e[2]=="lower":
+            plt.plot([e[0],e[0]],[e[1]-2,e[1]-17],"k",linewidth=10.0)
 
-        if dList[i][2]=="right":
-            plt.plot([dList[counter][0]+2,dList[counter][0]+17],[dList[counter][1],dList[counter][1]],"k",linewidth=10.0)
+        if e[2]=="upper":
+            plt.plot([e[0],e[0]],[e[1]+2,e[1]+17],"k",linewidth=10.0)
 
-        if dList[i][2]=="left":
-            plt.plot([dList[counter][0]-2,dList[counter][0]-17],[dList[counter][1],dList[counter][1]],"k",linewidth=10.0)
+        if e[2]=="right":
+            plt.plot([e[0]+2,e[0]+17],[e[1],e[1]],"k",linewidth=10.0)
 
-        if dList[i][2]=="llc":
-            plt.plot([dList[counter][0]-1.41,dList[counter][0]-10.61],[dList[counter][1]-1.41,dList[counter][1]-10.61],"k",linewidth=10.0)
+        if e[2]=="left":
+            plt.plot([e[0]-2,e[0]-17],[e[1],e[1]],"k",linewidth=10.0)
 
-        if dList[i][2]=="ulc":
-            plt.plot([dList[counter][0]-1.41,dList[counter][0]-10.61],[dList[counter][1]+1.41,dList[counter][1]+10.61],"k",linewidth=10.0)
+        if e[2]=="llc":
+            plt.plot([e[0]-1.41,e[0]-10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
 
-        if dList[i][2]=="lrc":
-            plt.plot([dList[counter][0]+1.41,dList[counter][0]+10.61],[dList[counter][1]-1.41,dList[counter][1]-10.61],"k",linewidth=10.0)
+        if e[2]=="ulc":
+            plt.plot([e[0]-1.41,e[0]-10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
 
-        if dList[i][2]=="urc":
-            plt.plot([dList[counter][0]+1.41,dList[counter][0]+10.61],[dList[counter][1]+1.41,dList[counter][1]+10.61],"k",linewidth=10.0)
+        if e[2]=="lrc":
+            plt.plot([e[0]+1.41,e[0]+10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
 
-        counter+=1
+        if e[2]=="urc":
+            plt.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
+
 
 
     plt.show()
