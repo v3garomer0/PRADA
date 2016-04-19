@@ -80,21 +80,21 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
 
 dList=[(79.35,0,"lower","on"),
-       (49.35,0,"lower","o"),
-       (34.35,0,"lower","off"),
-       (2.5,2.5,"llc","off"),#corner
-       (0,35,"left","off"),
-       (2.5,67.5,"ulc","off"),#corner
-       (34.35,70,"upper","off"),
-       (49.35,70,"upper","off"),
-       (79.35,70,"upper","off"),
-       (109.35,70,"upper","off"),
-       (124.35,70,"upper","off"),
-       (156.35,67.5,"urc","off"),#corner
-       (158.7,35,"right","off"),
-       (156.2,2.5,"lrc","off"),#corner
-       (124.35,0,"lower","off"),
-       (109.35,0,"lower","off")]
+       (49.35,0,"lower","on"),
+       (34.35,0,"lower","on"),
+       (2.5,2.5,"llc","on"),#corner
+       (0,35,"left","on"),
+       (2.5,67.5,"ulc","on"),#corner
+       (34.35,70,"upper","on"),
+       (49.35,70,"upper","on"),
+       (79.35,70,"upper","on"),
+       (109.35,70,"upper","on"),
+       (124.35,70,"upper","on"),
+       (156.35,67.5,"urc","on"),#corner
+       (158.7,35,"right","on"),
+       (156.2,2.5,"lrc","on"),#corner
+       (124.35,0,"lower","on"),
+       (109.35,0,"lower","on")]
 
 
 plateList=[(0,5),
@@ -116,6 +116,7 @@ def checkIfInPlate(platePolygon,x,y):
 
     return platePolygon.contains(point)
 
+#giving a random point within the plate
 def getRandomInPlate(platePolygon):
     x=random.uniform(0,158.7)
     y=random.uniform(0,70)
@@ -127,11 +128,85 @@ def getRandomInPlate(platePolygon):
 
     return x,y
 
-
+#checking which detector recieves the max signal given a point
 def getMaxDetector(dList,x,y):
     sList=getSignals(dList,x,y)
 
     return sList.index(max(sList))
+
+#getting the points of the max signal for photomultipliers
+def getMaxRegions(dList,platePolygon,N):
+
+    maxRegions=[]
+    
+    for i in range(len(dList)):
+        maxRegions.append([])
+    
+
+    for i in range(N):
+        x,y=getRandomInPlate(platePolygon)
+
+        maxDect=getMaxDetector(dList,x,y)
+        maxRegions[maxDect].append((x,y))
+
+    return maxRegions
+
+#plotting the max region
+def plotMaxRegions(dList,platePolygon,N):
+
+    maxRegions=getMaxRegions(dList,platePolygon,N)
+    
+    for i in range(len(maxRegions)):
+        xVals=[e[0] for e in maxRegions[i]]
+        yVals=[e[1] for e in maxRegions[i]]
+    
+        if i==0:
+            plt.plot(xVals,yVals,"ro")
+
+        if i==1:
+            plt.plot(xVals,yVals,"bo")
+                
+        if i==2:
+            plt.plot(xVals,yVals,"go")
+                
+        if i==3:
+            plt.plot(xVals,yVals,"yo")
+                
+        if i==4:
+            plt.plot(xVals,yVals,"r^")
+                
+        if i==5:
+            plt.plot(xVals,yVals,"bo")
+
+        if i==6:
+            plt.plot(xVals,yVals,"y^")
+    
+        if i==7:
+            plt.plot(xVals,yVals,"ro")
+    
+        if i==8:
+            plt.plot(xVals,yVals,"b^")
+    
+        if i==9:
+            plt.plot(xVals,yVals,"g^")
+    
+        if i==10:
+            plt.plot(xVals,yVals,"b^")
+    
+        if i==11:
+            plt.plot(xVals,yVals,"y^")
+    
+        if i==12:
+            plt.plot(xVals,yVals,"ro")
+
+        if i==13:
+            plt.plot(xVals,yVals,"go")
+    
+        if i==14:
+            plt.plot(xVals,yVals,"bo")
+
+        if i==15:
+            plt.plot(xVals,yVals,"yo")
 
 
 def plotGeometry():
@@ -196,7 +271,7 @@ def plotGeometry():
     counter = 0
     for p in polygons:
         if dList[counter][3]=="on":
-            print "dList val", dList[counter][3]
+#            print "dList val", dList[counter][3]
             interPol=interPol.intersection(p)
         counter+=1
 #        centroidCoord=list(interPol.centroid.coords)[0]
@@ -251,8 +326,9 @@ def plotGeometry():
 #    plt.xlim(-200,200)
 #    plt.ylim(-200,200)
 
-
-#Plotting MONDEs perimeter
+#myCurve(5)
+def plotDetector(dList):
+    #Plotting MONDEs perimeter
     plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
     plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
     plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
@@ -262,46 +338,35 @@ def plotGeometry():
     plt.plot([0,0],[65,5],"y",linewidth=2.0)
     plt.plot([0,5],[5,0],"y",linewidth=2.0)
 
-
-
-#Generating each photomultiplier tube
+    #Generating each photomultiplier tube
 
     for e in dList:
         if e[3]=="off":
             continue
-
+        
         if e[2]=="lower":
             plt.plot([e[0],e[0]],[e[1]-2,e[1]-17],"k",linewidth=10.0)
-
+        
         if e[2]=="upper":
             plt.plot([e[0],e[0]],[e[1]+2,e[1]+17],"k",linewidth=10.0)
-
+        
         if e[2]=="right":
             plt.plot([e[0]+2,e[0]+17],[e[1],e[1]],"k",linewidth=10.0)
-
+        
         if e[2]=="left":
             plt.plot([e[0]-2,e[0]-17],[e[1],e[1]],"k",linewidth=10.0)
-
+        
         if e[2]=="llc":
             plt.plot([e[0]-1.41,e[0]-10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
-
+        
         if e[2]=="ulc":
             plt.plot([e[0]-1.41,e[0]-10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
-
+        
         if e[2]=="lrc":
             plt.plot([e[0]+1.41,e[0]+10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
-
+        
         if e[2]=="urc":
             plt.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
-
-
-
-    plt.show()
-
-
-
-#myCurve(5)
-
 
 def getRandTheta(dList,x,y):
 
@@ -436,9 +501,13 @@ def getAngerPos(dList,x,y):
     print xP,yP
 
 
+plotDetector(dList)
+N=100000
+plotMaxRegions(dList,platePolygon,N)
 
+#plotGeometry()
 
-plotGeometry()
+plt.show()
 
 
 
