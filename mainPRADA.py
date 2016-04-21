@@ -3,6 +3,7 @@ from shapely.geometry import Polygon,MultiPoint,Point
 from shapely.ops import cascaded_union
 import random
 from math import *
+from matplotlib import colors
 
 
 
@@ -78,7 +79,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     return points
 
 
-
+#list of the photomultiplier tubes
 dList=[(79.35,0,"lower","on"),
        (49.35,0,"lower","on"),
        (34.35,0,"lower","on"),
@@ -97,6 +98,7 @@ dList=[(79.35,0,"lower","on"),
        (109.35,0,"lower","on")]
 
 
+#coordinates of Mondes plate
 plateList=[(0,5),
        (5,0),
        (153.7,0),
@@ -134,6 +136,15 @@ def getMaxDetector(dList,x,y):
 
     return sList.index(max(sList))
 
+#checking which detector recieves the second max signal given a point
+def get2MaxDetector(dList,x,y):
+    sList=getSignals(dList,x,y)
+
+    sList[sList.index(max(sList))]=0
+
+    return sList.index(max(sList))
+
+
 #getting the points of the max signal for photomultipliers
 def getMaxRegions(dList,platePolygon,N):
 
@@ -150,6 +161,28 @@ def getMaxRegions(dList,platePolygon,N):
         maxRegions[maxDect].append((x,y))
 
     return maxRegions
+
+#getting the points where a detector is max and the next one, second max
+def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
+    firstPoints=maxRegPoints[firstMaxDect]
+
+    secondPoints=[]
+
+    for p in firstPoints:
+        x,y=p
+        if get2MaxDetector(dList,x,y)==secMaxDect:
+            secondPoints.append(p)
+
+    return secondPoints
+
+#plotting the points where the first dect is max and te second dect is second max
+def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
+    secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
+
+    xPoints=[e[0] for e in secPoints]
+    yPoints=[e[1] for e in secPoints]
+
+    plt.plot(xPoints,yPoints,colorAndForm)
 
 #plotting the max region
 def plotMaxRegions(dList,platePolygon,N):
@@ -191,7 +224,7 @@ def plotMaxRegions(dList,platePolygon,N):
             plt.plot(xVals,yVals,"g^")
     
         if i==10:
-            plt.plot(xVals,yVals,"b^")
+            plt.plot(xVals,yVals,"c^")
     
         if i==11:
             plt.plot(xVals,yVals,"y^")
@@ -327,8 +360,10 @@ def plotGeometry():
 #    plt.ylim(-200,200)
 
 #myCurve(5)
+
+
+#Plotting MONDEs perimeter
 def plotDetector(dList):
-    #Plotting MONDEs perimeter
     plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
     plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
     plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
@@ -338,7 +373,7 @@ def plotDetector(dList):
     plt.plot([0,0],[65,5],"y",linewidth=2.0)
     plt.plot([0,5],[5,0],"y",linewidth=2.0)
 
-    #Generating each photomultiplier tube
+#Generating each photomultiplier tube
 
     for e in dList:
         if e[3]=="off":
@@ -502,8 +537,19 @@ def getAngerPos(dList,x,y):
 
 
 plotDetector(dList)
+
 N=100000
-plotMaxRegions(dList,platePolygon,N)
+#plotMaxRegions(dList,platePolygon,N)
+
+maxRegions=getMaxRegions(dList,platePolygon,N)
+
+plotFirstSecondMax(maxRegions,4,5,"rx")
+
+plotFirstSecondMax(maxRegions,4,6,"bo")
+
+plotFirstSecondMax(maxRegions,4,3,"y^")
+
+plotFirstSecondMax(maxRegions,4,2,"c^")
 
 #plotGeometry()
 
