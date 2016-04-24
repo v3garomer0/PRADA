@@ -144,6 +144,11 @@ def get2MaxDetector(dList,x,y):
 
     return sList.index(max(sList))
 
+#generating a list, ordering the max signals
+def getMaxList(dList,x,y):
+    sList=getSignals(dList,x,y)
+    
+    return sorted(range(len(sList)), key=lambda k: sList[k], reverse=True)
 
 #getting the points of the max signal for photomultipliers
 def getMaxRegions(dList,platePolygon,N):
