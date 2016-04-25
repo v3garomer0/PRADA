@@ -180,6 +180,13 @@ def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
 
     return secondPoints
 
+def plotList(miniList):
+
+    xPoints=[e[0] for e in miniList]
+    yPoints=[e[1] for e in miniList]
+
+    plt.plot(xPoints,yPoints,"ro")
+
 #plotting the points where the first dect is max and te second dect is second max
 def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
     secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
@@ -448,6 +455,8 @@ def getRandTheta(dList,x,y):
 
     return rAndThetaList
 
+#Making a list with the generated signals
+
 def getSignals(dList,x,y):
 
     rTList=getRandTheta(dList,x,y)
@@ -541,20 +550,62 @@ def getAngerPos(dList,x,y):
     print xP,yP
 
 
+#Making the dictionary
+def getLexicon(dList,platePolygon,N):
+
+    lexicon={}
+    xyPoints=[getRandomInPlate(platePolygon) for i in range(N)]
+    
+    for p in xyPoints:
+        x,y=p
+        maxListString=str(getMaxList(dList,x,y))
+
+        if maxListString not in lexicon:
+            lexicon[maxListString]=[]
+        lexicon[maxListString].append(p)
+
+    return lexicon
+
+#Making mini dictionary
+def getMiniLexicon(lexicon,argNo=3):
+
+    miniLex={}
+
+    for e in lexicon:
+        ee=[int(u) for u in e[1:-1].split(",")]
+        redListStr=str(ee[0:argNo])
+
+        if redListStr not in miniLex:
+            miniLex[redListStr]=[]
+
+        miniLex[redListStr]+=lexicon[e]
+
+    return miniLex
+
+
 plotDetector(dList)
 
-N=100000
+N=10000
+
+lexicon=getLexicon(dList,platePolygon,N)
+
+miniLexicon=getMiniLexicon(lexicon,5)
+
+miniList=miniLexicon["[0, 8, 1, 15, 7]"]
+
+plotList(miniList)
+
 #plotMaxRegions(dList,platePolygon,N)
 
-maxRegions=getMaxRegions(dList,platePolygon,N)
-
-plotFirstSecondMax(maxRegions,4,5,"rx")
-
-plotFirstSecondMax(maxRegions,4,6,"bo")
-
-plotFirstSecondMax(maxRegions,4,3,"y^")
-
-plotFirstSecondMax(maxRegions,4,2,"c^")
+#maxRegions=getMaxRegions(dList,platePolygon,N)
+#
+#plotFirstSecondMax(maxRegions,4,5,"rx")
+#
+#plotFirstSecondMax(maxRegions,4,6,"bo")
+#
+#plotFirstSecondMax(maxRegions,4,3,"y^")
+#
+#plotFirstSecondMax(maxRegions,4,2,"c^")
 
 #plotGeometry()
 
