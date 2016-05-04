@@ -2,3 +2,5 @@
 *.tsv
 *.csv
 *.pkl
+*.pyc
+.DS_Store

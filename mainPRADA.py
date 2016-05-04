@@ -4,6 +4,7 @@ from shapely.ops import cascaded_union
 import random
 from math import *
 from matplotlib import colors
+import pickle
 
 
 
@@ -128,7 +129,7 @@ def getRandomInPlate(platePolygon):
         x=random.uniform(0,158.7)
         y=random.uniform(0,70)
 
-    return x,y
+    return [x,y]
 
 #checking which detector recieves the max signal given a point
 def getMaxDetector(dList,x,y):
@@ -566,6 +567,15 @@ def getLexicon(dList,platePolygon,N):
 
     return lexicon
 
+#saving file with the dictionary
+def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
+
+    lexicon=getLexicon(dList,platePolygon,N)
+
+    fileObject=open(file_name,"wb")
+    pickle.dump(lexicon,fileObject)
+    fileObject.close()
+
 #Making mini dictionary
 def getMiniLexicon(lexicon,argNo=3):
 
@@ -582,18 +592,35 @@ def getMiniLexicon(lexicon,argNo=3):
 
     return miniLex
 
+#opening file with the dictionary
+def openLexiconFile(file_name="lexicon.pkl"):
+    
+    fileObject=open(file_name,"r")
 
-plotDetector(dList)
+    lex=pickle.load(fileObject)
+    
+    fileObject.close()
 
-N=10000
+    return lex
 
-lexicon=getLexicon(dList,platePolygon,N)
+#plotDetector(dList)
+#
+#N=10000
+#
+#lexicon=openLexiconFile("lexicon100k.pkl")
+#
+#miniLexicon=getMiniLexicon(lexicon,2)
+#
+#miniList=miniLexicon["[0, 8]"]
+#plotList(miniList)
 
-miniLexicon=getMiniLexicon(lexicon,5)
 
-miniList=miniLexicon["[0, 8, 1, 15, 7]"]
 
-plotList(miniList)
+#miniList=miniLexicon["[3, 5]"]
+#plotList(miniList)
+#
+#miniList=miniLexicon["[15, 9]"]
+#plotList(miniList)
 
 #plotMaxRegions(dList,platePolygon,N)
 
@@ -609,7 +636,7 @@ plotList(miniList)
 
 #plotGeometry()
 
-plt.show()
+#plt.show()
 
 
 
