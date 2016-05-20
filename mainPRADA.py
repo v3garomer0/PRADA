@@ -67,18 +67,22 @@ pl.show()
 #CLUSTERS
 
 miniLexicon=getMiniLexicon(lexicon,2)
-Y=miniLexicon["[0, 8]"]
+Y=miniLexicon["[3, 2]"]
 
 clusterList=getClusterList(Y)
 
 x=[e[0] for e in clusterList[0]]
 y=[e[1] for e in clusterList[0]]
 
-xp=[e[0] for e in clusterList[1]]
-yp=[e[1] for e in clusterList[1]]
+#xp=[e[0] for e in clusterList[1]]
+#yp=[e[1] for e in clusterList[1]]
+
+polygonList1=getCluster2Polygon(clusterList,alpha=0.5)
+plot_polygon(polygonList1[0])
 
 plt.plot(x,y,"o", color="b")
-plt.plot(xp,yp,"o", color="r")
+#plt.plot(xp,yp,"o", color="r")
+
 
 
 plt.show()

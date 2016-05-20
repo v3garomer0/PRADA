@@ -694,7 +694,7 @@ def alpha_shape(pointList, alpha):
     m = geometry.MultiLineString(edge_points)
     triangles = list(polygonize(m))
 
-    print "edge_points=", edge_points
+    #print "edge_points=", edge_points
 
     return cascaded_union(triangles), edge_points
 
@@ -726,5 +726,62 @@ def getClusterList(aList):
 
     return clusterList
 
+def getCluster2Polygon(clusterList,alpha=0.01):
+    polygonList=[]
 
+    for e in clusterList:
+        pointsObjt=convList2Point(e)
+        concave_hull, edge_points=alpha_shape(pointsObjt,alpha=alpha)
+        polygonList.append(concave_hull)
 
+    return polygonList
+
+###################################################################
+
+def getPolygons4MiniLex(miniLex):
+    polMiniLex={}
+
+    for e in miniLex:
+        lexPoints=miniLex[e]
+        clusterList=getClusterList(lexPoints)
+        if clusterList==False:
+            print "Entered false cond", len(e), e
+            continue
+        polMiniLex[e]=getCluster2Polygon(clusterList,alpha=0.5)
+
+    return polMiniLex
+
+def getPolMiniLex(lexicon):
+    polMiniLexDict={}
+
+    for i in range(16):
+        print "i + 1 = ",i + 1
+        tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
+        tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
+        polMiniLexDict[i+1]=tempPolMiniLex
+
+    return polMiniLexDict
+
+#########################################################################
+
+#saving file with the dictionary of polygons
+def savePolMiniLexDict(lexicon,file_name="polMiniLexDict.pkl"):
+    
+    polMiniLexDict=getPolMiniLex(lexicon)
+    
+    fileObject=open(file_name,"wb")
+    pickle.dump(polMiniLexDict,fileObject)
+    fileObject.close()
+
+#opening file with the dictionary of polygons
+def openPolMiniLexDict(file_name="polMiniLexDict.pkl"):
+    
+    fileObject=open(file_name,"r")
+    
+    polMiniLexDict=pickle.load(fileObject)
+    
+    fileObject.close()
+    
+    return polMiniLexDict
+
+#############################################################################
