@@ -605,14 +605,15 @@ def openLexiconFile(file_name="lexicon.pkl"):
 
 #plotDetector(dList)
 #
-#N=10000
+N=10000
 #
-#lexicon=openLexiconFile("lexicon100k.pkl")
+#saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
+lexicon=openLexiconFile("lexicon10k.pkl")
 #
-#miniLexicon=getMiniLexicon(lexicon,2)
-#
-#miniList=miniLexicon["[0, 8]"]
-#plotList(miniList)
+miniLexicon=getMiniLexicon(lexicon,2)
+
+miniList=miniLexicon["[0, 8]"]
+plotList(miniList)
 
 
 
@@ -636,7 +637,8 @@ def openLexiconFile(file_name="lexicon.pkl"):
 
 #plotGeometry()
 
-#plt.show()
+plotDetector(dList)
+plt.show()
 
 
 
