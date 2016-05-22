@@ -1,3 +1,3 @@
-# PRADA
-
-Position Reconstruction Algorithm for MONDE 
+# PRADA 
+Position Reconstruction from Amplitude Detection Algorithm
+(algorithm for MONDE)
