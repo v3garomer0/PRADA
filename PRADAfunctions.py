@@ -290,7 +290,7 @@ def plotGeometry():
         
         S=sList[counter]
         
-        print counter,S
+        print (counter,S)
 
         S=S-0.1*S
         dPoints.append(myCurve(e[0],e[1],polypoints,A,S,e[2]))
@@ -337,11 +337,11 @@ def plotGeometry():
         interPolList=list(interPol.exterior.coords)
 
     centroidCoord=list(interPol.centroid.coords)[0]
-    print "Centroid = ",centroidCoord
+    print ("Centroid = ",centroidCoord)
 
     AreaPol=interPol.area
     
-    print "Area Intersection= ",AreaPol
+    print ("Area Intersection= ",AreaPol)
 
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
@@ -459,7 +459,7 @@ def getRandTheta(dList,x,y):
         elif side=="ulc":
             v=(-1/sqrt(2),-1/sqrt(2))
         else:
-            print "Entered else "+ side
+            print ("Entered else "+ side)
             v=(0,0)
     
         cosTheta=(xl*v[0]+yl*v[1])/sqrt(xl**2+yl**2)
@@ -530,12 +530,12 @@ def getPointBack(dList,x,y):
             y=xl+yd
 
         else:
-            print "Its a corner" + dList[counter][2]
+            print ("Its a corner" + dList[counter][2])
 
 
 
 
-        print x,y
+        print (x,y)
         counter+=1
 
 #comparing with ANGER
@@ -549,7 +549,7 @@ def getAngerPos(dList,x,y):
     for e in S:
         sSum+=e
 
-    print sSum
+    print (sSum)
 
     xP,yP=0,0
 
@@ -561,7 +561,7 @@ def getAngerPos(dList,x,y):
 
         counter+=1
 
-    print xP,yP
+    print (xP,yP)
 
 
 #Making the dictionary
@@ -601,14 +601,14 @@ def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
     
     lexicon=getLexicon(dList,platePolygon,N)
     
-    fileObject=open(file_name,"wb")
+    fileObject=open(file_name,'wb')
     pickle.dump(lexicon,fileObject)
     fileObject.close()
 
 #opening file with the dictionary
 def openLexiconFile(file_name="lexicon.pkl"):
     
-    fileObject=open(file_name,"r")
+    fileObject=open(file_name,'rb')
 
     lex=pickle.load(fileObject)
     
@@ -745,7 +745,7 @@ def getPolygons4MiniLex(miniLex):
         lexPoints=miniLex[e]
         clusterList=getClusterList(lexPoints)
         if clusterList==False:
-            print "Entered false cond", len(e), e
+            print ("Entered false cond", len(e), e)
             continue
         polMiniLex[e]=getCluster2Polygon(clusterList,alpha=0.5)
 
@@ -755,7 +755,7 @@ def getPolMiniLex(lexicon):
     polMiniLexDict={}
 
     for i in range(16):
-        print "i + 1 = ",i + 1
+        print ("i + 1 = ",i + 1)
         tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
         tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
         polMiniLexDict[i+1]=tempPolMiniLex
