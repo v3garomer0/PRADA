@@ -290,7 +290,7 @@ def plotGeometry():
         
         S=sList[counter]
         
-        print counter,S
+        print (counter,S)
 
         S=S-0.1*S
         dPoints.append(myCurve(e[0],e[1],polypoints,A,S,e[2]))
@@ -330,18 +330,18 @@ def plotGeometry():
     counter = 0
     for p in polygons:
         if dList[counter][3]=="on":
-#            print "dList val", dList[counter][3]
+#            print ("dList val", dList[counter][3])
             interPol=interPol.intersection(p)
         counter+=1
 #        centroidCoord=list(interPol.centroid.coords)[0]
         interPolList=list(interPol.exterior.coords)
 
     centroidCoord=list(interPol.centroid.coords)[0]
-    print "Centroid = ",centroidCoord
+    print ("Centroid = ",centroidCoord)
 
     AreaPol=interPol.area
     
-    print "Area Intersection= ",AreaPol
+    print ("Area Intersection= ",AreaPol)
 
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
@@ -354,9 +354,9 @@ def plotGeometry():
 
 
 #    if polygon2.intersects(polygon1):
-#        print "They intersect!!"
+#        print ("They intersect!!")
 #    else:
-#        print "They dont intersect!!"
+#        print ("They dont intersect!!")
 
 #        return
 
@@ -459,7 +459,7 @@ def getRandTheta(dList,x,y):
         elif side=="ulc":
             v=(-1/sqrt(2),-1/sqrt(2))
         else:
-            print "Entered else "+ side
+            print ("Entered else "+ side)
             v=(0,0)
     
         cosTheta=(xl*v[0]+yl*v[1])/sqrt(xl**2+yl**2)
@@ -474,7 +474,7 @@ def getRandTheta(dList,x,y):
 def getSignals(dList,x,y):
 
     rTList=getRandTheta(dList,x,y)
-    #print rTList
+    #print (rTList)
     sList=[]
 
     A=10
@@ -530,12 +530,12 @@ def getPointBack(dList,x,y):
             y=xl+yd
 
         else:
-            print "Its a corner" + dList[counter][2]
+            print ("Its a corner" + dList[counter][2])
 
 
 
 
-        print x,y
+        print (x,y)
         counter+=1
 
 #comparing with ANGER
@@ -549,7 +549,7 @@ def getAngerPos(dList,x,y):
     for e in S:
         sSum+=e
 
-    print sSum
+    print (sSum)
 
     xP,yP=0,0
 
@@ -561,7 +561,7 @@ def getAngerPos(dList,x,y):
 
         counter+=1
 
-    print xP,yP
+    print (xP,yP)
 
 
 #Making the dictionary
@@ -608,7 +608,7 @@ def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
 #opening file with the dictionary
 def openLexiconFile(file_name="lexicon.pkl"):
     
-    fileObject=open(file_name,"r")
+    fileObject=open(file_name,"rb")
 
     lex=pickle.load(fileObject)
     
@@ -686,7 +686,7 @@ def alpha_shape(pointList, alpha):
         area = math.sqrt(s*(s-a)*(s-b)*(s-c))
         circum_r = a*b*c/(4.0*area)
         # Here's the radius filter.
-        #print circum_r
+        #print (circum_r)
         if circum_r < 1.0/alpha:
             add_edge(edges, edge_points, coords, ia, ib)
             add_edge(edges, edge_points, coords, ib, ic)
@@ -694,7 +694,7 @@ def alpha_shape(pointList, alpha):
     m = geometry.MultiLineString(edge_points)
     triangles = list(polygonize(m))
 
-    #print "edge_points=", edge_points
+    #print ("edge_points=", edge_points)
 
     return cascaded_union(triangles), edge_points
 
@@ -745,7 +745,7 @@ def getPolygons4MiniLex(miniLex):
         lexPoints=miniLex[e]
         clusterList=getClusterList(lexPoints)
         if clusterList==False:
-            print "Entered false cond", len(e), e
+            print ("Entered false cond", len(e), e)
             continue
         polMiniLex[e]=getCluster2Polygon(clusterList,alpha=0.5)
 
@@ -755,7 +755,7 @@ def getPolMiniLex(lexicon):
     polMiniLexDict={}
 
     for i in range(16):
-        print "i + 1 = ",i + 1
+        print ("i + 1 = ",i + 1)
         tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
         tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
         polMiniLexDict[i+1]=tempPolMiniLex
@@ -776,7 +776,7 @@ def savePolMiniLexDict(lexicon,file_name="polMiniLexDict.pkl"):
 #opening file with the dictionary of polygons
 def openPolMiniLexDict(file_name="polMiniLexDict.pkl"):
     
-    fileObject=open(file_name,"r")
+    fileObject=open(file_name,"rb")
     
     polMiniLexDict=pickle.load(fileObject)
     
