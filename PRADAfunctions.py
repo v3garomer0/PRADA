@@ -330,7 +330,7 @@ def plotGeometry():
     counter = 0
     for p in polygons:
         if dList[counter][3]=="on":
-#            print "dList val", dList[counter][3]
+#            print ("dList val", dList[counter][3])
             interPol=interPol.intersection(p)
         counter+=1
 #        centroidCoord=list(interPol.centroid.coords)[0]
@@ -354,9 +354,9 @@ def plotGeometry():
 
 
 #    if polygon2.intersects(polygon1):
-#        print "They intersect!!"
+#        print ("They intersect!!")
 #    else:
-#        print "They dont intersect!!"
+#        print ("They dont intersect!!")
 
 #        return
 
@@ -474,7 +474,7 @@ def getRandTheta(dList,x,y):
 def getSignals(dList,x,y):
 
     rTList=getRandTheta(dList,x,y)
-    #print rTList
+    #print (rTList)
     sList=[]
 
     A=10
@@ -610,6 +610,7 @@ def openLexiconFile(file_name="lexicon.pkl"):
     
     fileObject=open(file_name,'rb')
 
+
     lex=pickle.load(fileObject)
     
     fileObject.close()
@@ -686,7 +687,7 @@ def alpha_shape(pointList, alpha):
         area = math.sqrt(s*(s-a)*(s-b)*(s-c))
         circum_r = a*b*c/(4.0*area)
         # Here's the radius filter.
-        #print circum_r
+        #print (circum_r)
         if circum_r < 1.0/alpha:
             add_edge(edges, edge_points, coords, ia, ib)
             add_edge(edges, edge_points, coords, ib, ic)
@@ -694,7 +695,7 @@ def alpha_shape(pointList, alpha):
     m = geometry.MultiLineString(edge_points)
     triangles = list(polygonize(m))
 
-    #print "edge_points=", edge_points
+    #print ("edge_points=", edge_points)
 
     return cascaded_union(triangles), edge_points
 
@@ -776,7 +777,7 @@ def savePolMiniLexDict(lexicon,file_name="polMiniLexDict.pkl"):
 #opening file with the dictionary of polygons
 def openPolMiniLexDict(file_name="polMiniLexDict.pkl"):
     
-    fileObject=open(file_name,"r")
+    fileObject=open(file_name,"rb")
     
     polMiniLexDict=pickle.load(fileObject)
     
