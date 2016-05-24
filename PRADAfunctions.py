@@ -582,19 +582,24 @@ def convList2Point(Y):
     
     return pointsList
 
-def plot_polygon(polygon,fig):
+def plot_polygon(polygon,fig,fc='#999999'):
     #fig = pl.figure()
     ax = fig.add_subplot(111)
     margin = .3
 #    x_min, y_min, x_max, y_max = polygon.bounds
 #    ax.set_xlim([x_min-margin, x_max+margin])
 #    ax.set_ylim([y_min-margin, y_max+margin])
-    patch = PolygonPatch(polygon, fc='#999999',
+    patch = PolygonPatch(polygon, fc=fc,
                          ec='#000000', fill=True,
                          zorder=-1)
     ax.add_patch(patch)
     return fig
 
+def getRandColor():
+    r = lambda: random.randint(0,255)
+    fc='#%02X%02X%02X' % (r(),r(),r())
+    return fc
+    
 def alpha_shape(pointList, alpha):
     """
         Compute the alpha shape (concave hull) of a set
@@ -750,7 +755,7 @@ def plotPolyMiniLex(polyPartMiniLex,fig):
     #dont forget to call pl.show() after the function
     for dectComb in polyPartMiniLex:
         counter=0
-        print dectComb
+        print (dectComb)
         for poly in polyPartMiniLex[dectComb]:
             print ("type(poly) = ", type(poly))
             if type(poly) == shapely.geometry.multipolygon.MultiPolygon:
