@@ -3,14 +3,15 @@ from PRADAfunctions import *
 fig=pl.figure()
 plotDetector(dList)
 #
-#N=10000
+N=10000
 #
-#lexicon=openLexiconFile("lexicon100k.pkl")
-#
-#miniLexicon=getMiniLexicon(lexicon,2)
-#
-#miniList=miniLexicon["[0, 8]"]
-#plotList(miniList)
+#saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
+# lexicon=openLexiconFile("lexicon10k.pkl")
+# #
+# miniLexicon=getMiniLexicon(lexicon,2)
+
+# miniList=miniLexicon["[0, 8]"]
+# plotList(miniList)
 
 
 
@@ -99,21 +100,24 @@ miniLexicon=getMiniLexicon(lexicon,3)
 #    fig=plot_polygon(poly,fig)
 
 for dectComb in miniLexicon:
-    print dectComb
+    print (dectComb)
     Y=miniLexicon[dectComb]
     clusterList=getClusterList(Y)
     if clusterList==False:
         continue
-    polygonList=getCluster2Polygon(clusterList,alpha=0.5)
-    print polygonList
+    polygonList=getCluster2Polygon(clusterList,alpha=0.05)
+    print (polygonList)
     if polygonList==False:
         continue
+    fc=getRandColor()
     for poly in polygonList:
-        if type(poly) == shapely.geometry.multipolygon.MultiPolygon:
+        #This should be implemented in getCLuster2Polygon
+        #Maybe even from alpha_shape
+        print ("type(poly) = ",type(poly))
+        if type(poly) != shapely.geometry.polygon.Polygon:
             print("Entered condition")
             continue
-
-        fig=plot_polygon(poly,fig)
+        fig=plot_polygon(poly,fig,fc)
 
 #Y=miniLexicon["[9, 10]"]
 #
