@@ -123,7 +123,6 @@ platePolygon=Polygon(plateList)
 #checking if the point is inside the plate
 
 def checkIfInPlate(platePolygon,x,y):
-
     point=Point(x,y)
 
     return platePolygon.contains(point)
@@ -132,7 +131,6 @@ def checkIfInPlate(platePolygon,x,y):
 def getRandomInPlate(platePolygon):
     x=random.uniform(0,158.7)
     y=random.uniform(0,70)
-    
 
     while not checkIfInPlate(platePolygon,x,y):
         x=random.uniform(0,158.7)
@@ -149,7 +147,6 @@ def getMaxDetector(dList,x,y):
 #checking which detector recieves the second max signal given a point
 def get2MaxDetector(dList,x,y):
     sList=getSignals(dList,x,y)
-
     sList[sList.index(max(sList))]=0
 
     return sList.index(max(sList))
@@ -162,12 +159,10 @@ def getMaxList(dList,x,y):
 
 #getting the points of the max signal for photomultipliers
 def getMaxRegions(dList,platePolygon,N):
-
     maxRegions=[]
     
     for i in range(len(dList)):
         maxRegions.append([])
-    
 
     for i in range(N):
         x,y=getRandomInPlate(platePolygon)
@@ -180,7 +175,6 @@ def getMaxRegions(dList,platePolygon,N):
 #getting the points where a detector is max and the next one, second max
 def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
     firstPoints=maxRegPoints[firstMaxDect]
-
     secondPoints=[]
 
     for p in firstPoints:
@@ -191,7 +185,6 @@ def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
     return secondPoints
 
 def plotList(miniList):
-
     xPoints=[e[0] for e in miniList]
     yPoints=[e[1] for e in miniList]
 
@@ -208,7 +201,6 @@ def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
 
 #plotting the max region
 def plotMaxRegions(dList,platePolygon,N):
-
     maxRegions=getMaxRegions(dList,platePolygon,N)
     
     for i in range(len(maxRegions)):
@@ -263,7 +255,6 @@ def plotMaxRegions(dList,platePolygon,N):
         if i==15:
             pl.plot(xVals,yVals,"yo")
 
-
 def plotGeometry(x=80,y=55):
     A=10
     polypoints=100
@@ -281,9 +272,7 @@ def plotGeometry(x=80,y=55):
     sList=getSignals(dList,x,y)
     
     for e in dList:
-        
         S=sList[counter]
-        
         print (counter,S)
 
         S=S-0.1*S
@@ -314,7 +303,6 @@ def plotGeometry(x=80,y=55):
 
         pltPoly[i]=pl.Polygon(polyCoords[i], fc="b")
         pl.gca().add_patch(pltPoly[i])
-
 
     interPol=polygons[0]
     counter = 0
@@ -354,7 +342,6 @@ def plotDetector(dList):
     pl.plot([0,5],[5,0],"y",linewidth=2.0)
 
 #Generating each photomultiplier tube
-
     for e in dList:
         if e[3]=="off":
             continue
@@ -384,7 +371,6 @@ def plotDetector(dList):
             pl.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
 
 def getRandTheta(dList,x,y):
-
     rAndThetaList=[]
 
     for i in dList:
@@ -417,7 +403,6 @@ def getRandTheta(dList,x,y):
             v=(0,0)
     
         cosTheta=(xl*v[0]+yl*v[1])/sqrt(xl**2+yl**2)
-        
         theta=acos(cosTheta)
         rAndThetaList.append((r,theta))
 
@@ -426,7 +411,6 @@ def getRandTheta(dList,x,y):
 #Making a list with the generated signals
 
 def getSignals(dList,x,y):
-
     rTList=getRandTheta(dList,x,y)
     #print (rTList)
     sList=[]
@@ -440,22 +424,15 @@ def getSignals(dList,x,y):
         S=A*sin(theta)/r**gamma
         sList.append(S)
 
-
     return sList
 
-
-
 #For proving its correct
-
 def getPointBack(dList,x,y):
     rTList=getRandTheta(dList,x,y)
-   
 
     counter=0
     
-    
     for e in rTList:
-        
         side=dList[counter][2]
        
         r=e[0]
@@ -486,19 +463,14 @@ def getPointBack(dList,x,y):
         else:
             print ("Its a corner" + dList[counter][2])
 
-
-
-
         print (x,y)
         counter+=1
 
 #comparing with ANGER
-
 def getAngerPos(dList,x,y):
     S=getSignals(dList,x,y)
 
     sSum=0
-
 
     for e in S:
         sSum+=e
@@ -506,7 +478,6 @@ def getAngerPos(dList,x,y):
     print (sSum)
 
     xP,yP=0,0
-
 
     counter=0
     for e in S:
@@ -517,10 +488,8 @@ def getAngerPos(dList,x,y):
 
     print (xP,yP)
 
-
 #Making the dictionary
 def getLexicon(dList,platePolygon,N):
-
     lexicon={}
     xyPoints=[getRandomInPlate(platePolygon) for i in range(N)]
     
@@ -536,7 +505,6 @@ def getLexicon(dList,platePolygon,N):
 
 #Making mini dictionary
 def getMiniLexicon(lexicon,argNo=3):
-
     miniLex={}
 
     for e in lexicon:
@@ -552,7 +520,6 @@ def getMiniLexicon(lexicon,argNo=3):
 
 #saving file with the dictionary
 def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
-    
     lexicon=getLexicon(dList,platePolygon,N)
     
     fileObject=open(file_name,'wb')
@@ -561,9 +528,7 @@ def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
 
 #opening file with the dictionary
 def openLexiconFile(file_name="lexicon.pkl"):
-    
     fileObject=open(file_name,'rb')
-
 
     lex=pickle.load(fileObject)
     
@@ -573,8 +538,6 @@ def openLexiconFile(file_name="lexicon.pkl"):
 
 ################################################################################
 #Testing polygon boundaries
-
-
 def convList2Point(Y):
     pointsList=[]
     for e in Y:
@@ -662,7 +625,6 @@ def alpha_shape(pointList, alpha):
 #CLUSTER SECTION
 
 def getClusterList(aList):
-
     X=np.array(aList)
     
     db = DBSCAN(eps=2.5, min_samples=5).fit(X)
@@ -726,7 +688,6 @@ def getPolMiniLex(lexicon):
 
 #saving file with the dictionary of polygons
 def savePolMiniLexDict(lexicon,file_name="polMiniLexDict.pkl"):
-    
     polMiniLexDict=getPolMiniLex(lexicon)
     
     fileObject=open(file_name,"wb")
@@ -735,9 +696,7 @@ def savePolMiniLexDict(lexicon,file_name="polMiniLexDict.pkl"):
 
 #opening file with the dictionary of polygons
 def openPolMiniLexDict(file_name="polMiniLexDict.pkl"):
-    
     fileObject=open(file_name,"rb")
-    
     polMiniLexDict=pickle.load(fileObject)
     
     fileObject.close()
