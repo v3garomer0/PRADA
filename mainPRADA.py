@@ -1,6 +1,6 @@
 from PRADAfunctions import *
 
-fig=pl.figure()
+fig=plt.figure()
 plotDetector(dList)
 #
 N=10000
@@ -37,7 +37,7 @@ N=10000
 
 ############################################
 #POLYGONS BOUNDARIES
-lexicon=openLexiconFile("lexicon1M.pkl")
+lexicon=openLexiconFile("lexicon100k.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,1)
 #
@@ -48,13 +48,13 @@ lexicon=openLexiconFile("lexicon1M.pkl")
 #pointList=convList2Point(Y)
 #
 #concave_hull, edge_points = alpha_shape(pointList,alpha=0.01)
-##fig=pl.figure()
+##fig=plt.figure()
 #_ = plot_polygon(concave_hull,fig)
 #
 #x = [p.coords.xy[0] for p in pointList]
 #y = [p.coords.xy[1] for p in pointList]
-##pl.figure(figsize=(10,10))
-##pl.plot(x,y,'o', color='b')
+##plt.figure(figsize=(10,10))
+##plt.plot(x,y,'o', color='b')
 #
 #point_collection = MultiPoint(list(pointList))
 #point_collection.envelope
@@ -62,9 +62,9 @@ lexicon=openLexiconFile("lexicon1M.pkl")
 ###convex_hull_polygon = point_collection.convex_hull
 ###_ = plot_polygon(convex_hull_polygon)
 ###_ = plot_polygon(point_collection.envelope)
-#testVar = pl.plot(x,y,'o', color='b')
+#testVar = plt.plot(x,y,'o', color='b')
 #print ("type(testVar) = ",type(testVar))
-##pl.show()
+##plt.show()
 
 ##################################################
 #CLUSTERS
@@ -82,13 +82,13 @@ miniLexicon=getMiniLexicon(lexicon,3)
 
 #polygonList1=getCluster2Polygon(clusterList,alpha=0.5)
 
-#fig=pl.figure()
+#fig=plt.figure()
 #for poly in polygonList1:
 #    fig=plot_polygon(poly,fig)
 #fig=plot_polygon(polygonList1[0],fig)
 #fig=plot_polygon(polygonList1[1],fig)
 #print ("type = ",type(polygonList1[0]))
-#pl.gca().add_patch(pl.Polygon(polygonList1[0],fc="g"))
+#plt.gca().add_patch(plt.Polygon(polygonList1[0],fc="g"))
 
 #Y=miniLexicon["[6, 7]"]
 #
@@ -106,19 +106,15 @@ for dectComb in miniLexicon:
     if clusterList==False:
         continue
     polygonList=getCluster2Polygon(clusterList,alpha=0.05)
-    print (polygonList)
-    if polygonList==False:
-        continue
+    break
     fc=getRandColor()
     for poly in polygonList:
         #This should be implemented in getCLuster2Polygon
         #Maybe even from alpha_shape
-        print ("type(poly) = ",type(poly))
-        if type(poly) != shapely.geometry.polygon.Polygon:
-            print("Entered condition")
-            continue
         fig=plot_polygon(poly,fig,fc)
 
+
+plot_polygon(polygonList[0],fig)
 #Y=miniLexicon["[9, 10]"]
 #
 #clusterList=getClusterList(Y)
@@ -128,14 +124,14 @@ for dectComb in miniLexicon:
 #for poly in polygonList3:
 #    fig=plot_polygon(poly,fig)
 
-#pl.plot(x,y,"o", color="b")
-#pl.plot(xp,yp,"o", color="r")
+#plt.plot(x,y,"o", color="b")
+#plt.plot(xp,yp,"o", color="r")
 
-pl.show()
+#plt.show()
 
 #polyPartMiniLex=getPolyPartMiniLex(1,"polMiniLexDict10k.pkl")
-#fig=pl.figure()
+#fig=plt.figure()
 #fig=plotPolyMiniLex(polyPartMiniLex,fig)
 #plot_polygon(polyPartMiniLex["[8, 7, 9]"],fig)
 
-#pl.show()
+plt.show()

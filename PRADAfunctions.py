@@ -9,13 +9,13 @@ from sklearn import metrics
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.preprocessing import StandardScaler
 
-import pylab as pl
 from descartes import PolygonPatch
 from scipy.spatial import Delaunay
 
 import shapely
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
@@ -188,7 +188,7 @@ def plotList(miniList):
     xPoints=[e[0] for e in miniList]
     yPoints=[e[1] for e in miniList]
 
-    pl.plot(xPoints,yPoints,"ro")
+    plt.plot(xPoints,yPoints,"ro")
 
 #plotting the points where the first dect is max and te second dect is second max
 def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
@@ -197,7 +197,7 @@ def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
     xPoints=[e[0] for e in secPoints]
     yPoints=[e[1] for e in secPoints]
 
-    pl.plot(xPoints,yPoints,colorAndForm)
+    plt.plot(xPoints,yPoints,colorAndForm)
 
 #plotting the max region
 def plotMaxRegions(dList,platePolygon,N):
@@ -208,52 +208,52 @@ def plotMaxRegions(dList,platePolygon,N):
         yVals=[e[1] for e in maxRegions[i]]
     
         if i==0:
-            pl.plot(xVals,yVals,"ro")
+            plt.plot(xVals,yVals,"ro")
 
         if i==1:
-            pl.plot(xVals,yVals,"bo")
+            plt.plot(xVals,yVals,"bo")
                 
         if i==2:
-            pl.plot(xVals,yVals,"go")
+            plt.plot(xVals,yVals,"go")
                 
         if i==3:
-            pl.plot(xVals,yVals,"yo")
+            plt.plot(xVals,yVals,"yo")
                 
         if i==4:
-            pl.plot(xVals,yVals,"r^")
+            plt.plot(xVals,yVals,"r^")
                 
         if i==5:
-            pl.plot(xVals,yVals,"bo")
+            plt.plot(xVals,yVals,"bo")
 
         if i==6:
-            pl.plot(xVals,yVals,"y^")
+            plt.plot(xVals,yVals,"y^")
     
         if i==7:
-            pl.plot(xVals,yVals,"ro")
+            plt.plot(xVals,yVals,"ro")
     
         if i==8:
-            pl.plot(xVals,yVals,"b^")
+            plt.plot(xVals,yVals,"b^")
     
         if i==9:
-            pl.plot(xVals,yVals,"g^")
+            plt.plot(xVals,yVals,"g^")
     
         if i==10:
-            pl.plot(xVals,yVals,"c^")
+            plt.plot(xVals,yVals,"c^")
     
         if i==11:
-            pl.plot(xVals,yVals,"y^")
+            plt.plot(xVals,yVals,"y^")
     
         if i==12:
-            pl.plot(xVals,yVals,"ro")
+            plt.plot(xVals,yVals,"ro")
 
         if i==13:
-            pl.plot(xVals,yVals,"go")
+            plt.plot(xVals,yVals,"go")
     
         if i==14:
-            pl.plot(xVals,yVals,"bo")
+            plt.plot(xVals,yVals,"bo")
 
         if i==15:
-            pl.plot(xVals,yVals,"yo")
+            plt.plot(xVals,yVals,"yo")
 
 def plotGeometry(x=80,y=55):
     A=10
@@ -299,10 +299,10 @@ def plotGeometry(x=80,y=55):
         px[i]=[x[0] for x in polyCoords[i]]
         py[i]=[y[1] for y in polyCoords[i]]
 
-        pl.plot(px[i],py[i],'r')
+        plt.plot(px[i],py[i],'r')
 
-        pltPoly[i]=pl.Polygon(polyCoords[i], fc="b")
-        pl.gca().add_patch(pltPoly[i])
+        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
+        plt.gca().add_patch(pltPoly[i])
 
     interPol=polygons[0]
     counter = 0
@@ -324,22 +324,22 @@ def plotGeometry(x=80,y=55):
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
 
-#    pl.plot(pIx,pIy,'go')
+#    plt.plot(pIx,pIy,'go')
 
-    pltPolyIntersect = pl.Polygon(interPolList, fc='g')
+    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
     
-    pl.gca().add_patch(pltPolyIntersect)
+    plt.gca().add_patch(pltPolyIntersect)
 
 #Plotting MONDEs perimeter
 def plotDetector(dList):
-    pl.plot([5,153.7],[0,0],"y",linewidth=2.0)
-    pl.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
-    pl.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
-    pl.plot([158.7,153.7],[65,70],"y",linewidth=2.0)
-    pl.plot([153.7,5],[70,70],"y",linewidth=2.0)
-    pl.plot([5,0],[70,65],"y",linewidth=2.0)
-    pl.plot([0,0],[65,5],"y",linewidth=2.0)
-    pl.plot([0,5],[5,0],"y",linewidth=2.0)
+    plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
+    plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
+    plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
+    plt.plot([158.7,153.7],[65,70],"y",linewidth=2.0)
+    plt.plot([153.7,5],[70,70],"y",linewidth=2.0)
+    plt.plot([5,0],[70,65],"y",linewidth=2.0)
+    plt.plot([0,0],[65,5],"y",linewidth=2.0)
+    plt.plot([0,5],[5,0],"y",linewidth=2.0)
 
 #Generating each photomultiplier tube
     for e in dList:
@@ -347,28 +347,28 @@ def plotDetector(dList):
             continue
         
         if e[2]=="lower":
-            pl.plot([e[0],e[0]],[e[1]-2,e[1]-17],"k",linewidth=10.0)
+            plt.plot([e[0],e[0]],[e[1]-2,e[1]-17],"k",linewidth=10.0)
         
         if e[2]=="upper":
-            pl.plot([e[0],e[0]],[e[1]+2,e[1]+17],"k",linewidth=10.0)
+            plt.plot([e[0],e[0]],[e[1]+2,e[1]+17],"k",linewidth=10.0)
         
         if e[2]=="right":
-            pl.plot([e[0]+2,e[0]+17],[e[1],e[1]],"k",linewidth=10.0)
+            plt.plot([e[0]+2,e[0]+17],[e[1],e[1]],"k",linewidth=10.0)
         
         if e[2]=="left":
-            pl.plot([e[0]-2,e[0]-17],[e[1],e[1]],"k",linewidth=10.0)
+            plt.plot([e[0]-2,e[0]-17],[e[1],e[1]],"k",linewidth=10.0)
         
         if e[2]=="llc":
-            pl.plot([e[0]-1.41,e[0]-10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
+            plt.plot([e[0]-1.41,e[0]-10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
         
         if e[2]=="ulc":
-            pl.plot([e[0]-1.41,e[0]-10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
+            plt.plot([e[0]-1.41,e[0]-10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
         
         if e[2]=="lrc":
-            pl.plot([e[0]+1.41,e[0]+10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
+            plt.plot([e[0]+1.41,e[0]+10.61],[e[1]-1.41,e[1]-10.61],"k",linewidth=10.0)
         
         if e[2]=="urc":
-            pl.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
+            plt.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
 
 def getRandTheta(dList,x,y):
     rAndThetaList=[]
@@ -546,7 +546,7 @@ def convList2Point(Y):
     return pointsList
 
 def plot_polygon(polygon,fig,fc='#999999'):
-    #fig = pl.figure()
+    #fig = plt.figure()
     ax = fig.add_subplot(111)
     margin = .3
 #    x_min, y_min, x_max, y_max = polygon.bounds
@@ -654,6 +654,9 @@ def getCluster2Polygon(clusterList,alpha=0.01):
     for e in clusterList:
         pointsObjt=convList2Point(e)
         concave_hull, edge_points=alpha_shape(pointsObjt,alpha=alpha)
+        if type(concave_hull) != shapely.geometry.polygon.Polygon:
+            print ("Entered condition")
+            continue
         polygonList.append(concave_hull)
 
     return polygonList
@@ -669,7 +672,9 @@ def getPolygons4MiniLex(miniLex):
         if clusterList==False:
             print ("Entered false cond", len(e), e)
             continue
-        polMiniLex[e]=getCluster2Polygon(clusterList,alpha=0.5)
+        clusterList=getCluster2Polygon(clusterList,alpha=0.5)
+        if clusterList != []:
+            polMiniLex[e]=clusterList
 
     return polMiniLex
 
@@ -710,18 +715,36 @@ def getPolyPartMiniLex(dectAmount=3,polMiniLexDict="polMiniLexDict.pkl"):
     polyPartMiniLex=bigdict[dectAmount]
     return polyPartMiniLex
 
-def plotPolyMiniLex(polyPartMiniLex,fig):
-    #dont forget to call pl.show() after the function
+def plotPolyMiniLex(polyPartMiniLex):
+    fig=plt.figure()
+    plotDetector(dList)
+    #dont forget to call plt.show() after the function
     for dectComb in polyPartMiniLex:
-        counter=0
         print (dectComb)
+        fc=getRandColor()
         for poly in polyPartMiniLex[dectComb]:
             print ("type(poly) = ", type(poly))
             if type(poly) == shapely.geometry.multipolygon.MultiPolygon:
                 print("Entered condition")
                 continue
-            if counter == 3:
-                return fig
-            counter += 1
-            fig=plot_polygon(poly,fig)
+            fig=plot_polygon(poly,fig,fc)
     return fig
+
+def plotPoints(pointsList,fc):
+    x=[e[0] for e in pointsList]
+    y=[e[1] for e in pointsList]
+    plt.plot(x,y,"o",color=fc)
+
+def plotAllMiniLexiconPoints(miniLexicon,):
+    for e in miniLexicon:
+        fc=getRandColor()
+        plotPoints(miniLexicon[e],fc)
+
+################################################################################
+#3D PART
+
+def getPolyPartMiniLexCounts(polyPartMiniLex):
+    polyPartMiniLexCounts={}
+    for e in polyPartMiniLex:
+        polyPartMiniLexCounts[e]=[polyPartMiniLex[e],0]
+    return polyPartMiniLexCounts
