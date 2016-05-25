@@ -36,7 +36,7 @@ plotDetector(dList)
 
 ############################################
 #POLYGONS BOUNDARIES
-lexicon=openLexiconFile("lexicon100k.pkl")
+lexicon=openLexiconFile("lexicon1M.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,1)
 #
