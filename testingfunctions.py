@@ -17,14 +17,26 @@ from PRADAfunctions import *
 #    ax.add_patch(patch)
 #    return fig
 
-x = np.linspace(0, 2*np.pi, 400)
-y = np.sin(x**2)
+#x = np.linspace(0, 2*np.pi, 400)
+#y = np.sin(x**2)
+#
+## Just a figure and one subplot
+#f, ax = plt.subplots()
+#ax.plot(x, y)
+#ax.set_title('Simple plot')
 
-# Just a figure and one subplot
-f, ax = plt.subplots()
-ax.plot(x, y)
-ax.set_title('Simple plot')
-
+def plotDetectorNew(plateList):
+    x=[e[0]for e in plateList]
+    y=[e[1] for e in plateList]
+    plt.plot(x,y,"y",linewidth=2.0)
+#    plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
+#    plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
+#    plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
+#    plt.plot([158.7,153.7],[65,70],"y",linewidth=2.0)
+#    plt.plot([153.7,5],[70,70],"y",linewidth=2.0)
+#    plt.plot([5,0],[70,65],"y",linewidth=2.0)
+#    plt.plot([0,0],[65,5],"y",linewidth=2.0)
+#    plt.plot([0,5],[5,0],"y",linewidth=2.0)
 
 ## Two subplots, unpack the output array immediately
 #f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
