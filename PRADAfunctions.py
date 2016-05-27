@@ -147,23 +147,33 @@ def getRandomInPlate(platePolygon):
     return [x,y]
 
 #checking which detector recieves the max signal given a point
-def getMaxDetector(dList,x,y):
-    sList=getSignals(dList,x,y)
-
-    return sList.index(max(sList))
+#def getMaxDetector(dList,x,y):
+#    sList=getSignals(dList,x,y)
+#
+#    return sList.index(max(sList))
 
 #checking which detector recieves the second max signal given a point
-def get2MaxDetector(dList,x,y):
-    sList=getSignals(dList,x,y)
-    sList[sList.index(max(sList))]=0
-
-    return sList.index(max(sList))
+#def get2MaxDetector(dList,x,y):
+#    sList=getSignals(dList,x,y)
+#    sList[sList.index(max(sList))]=0
+#
+#    return sList.index(max(sList))
 
 #generating a list, ordering the max signals
 def getMaxList(dList,x,y):
     sList=getSignals(dList,x,y)
     
     return sorted(range(len(sList)), key=lambda k: sList[k], reverse=True)
+
+#ordering detectors from real data
+def getMaxRealList(realSList):
+    maxRealList=sorted(range(len(realSList)), key=lambda k: realSList[k], reverse=True)
+    return maxRealList
+
+def getRealStringList4Dict(dectNo=1,maxRealList):
+    shortList=maxRealList[dectNo:]
+    stringList4Dict=str(shortList)
+    return stringList4Dict
 
 #getting the points of the max signal for photomultipliers
 def getMaxRegions(dList,platePolygon,N):
@@ -181,16 +191,16 @@ def getMaxRegions(dList,platePolygon,N):
     return maxRegions
 
 #getting the points where a detector is max and the next one, second max
-def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
-    firstPoints=maxRegPoints[firstMaxDect]
-    secondPoints=[]
-
-    for p in firstPoints:
-        x,y=p
-        if get2MaxDetector(dList,x,y)==secMaxDect:
-            secondPoints.append(p)
-
-    return secondPoints
+#def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
+#    firstPoints=maxRegPoints[firstMaxDect]
+#    secondPoints=[]
+#
+#    for p in firstPoints:
+#        x,y=p
+#        if get2MaxDetector(dList,x,y)==secMaxDect:
+#            secondPoints.append(p)
+#
+#    return secondPoints
 
 def plotList(miniList):
     xPoints=[e[0] for e in miniList]
@@ -199,13 +209,13 @@ def plotList(miniList):
     plt.plot(xPoints,yPoints,"ro")
 
 #plotting the points where the first dect is max and te second dect is second max
-def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
-    secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
-
-    xPoints=[e[0] for e in secPoints]
-    yPoints=[e[1] for e in secPoints]
-
-    plt.plot(xPoints,yPoints,colorAndForm)
+#def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
+#    secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
+#
+#    xPoints=[e[0] for e in secPoints]
+#    yPoints=[e[1] for e in secPoints]
+#
+#    plt.plot(xPoints,yPoints,colorAndForm)
 
 #plotting the max region
 def plotMaxRegions(dList,platePolygon,N):
