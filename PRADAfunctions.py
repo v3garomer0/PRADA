@@ -18,6 +18,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+from matplotlib.patches import Circle, PathPatch
+from mpl_toolkits.mplot3d import Axes3D
+import mpl_toolkits.mplot3d.art3d as art3d
+from matplotlib.collections import PolyCollection
+from matplotlib.colors import colorConverter
+
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     def getR(A,S,ang,gamma):
@@ -257,6 +263,8 @@ def plotMaxRegions(dList,platePolygon,N):
         if i==15:
             plt.plot(xVals,yVals,"yo")
 
+     
+
 def plotGeometry(x=80,y=55):
     A=10
     polypoints=100
@@ -332,7 +340,9 @@ def plotGeometry(x=80,y=55):
     
     plt.gca().add_patch(pltPolyIntersect)
 
-#Plotting MONDEs perimeter
+     
+
+#Plotting MONDEs plate
 def plotDetector(plateList,dList):
     x=[e[0]for e in plateList]
     y=[e[1] for e in plateList]
@@ -367,6 +377,7 @@ def plotDetector(plateList,dList):
         if e[2]=="urc":
             plt.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
 
+#MONDE 3D
 def plotDetector3D(plateList,dList):
     fig=plt.figure()
     ax=fig.gca(projection='3d')
@@ -406,6 +417,7 @@ def plotDetector3D(plateList,dList):
         if e[2]=="urc":
             ax.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],0,"k",linewidth=10.0)
             ax.legend()
+    return ax
 
 
 def getRandTheta(dList,x,y):
@@ -756,27 +768,24 @@ def getPolyPartMiniLex(dectAmount=3,polMiniLexDict="polMiniLexDict.pkl"):
 def plotPolyMiniLex(polyPartMiniLex):
     fig=plt.figure()
     plotDetector(plateList,dList)
-    #dont forget to call plt.show() after the function
+    #dont forget to call plt.show()  after the function
     for dectComb in polyPartMiniLex:
-        print (dectComb)
         fc=getRandColor()
         for poly in polyPartMiniLex[dectComb]:
-            print ("type(poly) = ", type(poly))
-            if type(poly) == shapely.geometry.multipolygon.MultiPolygon:
-                print("Entered condition")
-                continue
             fig=plot_polygon(poly,fig,fc)
     return fig
 
-def plotPoints(pointsList,fc):
+def plotPoints(pointsList,fc): #points list would be a miniLex
     x=[e[0] for e in pointsList]
     y=[e[1] for e in pointsList]
     plt.plot(x,y,"o",color=fc)
+     
 
 def plotAllMiniLexiconPoints(miniLexicon):
     for e in miniLexicon:
         fc=getRandColor()
         plotPoints(miniLexicon[e],fc)
+     
 
 ################################################################################
 #3D PART
@@ -786,3 +795,25 @@ def getPolyPartMiniLexCounts(polyPartMiniLex):
     for e in polyPartMiniLex:
         polyPartMiniLexCounts[e]=[polyPartMiniLex[e],0]
     return polyPartMiniLexCounts
+
+
+def plot2DPolyIn3D(ax,poly,fc,zVal=0.0):
+    polyListCoords=list(poly.exterior.coords)
+    poly=PolyCollection([polyListCoords],facecolors=[fc],closed=False)
+    zs=[zVal]
+    ax.add_collection3d(poly,zs=zs,zdir='z')
+    return ax
+
+def plotPolyMiniLex3D(polyPartMiniLex):
+#    fig=plt.figure()
+    ax=plotDetector3D(plateList,dList)
+    ax.set_zlim(0, 10)
+    #dont forget to call plt.show()  after the function
+    for dectComb in polyPartMiniLex:
+        print (dectComb)
+        fc=getRandColor()
+        zVal=random.randint(0,10)
+        for poly in polyPartMiniLex[dectComb]:
+            ax=plot2DPolyIn3D(ax,poly,fc,zVal)
+
+     

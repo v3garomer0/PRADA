@@ -8,14 +8,12 @@ from PRADAfunctions import *
 N=10000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
-# lexicon=openLexiconFile("lexicon10k.pkl")
+lexicon=openLexiconFile("lexicon10k.pkl")
 # #
 # miniLexicon=getMiniLexicon(lexicon,2)
 
 # miniList=miniLexicon["[0, 8]"]
 # plotList(miniList)
-
-
 
 #miniList=miniLexicon["[3, 5]"]
 #plotList(miniList)
@@ -41,11 +39,11 @@ N=10000
 #POLYGONS BOUNDARIES
 #lexicon=openLexiconFile("lexicon100k.pkl")
 #
-#miniLexicon=getMiniLexicon(lexicon,1)
+miniLexicon=getMiniLexicon(lexicon,1)
 #
 #X=np.array(miniLexicon["[4]"])
 #
-#Y=miniLexicon["[4]"]
+Y=miniLexicon["[4]"]
 #
 #pointList=convList2Point(Y)
 #
@@ -143,4 +141,4 @@ plotPolyMiniLex(polMiniLexDict[4])
 #fig=plotPolyMiniLex(polyPartMiniLex,fig)
 #plot_polygon(polyPartMiniLex["[8, 7, 9]"],fig)
 
-plt.show()
+#plt.show()

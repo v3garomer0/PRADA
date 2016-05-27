@@ -1,4 +1,10 @@
 from PRADAfunctions import *
+from matplotlib.patches import Circle, PathPatch
+from mpl_toolkits.mplot3d import Axes3D
+import mpl_toolkits.mplot3d.art3d as art3d
+from matplotlib.collections import PolyCollection
+from matplotlib.colors import colorConverter
+
 #
 #plotDetector(dList) #plot MONDE
 #
@@ -25,18 +31,81 @@ from PRADAfunctions import *
 #ax.plot(x, y)
 #ax.set_title('Simple plot')
 
-def plotDetectorNew(plateList):
+def plot_polygon3D(polygon,fig,fc='#999999'):
+    #fig = plt.figure()
+    ax = fig.add_subplot(111)
+    margin = .3
+    #    x_min, y_min, x_max, y_max = polygon.bounds
+    #    ax.set_xlim([x_min-margin, x_max+margin])
+    #    ax.set_ylim([y_min-margin, y_max+margin])
+    patch = PolygonPatch(polygon, fc=fc,
+                         ec='#000000', fill=True,
+                         zorder=-1)
+    ax.add_patch(patch)
+    return fig
+
+def plotDetector3D(plateList,dList):
+    fig=plt.figure()
+    ax=fig.gca(projection='3d')
+
     x=[e[0]for e in plateList]
     y=[e[1] for e in plateList]
-    plt.plot(x,y,"y",linewidth=2.0)
-#    plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
-#    plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
-#    plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
-#    plt.plot([158.7,153.7],[65,70],"y",linewidth=2.0)
-#    plt.plot([153.7,5],[70,70],"y",linewidth=2.0)
-#    plt.plot([5,0],[70,65],"y",linewidth=2.0)
-#    plt.plot([0,0],[65,5],"y",linewidth=2.0)
-#    plt.plot([0,5],[5,0],"y",linewidth=2.0)
+    z=0
+    ax.plot(x,y,z,"y",linewidth=2.0)
+    ax.legend()
+    
+    #Generating each photomultiplier tube
+    for e in dList:
+        if e[3]=="off":
+            continue
+        
+        if e[2]=="lower":
+            ax.plot([e[0],e[0]],[e[1]-2,e[1]-17],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="upper":
+            ax.plot([e[0],e[0]],[e[1]+2,e[1]+17],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="right":
+            ax.plot([e[0]+2,e[0]+17],[e[1],e[1]],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="left":
+            ax.plot([e[0]-2,e[0]-17],[e[1],e[1]],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="llc":
+            ax.plot([e[0]-1.41,e[0]-10.61],[e[1]-1.41,e[1]-10.61],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="ulc":
+            ax.plot([e[0]-1.41,e[0]-10.61],[e[1]+1.41,e[1]+10.61],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="lrc":
+            ax.plot([e[0]+1.41,e[0]+10.61],[e[1]-1.41,e[1]-10.61],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="urc":
+            ax.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],0,"k",linewidth=10.0)
+            ax.legend()
+
+    return ax
+
+def plot2DPolyIn3D(ax,poly,fc):
+    polyListCoords=list(poly.exterior.coords)
+    poly=PolyCollection([polyListCoords],facecolors=[fc],closed=False)
+    
+    zs=[0.0]
+    
+    ax.add_collection3d(poly,zs=zs,zdir='z')
+
+    return ax
+
+def plotPolyMiniLex3D(polyPartMiniLex):
+    fig=plt.figure()
+    ax=plotDetector3D(plateList,dList)
+    #dont forget to call plt.show() after the function
+    for dectComb in polyPartMiniLex:
+        print (dectComb)
+        fc=getRandColor()
+        for poly in polyPartMiniLex[dectComb]:
+            ax=plot2DPolyIn3D(ax,poly,fc)
+
 
 ## Two subplots, unpack the output array immediately
 #f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
