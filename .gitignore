@@ -3,5 +3,6 @@
 *.csv
 *.pkl
 *.pyc
+*~
 .DS_Store
 plot_dbscan.py
