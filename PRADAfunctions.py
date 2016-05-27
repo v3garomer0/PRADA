@@ -16,6 +16,7 @@ import shapely
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
@@ -116,7 +117,8 @@ plateList=[(0,5),
        (158.7,65),
        (153.7,70),
        (5,70),
-       (0,65)]
+       (0,65),
+        (0,5)]
 
 platePolygon=Polygon(plateList)
 
@@ -331,15 +333,10 @@ def plotGeometry(x=80,y=55):
     plt.gca().add_patch(pltPolyIntersect)
 
 #Plotting MONDEs perimeter
-def plotDetector(dList):
-    plt.plot([5,153.7],[0,0],"y",linewidth=2.0)
-    plt.plot([153.7,158.7],[0,5],"y",linewidth=2.0)
-    plt.plot([158.7,158.7],[5,65],"y",linewidth=2.0)
-    plt.plot([158.7,153.7],[65,70],"y",linewidth=2.0)
-    plt.plot([153.7,5],[70,70],"y",linewidth=2.0)
-    plt.plot([5,0],[70,65],"y",linewidth=2.0)
-    plt.plot([0,0],[65,5],"y",linewidth=2.0)
-    plt.plot([0,5],[5,0],"y",linewidth=2.0)
+def plotDetector(plateList,dList):
+    x=[e[0]for e in plateList]
+    y=[e[1] for e in plateList]
+    plt.plot(x,y,"y",linewidth=2.0)
 
 #Generating each photomultiplier tube
     for e in dList:
@@ -369,6 +366,47 @@ def plotDetector(dList):
         
         if e[2]=="urc":
             plt.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
+
+def plotDetector3D(plateList,dList):
+    fig=plt.figure()
+    ax=fig.gca(projection='3d')
+
+    x=[e[0]for e in plateList]
+    y=[e[1] for e in plateList]
+    z=0
+    ax.plot(x,y,z,"y",linewidth=2.0)
+    ax.legend()
+    
+    #Generating each photomultiplier tube
+    for e in dList:
+        if e[3]=="off":
+            continue
+        
+        if e[2]=="lower":
+            ax.plot([e[0],e[0]],[e[1]-2,e[1]-17],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="upper":
+            ax.plot([e[0],e[0]],[e[1]+2,e[1]+17],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="right":
+            ax.plot([e[0]+2,e[0]+17],[e[1],e[1]],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="left":
+            ax.plot([e[0]-2,e[0]-17],[e[1],e[1]],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="llc":
+            ax.plot([e[0]-1.41,e[0]-10.61],[e[1]-1.41,e[1]-10.61],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="ulc":
+            ax.plot([e[0]-1.41,e[0]-10.61],[e[1]+1.41,e[1]+10.61],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="lrc":
+            ax.plot([e[0]+1.41,e[0]+10.61],[e[1]-1.41,e[1]-10.61],0,"k",linewidth=10.0)
+            ax.legend()
+        if e[2]=="urc":
+            ax.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],0,"k",linewidth=10.0)
+            ax.legend()
+
 
 def getRandTheta(dList,x,y):
     rAndThetaList=[]
@@ -717,7 +755,7 @@ def getPolyPartMiniLex(dectAmount=3,polMiniLexDict="polMiniLexDict.pkl"):
 
 def plotPolyMiniLex(polyPartMiniLex):
     fig=plt.figure()
-    plotDetector(dList)
+    plotDetector(plateList,dList)
     #dont forget to call plt.show() after the function
     for dectComb in polyPartMiniLex:
         print (dectComb)
@@ -735,7 +773,7 @@ def plotPoints(pointsList,fc):
     y=[e[1] for e in pointsList]
     plt.plot(x,y,"o",color=fc)
 
-def plotAllMiniLexiconPoints(miniLexicon,):
+def plotAllMiniLexiconPoints(miniLexicon):
     for e in miniLexicon:
         fc=getRandColor()
         plotPoints(miniLexicon[e],fc)

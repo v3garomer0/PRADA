@@ -1,7 +1,9 @@
 from PRADAfunctions import *
 
-fig=plt.figure()
-plotDetector(dList)
+#fig=plt.figure()
+#plotDetector(dList)
+
+#plotDetector(plateList,dList)
 #
 N=10000
 #
@@ -37,7 +39,7 @@ N=10000
 
 ############################################
 #POLYGONS BOUNDARIES
-lexicon=openLexiconFile("lexicon100k.pkl")
+#lexicon=openLexiconFile("lexicon100k.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,1)
 #
@@ -69,7 +71,7 @@ lexicon=openLexiconFile("lexicon100k.pkl")
 ##################################################
 #CLUSTERS
 
-miniLexicon=getMiniLexicon(lexicon,3)
+#miniLexicon=getMiniLexicon(lexicon,3)
 #Y=miniLexicon["[0, 8]"]
 #
 #clusterList=getClusterList(Y)
@@ -99,27 +101,34 @@ miniLexicon=getMiniLexicon(lexicon,3)
 #for poly in polygonList2:
 #    fig=plot_polygon(poly,fig)
 
-for dectComb in miniLexicon:
-    print (dectComb)
-    Y=miniLexicon[dectComb]
-    clusterList=getClusterList(Y)
-    if clusterList==False:
-        continue
-    polygonList=getCluster2Polygon(clusterList,alpha=0.05)
-    break
-    fc=getRandColor()
-    for poly in polygonList:
-        #This should be implemented in getCLuster2Polygon
-        #Maybe even from alpha_shape
-        fig=plot_polygon(poly,fig,fc)
-
-
-plot_polygon(polygonList[0],fig)
+#for dectComb in miniLexicon:
+#    print (dectComb)
+#    Y=miniLexicon[dectComb]
+#    clusterList=getClusterList(Y)
+#    if clusterList==False:
+#        continue
+#    polygonList=getCluster2Polygon(clusterList,alpha=0.05)
+#    break
+#    fc=getRandColor()
+#    for poly in polygonList:
+#        #This should be implemented in getCLuster2Polygon
+#        #Maybe even from alpha_shape
+#        fig=plot_polygon(poly,fig,fc)
+#
+#
+#plot_polygon(polygonList[0],fig)
 #Y=miniLexicon["[9, 10]"]
 #
 #clusterList=getClusterList(Y)
 #
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
+polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
+#
+plotPolyMiniLex(polMiniLexDict[1])
+plotPolyMiniLex(polMiniLexDict[2])
+plotPolyMiniLex(polMiniLexDict[3])
+plotPolyMiniLex(polMiniLexDict[4])
+
 #
 #for poly in polygonList3:
 #    fig=plot_polygon(poly,fig)
