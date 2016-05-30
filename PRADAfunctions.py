@@ -128,6 +128,24 @@ plateList=[(0,5),
 
 platePolygon=Polygon(plateList)
 
+#Making a list with the generated signals
+
+def getSignals(dList,x,y):
+    rTList=getRandTheta(dList,x,y)
+    #print (rTList)
+    sList=[]
+
+    A=10
+    gamma=2.0
+
+    for e in rTList:
+        r=e[0]
+        theta=e[1]
+        S=A*sin(theta)/r**gamma
+        sList.append(S)
+
+    return sList
+
 #checking if the point is inside the plate
 
 def checkIfInPlate(platePolygon,x,y):
@@ -147,17 +165,17 @@ def getRandomInPlate(platePolygon):
     return [x,y]
 
 #checking which detector recieves the max signal given a point
-#def getMaxDetector(dList,x,y):
-#    sList=getSignals(dList,x,y)
-#
-#    return sList.index(max(sList))
+def getMaxDetector(dList,x,y):
+    sList=getSignals(dList,x,y)
+
+    return sList.index(max(sList))
 
 #checking which detector recieves the second max signal given a point
-#def get2MaxDetector(dList,x,y):
-#    sList=getSignals(dList,x,y)
-#    sList[sList.index(max(sList))]=0
-#
-#    return sList.index(max(sList))
+def get2MaxDetector(dList,x,y):
+    sList=getSignals(dList,x,y)
+    sList[sList.index(max(sList))]=0
+
+    return sList.index(max(sList))
 
 #generating a list, ordering the max signals
 def getMaxList(dList,x,y):
@@ -170,7 +188,7 @@ def getMaxRealList(realSList):
     maxRealList=sorted(range(len(realSList)), key=lambda k: realSList[k], reverse=True)
     return maxRealList
 
-def getRealStringList4Dict(dectNo=1,maxRealList):
+def getRealStringList4Dict(dectNo,maxRealList):
     shortList=maxRealList[dectNo:]
     stringList4Dict=str(shortList)
     return stringList4Dict
@@ -191,16 +209,16 @@ def getMaxRegions(dList,platePolygon,N):
     return maxRegions
 
 #getting the points where a detector is max and the next one, second max
-#def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
-#    firstPoints=maxRegPoints[firstMaxDect]
-#    secondPoints=[]
-#
-#    for p in firstPoints:
-#        x,y=p
-#        if get2MaxDetector(dList,x,y)==secMaxDect:
-#            secondPoints.append(p)
-#
-#    return secondPoints
+def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
+    firstPoints=maxRegPoints[firstMaxDect]
+    secondPoints=[]
+
+    for p in firstPoints:
+        x,y=p
+        if get2MaxDetector(dList,x,y)==secMaxDect:
+            secondPoints.append(p)
+
+    return secondPoints
 
 def plotList(miniList):
     xPoints=[e[0] for e in miniList]
@@ -209,17 +227,18 @@ def plotList(miniList):
     plt.plot(xPoints,yPoints,"ro")
 
 #plotting the points where the first dect is max and te second dect is second max
-#def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
-#    secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
-#
-#    xPoints=[e[0] for e in secPoints]
-#    yPoints=[e[1] for e in secPoints]
-#
-#    plt.plot(xPoints,yPoints,colorAndForm)
+def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
+    secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
+
+    xPoints=[e[0] for e in secPoints]
+    yPoints=[e[1] for e in secPoints]
+
+    plt.plot(xPoints,yPoints,colorAndForm)
 
 #plotting the max region
 def plotMaxRegions(dList,platePolygon,N):
     maxRegions=getMaxRegions(dList,platePolygon,N)
+    
     
     for i in range(len(maxRegions)):
         xVals=[e[0] for e in maxRegions[i]]
@@ -275,9 +294,10 @@ def plotMaxRegions(dList,platePolygon,N):
 
      
 
-def plotGeometry(x=80,y=55):
+def plotGeometry(x=80,y=35):
     A=10
     polypoints=100
+    plotDetector(plateList,dList)
 
     dPoints=[] #detector points
     convexPoints=[]
@@ -344,7 +364,7 @@ def plotGeometry(x=80,y=55):
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
 
-#    plt.plot(pIx,pIy,'go')
+    plt.plot(pIx,pIy,'go')
 
     pltPolyIntersect = plt.Polygon(interPolList, fc='g')
     
@@ -468,24 +488,6 @@ def getRandTheta(dList,x,y):
 
     return rAndThetaList
 
-#Making a list with the generated signals
-
-def getSignals(dList,x,y):
-    rTList=getRandTheta(dList,x,y)
-    #print (rTList)
-    sList=[]
-
-    A=10
-    gamma=2.0
-
-    for e in rTList:
-        r=e[0]
-        theta=e[1]
-        S=A*sin(theta)/r**gamma
-        sList.append(S)
-
-    return sList
-
 #For proving its correct
 def getPointBack(dList,x,y):
     rTList=getRandTheta(dList,x,y)
@@ -602,6 +604,8 @@ def convList2Point(Y):
     pointsList=[]
     for e in Y:
         pointsList.append(Point(e))
+    
+    print e
     
     return pointsList
 
@@ -732,7 +736,7 @@ def getPolygons4MiniLex(miniLex):
         if clusterList==False:
             print ("Entered false cond", len(e), e)
             continue
-        clusterList=getCluster2Polygon(clusterList,alpha=0.5)
+        clusterList=getCluster2Polygon(clusterList,alpha=0.1)
         if clusterList != []:
             polMiniLex[e]=clusterList
 
@@ -792,6 +796,7 @@ def plotPoints(pointsList,fc): #points list would be a miniLex
      
 
 def plotAllMiniLexiconPoints(miniLexicon):
+    plotDetector(plateList,dList)
     for e in miniLexicon:
         fc=getRandColor()
         plotPoints(miniLexicon[e],fc)

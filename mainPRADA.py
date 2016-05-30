@@ -1,20 +1,20 @@
 from PRADAfunctions import *
 
 #fig=plt.figure()
-#plotDetector(dList)
+#plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
 #
-N=10000
+N=1000000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
-lexicon=openLexiconFile("lexicon10k.pkl")
-# #
-# miniLexicon=getMiniLexicon(lexicon,2)
-
-# miniList=miniLexicon["[0, 8]"]
-# plotList(miniList)
-
+#lexicon=openLexiconFile("lexicon1M.pkl")
+#
+#miniLexicon=getMiniLexicon(lexicon,2)
+#
+#miniList=miniLexicon["[0, 8]"]
+#plotList(miniList)
+#
 #miniList=miniLexicon["[3, 5]"]
 #plotList(miniList)
 #
@@ -22,7 +22,7 @@ lexicon=openLexiconFile("lexicon10k.pkl")
 #plotList(miniList)
 
 #plotMaxRegions(dList,platePolygon,N)
-
+#
 #maxRegions=getMaxRegions(dList,platePolygon,N)
 #
 #plotFirstSecondMax(maxRegions,4,5,"rx")
@@ -37,51 +37,50 @@ lexicon=openLexiconFile("lexicon10k.pkl")
 
 ############################################
 #POLYGONS BOUNDARIES
-#lexicon=openLexiconFile("lexicon100k.pkl")
+lexicon=openLexiconFile("lexicon1M.pkl")
 #
-miniLexicon=getMiniLexicon(lexicon,1)
+#miniLexicon=getMiniLexicon(lexicon,1)
 #
 #X=np.array(miniLexicon["[4]"])
 #
-Y=miniLexicon["[4]"]
+#Y=miniLexicon["[4]"]
 #
 #pointList=convList2Point(Y)
 #
-#concave_hull, edge_points = alpha_shape(pointList,alpha=0.01)
-##fig=plt.figure()
+#concave_hull, edge_points = alpha_shape(pointList,alpha=0.1)
+#fig=plt.figure()
 #_ = plot_polygon(concave_hull,fig)
-#
 #x = [p.coords.xy[0] for p in pointList]
 #y = [p.coords.xy[1] for p in pointList]
-##plt.figure(figsize=(10,10))
-##plt.plot(x,y,'o', color='b')
+#plt.plot(x,y,'o', color='b')
 #
 #point_collection = MultiPoint(list(pointList))
 #point_collection.envelope
 #
-###convex_hull_polygon = point_collection.convex_hull
-###_ = plot_polygon(convex_hull_polygon)
-###_ = plot_polygon(point_collection.envelope)
+#convex_hull_polygon = point_collection.convex_hull
+#_ = plot_polygon(concave_hull,fig)
+#_ = plot_polygon(point_collection.envelope,fig)
 #testVar = plt.plot(x,y,'o', color='b')
+
 #print ("type(testVar) = ",type(testVar))
-##plt.show()
+#plt.show()
 
 ##################################################
 #CLUSTERS
 
-#miniLexicon=getMiniLexicon(lexicon,3)
+#miniLexicon=getMiniLexicon(lexicon,2)
 #Y=miniLexicon["[0, 8]"]
 #
 #clusterList=getClusterList(Y)
 #
 #x=[e[0] for e in clusterList[0]]
 #y=[e[1] for e in clusterList[0]]
-
+#
 #xp=[e[0] for e in clusterList[1]]
 #yp=[e[1] for e in clusterList[1]]
-
+#
 #polygonList1=getCluster2Polygon(clusterList,alpha=0.5)
-
+#
 #fig=plt.figure()
 #for poly in polygonList1:
 #    fig=plot_polygon(poly,fig)
@@ -120,12 +119,12 @@ Y=miniLexicon["[4]"]
 #clusterList=getClusterList(Y)
 #
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
-polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
+#polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
 #
-plotPolyMiniLex(polMiniLexDict[1])
-plotPolyMiniLex(polMiniLexDict[2])
-plotPolyMiniLex(polMiniLexDict[3])
-plotPolyMiniLex(polMiniLexDict[4])
+#plotPolyMiniLex(polMiniLexDict[1])
+#plotPolyMiniLex(polMiniLexDict[2])
+#plotPolyMiniLex(polMiniLexDict[3])
+#plotPolyMiniLex(polMiniLexDict[4])
 
 #
 #for poly in polygonList3:
@@ -141,4 +140,4 @@ plotPolyMiniLex(polMiniLexDict[4])
 #fig=plotPolyMiniLex(polyPartMiniLex,fig)
 #plot_polygon(polyPartMiniLex["[8, 7, 9]"],fig)
 
-#plt.show()
+plt.show()
