@@ -605,7 +605,7 @@ def convList2Point(Y):
     for e in Y:
         pointsList.append(Point(e))
     
-    print e
+    print (e)
     
     return pointsList
 
@@ -625,6 +625,12 @@ def plot_polygon(polygon,fig,fc='#999999'):
 def getRandColor():
     r = lambda: random.randint(0,255)
     fc='#%02X%02X%02X' % (r(),r(),r())
+    return fc
+
+#sample function, needs 2 be changed
+def getColor4HeatMap(counts,maxCount):
+    colorVal=1.0*counts*255/maxCount
+    fc='#%02X%02X%02X' % (colorVal,0,0)
     return fc
     
 def alpha_shape(pointList, alpha):
@@ -831,4 +837,43 @@ def plotPolyMiniLex3D(polyPartMiniLex):
         for poly in polyPartMiniLex[dectComb]:
             ax=plot2DPolyIn3D(ax,poly,fc,zVal)
 
-     
+
+##########################################################
+
+#Given a list of detector combinations, it returns a dictionary with the
+#counts for each combination
+def getCountDict(detectCombList):
+    countDict={}
+    for e in detectCombList:
+        sE = str(e)
+
+        if sE not in countDict:
+            countDict[sE]=0
+        else:
+            countDict[sE]+=1
+
+    return countDict
+
+def getCombNotInMapList(countDict, polyPartMiniLex):
+    combNotInMapList=[e for e in countDict if e not in polyPartMiniLex]
+    return combNotInMapList
+
+def getMaxCount(countDict):
+    maxCount=max([a[e] for e in a])
+    return maxCount
+
+def plotCountDictPolygons(countDict, polyPartMiniLex):
+    fig=plt.figure()
+    plotDetector(plateList,dList)
+    #dont forget to call plt.show()  after the function
+    maxCount=getMaxCount(countDict)
+    for dectComb in polyPartMiniLex:
+        if dectComb not in countDict:
+            counts=0
+        else:
+            counts=countDict[e]
+        # fc=getRandColor()#Change this to the heatmap funct stuff...
+        fc=getColor4HeatMap(count,maxCount)
+        for poly in polyPartMiniLex[dectComb]:
+            fig=plot_polygon(poly,fig,fc)
+    return fig
