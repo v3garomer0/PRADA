@@ -1,31 +1,31 @@
 from PRADAfunctions import *
 
-#fig=plt.figure()
-#plotDetector(plateList,dList)
+fig=plt.figure()
+plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
 #
-N=1000000
+N=100000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
-#lexicon=openLexiconFile("lexicon1M.pkl")
-#
-#miniLexicon=getMiniLexicon(lexicon,2)
+lexicon=openLexiconFile("lexicon100k.pkl")
+
+miniLexicon=getMiniLexicon(lexicon,2)
+
+#miniList=miniLexicon["[0, 1]"]
+#plotList(miniList)
 #
 #miniList=miniLexicon["[0, 8]"]
 #plotList(miniList)
 #
-#miniList=miniLexicon["[3, 5]"]
-#plotList(miniList)
-#
-#miniList=miniLexicon["[15, 9]"]
+#miniList=miniLexicon["[0, 15]"]
 #plotList(miniList)
 
 #plotMaxRegions(dList,platePolygon,N)
 #
-#maxRegions=getMaxRegions(dList,platePolygon,N)
+maxRegions=getMaxRegions(dList,platePolygon,N)
 #
-#plotFirstSecondMax(maxRegions,4,5,"rx")
+plotFirstSecondMax(maxRegions,4,5,"rx")
 #
 #plotFirstSecondMax(maxRegions,4,6,"bo")
 #
@@ -37,9 +37,9 @@ N=1000000
 
 ############################################
 #POLYGONS BOUNDARIES
-lexicon=openLexiconFile("lexicon1M.pkl")
+#lexicon=openLexiconFile("lexicon100k.pkl")
 #
-#miniLexicon=getMiniLexicon(lexicon,1)
+#miniLexicon=getMiniLexicon(lexicon,2)
 #
 #X=np.array(miniLexicon["[4]"])
 #
@@ -65,7 +65,7 @@ lexicon=openLexiconFile("lexicon1M.pkl")
 #print ("type(testVar) = ",type(testVar))
 #plt.show()
 
-##################################################
+############################################################
 #CLUSTERS
 
 #miniLexicon=getMiniLexicon(lexicon,2)
@@ -89,15 +89,19 @@ lexicon=openLexiconFile("lexicon1M.pkl")
 #print ("type = ",type(polygonList1[0]))
 #plt.gca().add_patch(plt.Polygon(polygonList1[0],fc="g"))
 
+#############################################################
+
 #Y=miniLexicon["[6, 7]"]
 #
 #clusterList=getClusterList(Y)
 #
 #polygonList2=getCluster2Polygon(clusterList,alpha=0.5)
 #
+#fig=plt.figure()
+#
 #for poly in polygonList2:
 #    fig=plot_polygon(poly,fig)
-
+#
 #for dectComb in miniLexicon:
 #    print (dectComb)
 #    Y=miniLexicon[dectComb]
@@ -114,6 +118,9 @@ lexicon=openLexiconFile("lexicon1M.pkl")
 #
 #
 #plot_polygon(polygonList[0],fig)
+
+###############################################################
+
 #Y=miniLexicon["[9, 10]"]
 #
 #clusterList=getClusterList(Y)
@@ -121,9 +128,9 @@ lexicon=openLexiconFile("lexicon1M.pkl")
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
 #polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
 #
-#plotPolyMiniLex(polMiniLexDict[1])
-#plotPolyMiniLex(polMiniLexDict[2])
-#plotPolyMiniLex(polMiniLexDict[3])
+#for i in range(16):
+#    plotPolyMiniLex(polMiniLexDict[i+1])
+
 #plotPolyMiniLex(polMiniLexDict[4])
 
 #
