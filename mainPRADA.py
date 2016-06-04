@@ -128,12 +128,13 @@ from realDataStuff import *
 #
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
 polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
-
+orderVal=1
+threshold=30
 rawExpDat=unpickleRealData("fuente15.pkl")
 expDat=[e[2:] for e in rawExpDat]
-discDetList=getDiscriminateDetectList(expDat,40,2)
+discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
 countDict=getCountDict(discDetList)
-miniPol=polMiniLexDict[2]
+miniPol=polMiniLexDict[orderVal]
 plotCountDictPolygons(countDict,miniPol)
 
 plt.show()

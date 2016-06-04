@@ -627,8 +627,10 @@ def getRandColor():
 
 #sample function, needs 2 be changed
 def getColor4HeatMap(counts,maxCount):
-    colorVal=int(1.0*counts*255/maxCount)
-    fc='#%02X%02X%02X' % (colorVal,55,55)
+    colorValR=int(255*sin(pi/2*counts/maxCount))
+    colorValG=int(255*sin(pi*counts/maxCount))
+    colorValB=int(255*cos(pi/2*counts/maxCount))
+    fc='#%02X%02X%02X' % (colorValR,colorValG,colorValB)
     return fc
     
 def alpha_shape(pointList, alpha):
