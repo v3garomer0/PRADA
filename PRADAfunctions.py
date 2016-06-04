@@ -293,8 +293,6 @@ def plotMaxRegions(dList,platePolygon,N):
         if i==15:
             plt.plot(xVals,yVals,"yo")
 
-     
-
 def plotGeometry(x=80,y=35):
     A=10
     polypoints=100
@@ -629,8 +627,8 @@ def getRandColor():
 
 #sample function, needs 2 be changed
 def getColor4HeatMap(counts,maxCount):
-    colorVal=1.0*counts*255/maxCount
-    fc='#%02X%02X%02X' % (colorVal,0,0)
+    colorVal=int(1.0*counts*255/maxCount)
+    fc='#%02X%02X%02X' % (colorVal,55,55)
     return fc
     
 def alpha_shape(pointList, alpha):
@@ -847,7 +845,7 @@ def getCountDict(detectCombList):
         sE = str(e)
 
         if sE not in countDict:
-            countDict[sE]=0
+            countDict[sE]=1
         else:
             countDict[sE]+=1
 
@@ -858,7 +856,7 @@ def getCombNotInMapList(countDict, polyPartMiniLex):
     return combNotInMapList
 
 def getMaxCount(countDict):
-    maxCount=max([a[e] for e in a])
+    maxCount=max([countDict[e] for e in countDict])
     return maxCount
 
 def plotCountDictPolygons(countDict, polyPartMiniLex):
@@ -870,12 +868,13 @@ def plotCountDictPolygons(countDict, polyPartMiniLex):
         if dectComb not in countDict:
             counts=0
         else:
-            counts=countDict[e]
+            counts=countDict[dectComb]
         # fc=getRandColor()#Change this to the heatmap funct stuff...
-        fc=getColor4HeatMap(count,maxCount)
+        fc=getColor4HeatMap(counts,maxCount)
         for poly in polyPartMiniLex[dectComb]:
             fig=plot_polygon(poly,fig,fc)
     return fig
+
 #######################################################################################
 #Real Data
 def getDiscriminateDetectList(shortDataInList,threshold=50,dectNo=3):

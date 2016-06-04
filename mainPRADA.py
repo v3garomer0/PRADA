@@ -1,16 +1,17 @@
 from PRADAfunctions import *
+from realDataStuff import *
 
-fig=plt.figure()
-plotDetector(plateList,dList)
+# fig=plt.figure()
+# plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
 #
-N=100000
+# N=100000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
-lexicon=openLexiconFile("lexicon100k.pkl")
+# lexicon=openLexiconFile("lexicon100k.pkl")
 
-miniLexicon=getMiniLexicon(lexicon,2)
+# miniLexicon=getMiniLexicon(lexicon,2)
 
 #miniList=miniLexicon["[0, 1]"]
 #plotList(miniList)
@@ -23,9 +24,9 @@ miniLexicon=getMiniLexicon(lexicon,2)
 
 #plotMaxRegions(dList,platePolygon,N)
 #
-maxRegions=getMaxRegions(dList,platePolygon,N)
+# maxRegions=getMaxRegions(dList,platePolygon,N)
 #
-plotFirstSecondMax(maxRegions,4,5,"rx")
+# plotFirstSecondMax(maxRegions,4,5,"rx")
 #
 #plotFirstSecondMax(maxRegions,4,6,"bo")
 #
@@ -126,9 +127,19 @@ plotFirstSecondMax(maxRegions,4,5,"rx")
 #clusterList=getClusterList(Y)
 #
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
-#polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
+polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
+
+rawExpDat=unpickleRealData("fuente15.pkl")
+expDat=[e[2:] for e in rawExpDat]
+discDetList=getDiscriminateDetectList(expDat,40,2)
+countDict=getCountDict(discDetList)
+miniPol=polMiniLexDict[2]
+plotCountDictPolygons(countDict,miniPol)
+
+plt.show()
+
 #
-#for i in range(16):
+# for i in range(16):
 #    plotPolyMiniLex(polMiniLexDict[i+1])
 
 #plotPolyMiniLex(polMiniLexDict[4])
@@ -146,5 +157,3 @@ plotFirstSecondMax(maxRegions,4,5,"rx")
 #fig=plt.figure()
 #fig=plotPolyMiniLex(polyPartMiniLex,fig)
 #plot_polygon(polyPartMiniLex["[8, 7, 9]"],fig)
-
-plt.show()
