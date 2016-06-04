@@ -221,10 +221,11 @@ def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
     return secondPoints
 
 def plotList(miniList):
+    fc=getRandColor()
     xPoints=[e[0] for e in miniList]
     yPoints=[e[1] for e in miniList]
 
-    plt.plot(xPoints,yPoints,"ro")
+    plt.plot(xPoints,yPoints,"o",color=fc)
 
 #plotting the points where the first dect is max and te second dect is second max
 def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
@@ -545,7 +546,6 @@ def getAngerPos(dList,x,y):
     for e in S:
         xP+=e*dList[counter][0]/sSum
         yP+=e*dList[counter][1]/sSum
-
         counter+=1
 
     print (xP,yP)
@@ -837,7 +837,6 @@ def plotPolyMiniLex3D(polyPartMiniLex):
         for poly in polyPartMiniLex[dectComb]:
             ax=plot2DPolyIn3D(ax,poly,fc,zVal)
 
-
 ##########################################################
 
 #Given a list of detector combinations, it returns a dictionary with the
@@ -877,3 +876,22 @@ def plotCountDictPolygons(countDict, polyPartMiniLex):
         for poly in polyPartMiniLex[dectComb]:
             fig=plot_polygon(poly,fig,fc)
     return fig
+#######################################################################################
+#Real Data
+def getDiscriminateDetectList(shortDataInList,threshold=50,dectNo=3):
+    discriminateDetectList=[]
+    for e in shortDataInList:
+        miniDDList=getMiniDiscList(e,threshold,dectNo)
+        if miniDDList!=[]:
+            discriminateDetectList.append(miniDDList)
+    return discriminateDetectList
+
+def getMiniDiscList(listRow,threshold=50,dectNo=3):
+    miniDiscList=[i for i in listRow if i>=threshold]
+    if len(miniDiscList)>=dectNo:
+        detectList=getMaxListFromData(listRow)
+        return detectList[:dectNo]
+    return[]
+
+def getMaxListFromData(dataList):
+    return sorted(range(len(dataList)), key=lambda k: dataList[k], reverse=True)
