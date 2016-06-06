@@ -128,7 +128,7 @@ from realDataStuff import *
 #
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
 polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
-orderVal=1
+orderVal=3
 threshold=30
 rawExpDat=unpickleRealData("fuente15.pkl")
 expDat=[e[2:] for e in rawExpDat]
