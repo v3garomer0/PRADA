@@ -729,8 +729,10 @@ def getCluster2Polygon(clusterList,alpha=0.01):
     for e in clusterList:
         pointsObjt=convList2Point(e)
         concave_hull, edge_points=alpha_shape(pointsObjt,alpha=alpha)
+
         if type(concave_hull) != shapely.geometry.polygon.Polygon:
-            print ("Entered condition")
+            print ("Entered if in getCluster2Polygon")
+            print (type(concave_hull))
             continue
         polygonList.append(concave_hull)
 
@@ -760,6 +762,8 @@ def getPolMiniLex(lexicon):
         print ("i + 1 = ",i + 1)
         tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
         tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
+        if tempPolMiniLex == {}:
+            continue
         polMiniLexDict[i+1]=tempPolMiniLex
 
     return polMiniLexDict

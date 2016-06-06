@@ -126,7 +126,6 @@ lexicon=openLexiconFile("lexicon10kNEc.pkl")
 #Y=miniLexicon["[9, 10]"]
 
 #clusterList=getClusterList(Y)
-
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
 polMiniLexDict=openPolMiniLexDict("polMiniLexDict10kNEc.pkl")
 #orderVal=1
