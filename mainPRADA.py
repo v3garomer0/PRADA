@@ -1,19 +1,20 @@
 from PRADAfunctions import *
 from realDataStuff import *
 
-# fig=plt.figure()
-# plotDetector(plateList,dList)
+#fig=plt.figure()
+plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
 #
-# N=100000
+N=10000
 #
-#saveLexicon(dList,platePolygon,N,file_name="lexicon10k.pkl")
-# lexicon=openLexiconFile("lexicon100k.pkl")
-
-# miniLexicon=getMiniLexicon(lexicon,2)
-
-#miniList=miniLexicon["[0, 1]"]
+#saveLexicon(dList,platePolygon,N,file_name="lexicon10kNEc.pkl")
+#lexicon=openLexiconFile("lexicon10kNEc.pkl")
+#
+#miniLexicon=getMiniLexicon(lexicon,1)
+#for e in miniLexicon:
+#    plotList(miniLexicon[e])
+#miniList=miniLexicon["[0]"]
 #plotList(miniList)
 #
 #miniList=miniLexicon["[0, 8]"]
@@ -38,7 +39,7 @@ from realDataStuff import *
 
 ############################################
 #POLYGONS BOUNDARIES
-#lexicon=openLexiconFile("lexicon100k.pkl")
+lexicon=openLexiconFile("lexicon10kNEc.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,2)
 #
@@ -123,25 +124,25 @@ from realDataStuff import *
 ###############################################################
 
 #Y=miniLexicon["[9, 10]"]
-#
+
 #clusterList=getClusterList(Y)
-#
+
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
-polMiniLexDict=openPolMiniLexDict("polMiniLexDict100k.pkl")
-orderVal=1
-threshold=30
-rawExpDat=unpickleRealData("fuente15.pkl")
-expDat=[e[2:] for e in rawExpDat]
-discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
-countDict=getCountDict(discDetList)
-miniPol=polMiniLexDict[orderVal]
-plotCountDictPolygons(countDict,miniPol)
-
-plt.show()
+polMiniLexDict=openPolMiniLexDict("polMiniLexDict10kNEc.pkl")
+#orderVal=1
+#threshold=30
+#rawExpDat=unpickleRealData("fuente15.pkl")
+#expDat=[e[2:] for e in rawExpDat]
+#discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
+#countDict=getCountDict(discDetList)
+#miniPol=polMiniLexDict[orderVal]
+#plotCountDictPolygons(countDict,miniPol)
+#
+#plt.show()
 
 #
-# for i in range(16):
-#    plotPolyMiniLex(polMiniLexDict[i+1])
+for i in range(16):
+    plotPolyMiniLex(polMiniLexDict[i+1])
 
 #plotPolyMiniLex(polMiniLexDict[4])
 
@@ -152,7 +153,7 @@ plt.show()
 #plt.plot(x,y,"o", color="b")
 #plt.plot(xp,yp,"o", color="r")
 
-#plt.show()
+plt.show()
 
 #polyPartMiniLex=getPolyPartMiniLex(1,"polMiniLexDict10k.pkl")
 #fig=plt.figure()

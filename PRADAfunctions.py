@@ -136,12 +136,17 @@ def getSignals(dList,x,y):
     sList=[]
 
     A=10
-    gamma=2.0
-
+    gamma=1.3
+    lamb=210
+    thetaC=pi/6
+    
     for e in rTList:
         r=e[0]
         theta=e[1]
-        S=A*sin(theta)/r**gamma
+        if thetaC>theta>0 or pi>theta>pi-thetaC:
+            S=0
+        else:
+            S=A*exp(-r/lamb)*sin(pi*(theta-thetaC)/(pi-2*thetaC))/r**gamma
         sList.append(S)
 
     return sList
@@ -646,7 +651,7 @@ def alpha_shape(pointList, alpha):
     if len(pointList) < 4:
         # When you have a triangle, there is no sense
         # in computing an alpha shape.
-        return MultiPoint(list(pointList)).convex_hull
+        return MultiPoint(list(pointList)).convex_hull,False
     def add_edge(edges, edge_points, coords, i, j):
         """
             Add a line between the i-th and j-th points,
@@ -759,6 +764,17 @@ def getPolMiniLex(lexicon):
 
     return polMiniLexDict
 
+def getPolMiniLexList(lexicon):
+    polMiniLexList=[]
+    
+    for i in range(len(lexicon)):
+        #print ("i + 1 = ",i + 1)
+        tempMiniLex=getMiniLexicon(lexicon,argNo=i)
+        tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
+        polMiniLexList.append(tempPolMiniLex)
+    
+    return polMiniLexList
+
 #########################################################################
 
 #saving file with the dictionary of polygons
@@ -777,6 +793,25 @@ def openPolMiniLexDict(file_name="polMiniLexDict.pkl"):
     fileObject.close()
     
     return polMiniLexDict
+
+#########################################################################
+
+#saving file with the list of polygons
+def savePolMiniLexList(lexicon,file_name="polMiniLexList.pkl"):
+    polMiniLexList=getPolMiniLexList(lexicon)
+    
+    fileObject=open(file_name,"wb")
+    pickle.dump(polMiniLexList,fileObject)
+    fileObject.close()
+
+#opening file with the dictionary of polygons
+def openPolMiniLexList(file_name="polMiniLexList.pkl"):
+    fileObject=open(file_name,"rb")
+    polMiniLexList=pickle.load(fileObject)
+    
+    fileObject.close()
+    
+    return polMiniLexList
 
 #############################################################################
 
