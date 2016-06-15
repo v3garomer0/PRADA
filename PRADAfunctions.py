@@ -808,7 +808,7 @@ def savePolMiniLexList(lexicon,file_name="polMiniLexList.pkl"):
     pickle.dump(polMiniLexList,fileObject)
     fileObject.close()
 
-#opening file with the dictionary of polygons
+#opening file with the list of polygons
 def openPolMiniLexList(file_name="polMiniLexList.pkl"):
     fileObject=open(file_name,"rb")
     polMiniLexList=pickle.load(fileObject)
@@ -845,6 +845,51 @@ def plotAllMiniLexiconPoints(miniLexicon):
     for e in miniLexicon:
         fc=getRandColor()
         plotPoints(miniLexicon[e],fc)
+
+################################################################################
+#Function for certain number of detectors
+def getCertPolMiniLex(lexicon,orderNo):
+    certPolMiniLexDict={}
+    
+    tempMiniLex=getMiniLexicon(lexicon,orderNo)
+    tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
+    
+    certPolMiniLexDict[orderNo]=tempPolMiniLex
+    
+    return certPolMiniLexDict
+
+
+#saving dictionary with a certain number of detectors
+def saveCertainPolMiniLexDict(CombNo,lexicon,file_name="CertPolMiniLexDict.pkl"):
+    certPolMiniLexDict=getCertPolMiniLex(lexicon,orderNo)
+    
+    fileObject=open(file_name,"wb")
+    pickle.dump(certPolMiniLexDict,fileObject)
+    fileObject.close()
+
+
+def openCertainPolMiniLexDict(file_name="CertPolMiniLexDict.pkl"):
+    fileObject=open(file_name,"rb")
+    certPolMiniLexDict=pickle.load(fileObject)
+    
+    fileObject.close()
+    
+    return certPolMiniLexDict
+
+def plotCertPolyMiniLex(certPolMiniLexDict):
+    fig=plt.figure()
+    plotDetector(plateList,dList)
+    
+    for dectComb in certPolMiniLexDict:
+        #fc=getRandColor()
+        for poly in certPolMiniLexDict[dectComb]:
+            print poly
+            print certPolMiniLexDict[dectComb][poly]
+            for realPoly in certPolMiniLexDict[dectComb][poly]:
+                fc=getRandColor()
+                fig=plot_polygon(realPoly,fig,fc)
+
+    return fig
      
 
 ################################################################################

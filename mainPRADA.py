@@ -1,15 +1,15 @@
 from PRADAfunctions import *
 from realDataStuff import *
 
-#fig=plt.figure()
+fig=plt.figure()
 plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
 #
-N=10000
+#N=1000000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10kNEc.pkl")
-#lexicon=openLexiconFile("lexicon10kNEc.pkl")
+#lexicon=openLexiconFile("lexicon100kNEc.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,1)
 #for e in miniLexicon:
@@ -39,7 +39,7 @@ N=10000
 
 ############################################
 #POLYGONS BOUNDARIES
-lexicon=openLexiconFile("lexicon10kNEc.pkl")
+#lexicon=openLexiconFile("lexicon1MNEc.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,2)
 #
@@ -122,12 +122,12 @@ lexicon=openLexiconFile("lexicon10kNEc.pkl")
 #plot_polygon(polygonList[0],fig)
 
 ###############################################################
-
+#
 #Y=miniLexicon["[9, 10]"]
-
+#
 #clusterList=getClusterList(Y)
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
-polMiniLexDict=openPolMiniLexDict("polMiniLexDict10kNEc.pkl")
+#polMiniLexDict=openPolMiniLexDict("polMiniLexDict1MNEc.pkl")
 #orderVal=1
 #threshold=30
 #rawExpDat=unpickleRealData("fuente15.pkl")
@@ -140,13 +140,14 @@ polMiniLexDict=openPolMiniLexDict("polMiniLexDict10kNEc.pkl")
 #plt.show()
 
 #
-for i in range(16):
-    plotPolyMiniLex(polMiniLexDict[i+1])
-
-#plotPolyMiniLex(polMiniLexDict[4])
-
+#for i in range(16):
+#    plotPolyMiniLex(polMiniLexDict[i+1])
 #
-#for poly in polygonList3:
+#for poly in certPolMiniLexDict100kNEc:
+#    fig=plot_polygon(poly,fig)
+#plot_polygon(polMiniLexDict[4],fig)
+
+#for poly in certPolMiniLexDict100kNEc:
 #    fig=plot_polygon(poly,fig)
 
 #plt.plot(x,y,"o", color="b")
