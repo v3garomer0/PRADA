@@ -9,37 +9,25 @@ plotDetector(plateList,dList)
 #N=1000000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10kNEc.pkl")
-#lexicon=openLexiconFile("lexicon100kNEc.pkl")
+#lexicon=openLexicon("lexicon100kNEc.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,1)
 #for e in miniLexicon:
-#    plotList(miniLexicon[e])
+#    plotPoints(miniLexicon[e],fc)
 #miniList=miniLexicon["[0]"]
-#plotList(miniList)
+#plotPoints(miniList,fc)
 #
 #miniList=miniLexicon["[0, 8]"]
-#plotList(miniList)
+#plotPoints(miniList,fc)
 #
 #miniList=miniLexicon["[0, 15]"]
-#plotList(miniList)
+#plotPoints(miniList,fc)
 
-#plotMaxRegions(dList,platePolygon,N)
-#
-# maxRegions=getMaxRegions(dList,platePolygon,N)
-#
-# plotFirstSecondMax(maxRegions,4,5,"rx")
-#
-#plotFirstSecondMax(maxRegions,4,6,"bo")
-#
-#plotFirstSecondMax(maxRegions,4,3,"y^")
-#
-#plotFirstSecondMax(maxRegions,4,2,"c^")
-
-#plotGeometry()
+#plotPetals()
 
 ############################################
 #POLYGONS BOUNDARIES
-#lexicon=openLexiconFile("lexicon1MNEc.pkl")
+#lexicon=openLexicon("lexicon1MNEc.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,2)
 #
@@ -127,7 +115,7 @@ plotDetector(plateList,dList)
 #
 #clusterList=getClusterList(Y)
 #polygonList3=getCluster2Polygon(clusterList,alpha=0.5)
-#polMiniLexDict=openPolMiniLexDict("polMiniLexDict1MNEc.pkl")
+#polMiniLexList=openPolMiniLexList("polMiniLexList1MNEc.pkl")
 #orderVal=1
 #threshold=30
 #rawExpDat=unpickleRealData("fuente15.pkl")
@@ -141,7 +129,7 @@ plotDetector(plateList,dList)
 
 #
 #for i in range(16):
-#    plotPolyMiniLex(polMiniLexDict[i+1])
+#    plotPolyMiniLex(polMiniLexList[i])
 #
 #for poly in certPolMiniLexDict100kNEc:
 #    fig=plot_polygon(poly,fig)
@@ -155,7 +143,7 @@ plotDetector(plateList,dList)
 
 plt.show()
 
-#polyPartMiniLex=getPolyPartMiniLex(1,"polMiniLexDict10k.pkl")
+#polyPartMiniLex=getPolyPartMiniLex(1,"polMiniLexList10k.pkl")
 #fig=plt.figure()
 #fig=plotPolyMiniLex(polyPartMiniLex,fig)
 #plot_polygon(polyPartMiniLex["[8, 7, 9]"],fig)

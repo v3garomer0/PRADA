@@ -169,19 +169,6 @@ def getRandomInPlate(platePolygon):
 
     return [x,y]
 
-#checking which detector recieves the max signal given a point
-def getMaxDetector(dList,x,y):
-    sList=getSignals(dList,x,y)
-
-    return sList.index(max(sList))
-
-#checking which detector recieves the second max signal given a point
-def get2MaxDetector(dList,x,y):
-    sList=getSignals(dList,x,y)
-    sList[sList.index(max(sList))]=0
-
-    return sList.index(max(sList))
-
 #generating a list, ordering the max signals
 def getMaxList(dList,x,y):
     sList=getSignals(dList,x,y)
@@ -198,107 +185,8 @@ def getRealStringList4Dict(dectNo,maxRealList):
     stringList4Dict=str(shortList)
     return stringList4Dict
 
-#getting the points of the max signal for photomultipliers
-def getMaxRegions(dList,platePolygon,N):
-    maxRegions=[]
-    
-    for i in range(len(dList)):
-        maxRegions.append([])
-
-    for i in range(N):
-        x,y=getRandomInPlate(platePolygon)
-
-        maxDect=getMaxDetector(dList,x,y)
-        maxRegions[maxDect].append((x,y))
-
-    return maxRegions
-
-#getting the points where a detector is max and the next one, second max
-def getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect):
-    firstPoints=maxRegPoints[firstMaxDect]
-    secondPoints=[]
-
-    for p in firstPoints:
-        x,y=p
-        if get2MaxDetector(dList,x,y)==secMaxDect:
-            secondPoints.append(p)
-
-    return secondPoints
-
-def plotList(miniList):
-    fc=getRandColor()
-    xPoints=[e[0] for e in miniList]
-    yPoints=[e[1] for e in miniList]
-
-    plt.plot(xPoints,yPoints,"o",color=fc)
-
-#plotting the points where the first dect is max and te second dect is second max
-def plotFirstSecondMax(maxRegPoints,firstMaxDect,secMaxDect,colorAndForm):
-    secPoints=getFirstAndSecMaxPoints(maxRegPoints,firstMaxDect,secMaxDect)
-
-    xPoints=[e[0] for e in secPoints]
-    yPoints=[e[1] for e in secPoints]
-
-    plt.plot(xPoints,yPoints,colorAndForm)
-
-#plotting the max region
-def plotMaxRegions(dList,platePolygon,N):
-    maxRegions=getMaxRegions(dList,platePolygon,N)
-    
-    
-    for i in range(len(maxRegions)):
-        xVals=[e[0] for e in maxRegions[i]]
-        yVals=[e[1] for e in maxRegions[i]]
-    
-        if i==0:
-            plt.plot(xVals,yVals,"ro")
-
-        if i==1:
-            plt.plot(xVals,yVals,"bo")
-                
-        if i==2:
-            plt.plot(xVals,yVals,"go")
-                
-        if i==3:
-            plt.plot(xVals,yVals,"yo")
-                
-        if i==4:
-            plt.plot(xVals,yVals,"r^")
-                
-        if i==5:
-            plt.plot(xVals,yVals,"bo")
-
-        if i==6:
-            plt.plot(xVals,yVals,"y^")
-    
-        if i==7:
-            plt.plot(xVals,yVals,"ro")
-    
-        if i==8:
-            plt.plot(xVals,yVals,"b^")
-    
-        if i==9:
-            plt.plot(xVals,yVals,"g^")
-    
-        if i==10:
-            plt.plot(xVals,yVals,"c^")
-    
-        if i==11:
-            plt.plot(xVals,yVals,"y^")
-    
-        if i==12:
-            plt.plot(xVals,yVals,"ro")
-
-        if i==13:
-            plt.plot(xVals,yVals,"go")
-    
-        if i==14:
-            plt.plot(xVals,yVals,"bo")
-
-        if i==15:
-            plt.plot(xVals,yVals,"yo")
-
-def plotGeometry(x=80,y=35):
+#for ploting petals
+def plotPetals(x=80,y=35):
     A=10
     polypoints=100
     plotDetector(plateList,dList)
@@ -533,7 +421,7 @@ def getPointBack(dList,x,y):
         counter+=1
 
 #comparing with ANGER
-def getAngerPos(dList,x,y):
+def getAngerPosFromPos(dList,x,y):
     S=getSignals(dList,x,y)
 
     sSum=0
@@ -592,7 +480,7 @@ def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
     fileObject.close()
 
 #opening file with the dictionary
-def openLexiconFile(file_name="lexicon.pkl"):
+def openLexicon(file_name="lexicon.pkl"):
     fileObject=open(file_name,'rb')
 
     lex=pickle.load(fileObject)
@@ -602,7 +490,9 @@ def openLexiconFile(file_name="lexicon.pkl"):
     return lex
 
 ################################################################################
-#Testing polygon boundaries
+#Polygon boundaries
+
+#making list of points from dictionary
 def convList2Point(Y):
     pointsList=[]
     for e in Y:
@@ -755,19 +645,6 @@ def getPolygons4MiniLex(miniLex):
 
     return polMiniLex
 
-def getPolMiniLex(lexicon):
-    polMiniLexDict={}
-
-    for i in range(16):
-        print ("i + 1 = ",i + 1)
-        tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
-        tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
-        if tempPolMiniLex == {}:
-            continue
-        polMiniLexDict[i+1]=tempPolMiniLex
-
-    return polMiniLexDict
-
 def getPolMiniLexList(lexicon):
     polMiniLexList=[]
     
@@ -778,25 +655,6 @@ def getPolMiniLexList(lexicon):
         polMiniLexList.append(tempPolMiniLex)
     
     return polMiniLexList
-
-#########################################################################
-
-#saving file with the dictionary of polygons
-def savePolMiniLexDict(lexicon,file_name="polMiniLexDict.pkl"):
-    polMiniLexDict=getPolMiniLex(lexicon)
-    
-    fileObject=open(file_name,"wb")
-    pickle.dump(polMiniLexDict,fileObject)
-    fileObject.close()
-
-#opening file with the dictionary of polygons
-def openPolMiniLexDict(file_name="polMiniLexDict.pkl"):
-    fileObject=open(file_name,"rb")
-    polMiniLexDict=pickle.load(fileObject)
-    
-    fileObject.close()
-    
-    return polMiniLexDict
 
 #########################################################################
 
@@ -818,10 +676,10 @@ def openPolMiniLexList(file_name="polMiniLexList.pkl"):
     return polMiniLexList
 
 #############################################################################
-
-def getPolyPartMiniLex(dectAmount=3,polMiniLexDict="polMiniLexDict.pkl"):
-    bigdict=openPolMiniLexDict(polMiniLexDict)
-    polyPartMiniLex=bigdict[dectAmount]
+#getting the dictionary element of the list
+def getPolyPartMiniLex(dectAmount=3,polMiniLexList="polMiniLexList.pkl"):
+    bigList=openPolMiniLexList(polMiniLexList)
+    polyPartMiniLex=bigList[dectAmount-1]
     return polyPartMiniLex
 
 def plotPolyMiniLex(polyPartMiniLex):
@@ -849,12 +707,9 @@ def plotAllMiniLexiconPoints(miniLexicon):
 ################################################################################
 #Function for certain number of detectors
 def getCertPolMiniLex(lexicon,orderNo):
-    certPolMiniLexDict={}
     
     tempMiniLex=getMiniLexicon(lexicon,orderNo)
-    tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
-    
-    certPolMiniLexDict[orderNo]=tempPolMiniLex
+    certPolMiniLexDict=getPolygons4MiniLex(tempMiniLex)
     
     return certPolMiniLexDict
 
@@ -880,27 +735,18 @@ def plotCertPolyMiniLex(certPolMiniLexDict):
     fig=plt.figure()
     plotDetector(plateList,dList)
     
-    for dectComb in certPolMiniLexDict:
-        #fc=getRandColor()
-        for poly in certPolMiniLexDict[dectComb]:
-            print poly
-            print certPolMiniLexDict[dectComb][poly]
-            for realPoly in certPolMiniLexDict[dectComb][poly]:
-                fc=getRandColor()
-                fig=plot_polygon(realPoly,fig,fc)
+    for detectOrder in certPolMiniLexDict:
+        #print detectOrder
+        #print certPolMiniLexDict[detectOrder]
+        for poly in certPolMiniLexDict[detectOrder]:
+            fc=getRandColor()
+            fig=plot_polygon(poly,fig,fc)
 
     return fig
      
 
 ################################################################################
-#3D PART
-
-def getPolyPartMiniLexCounts(polyPartMiniLex):
-    polyPartMiniLexCounts={}
-    for e in polyPartMiniLex:
-        polyPartMiniLexCounts[e]=[polyPartMiniLex[e],0]
-    return polyPartMiniLexCounts
-
+#ploting in 3D
 
 def plot2DPolyIn3D(ax,poly,fc,zVal=0.0):
     polyListCoords=list(poly.exterior.coords)
