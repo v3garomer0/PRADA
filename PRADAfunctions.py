@@ -607,6 +607,7 @@ def getClusterList(aList):
     clusterList=[[] for i in range(n_clusters_)]
 
     for p,l in zip(X,labels):
+        l=int(l)
         if l==-1:
             continue
 
