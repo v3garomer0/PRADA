@@ -180,8 +180,9 @@ def getMaxRealList(realSList):
     maxRealList=sorted(range(len(realSList)), key=lambda k: realSList[k], reverse=True)
     return maxRealList
 
-def getRealStringList4Dict(dectNo,maxRealList):
-    shortList=maxRealList[dectNo:]
+#given a detector order and a combination, returns a combination with less detectors
+def getRealStringList4Dict(dectOrder,maxRealList):
+    shortList=maxRealList[dectOrder:]
     stringList4Dict=str(shortList)
     return stringList4Dict
 
@@ -650,7 +651,7 @@ def getPolMiniLexList(lexicon):
     
     for i in range(len(lexicon)):
         #print ("i + 1 = ",i + 1)
-        tempMiniLex=getMiniLexicon(lexicon,argNo=i)
+        tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
         tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
         polMiniLexList.append(tempPolMiniLex)
     
@@ -715,7 +716,7 @@ def getCertPolMiniLex(lexicon,orderNo):
 
 
 #saving dictionary with a certain number of detectors
-def saveCertainPolMiniLexDict(CombNo,lexicon,file_name="CertPolMiniLexDict.pkl"):
+def saveCertainPolMiniLexDict(orderNo,lexicon,file_name="CertPolMiniLexDict.pkl"):
     certPolMiniLexDict=getCertPolMiniLex(lexicon,orderNo)
     
     fileObject=open(file_name,"wb")
