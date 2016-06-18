@@ -650,7 +650,7 @@ def getPolygons4MiniLex(miniLex):
 def getPolMiniLexList(lexicon):
     polMiniLexList=[]
     
-    for i in range(len(lexicon)):
+    for i in range(16):
         #print ("i + 1 = ",i + 1)
         tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
         tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
