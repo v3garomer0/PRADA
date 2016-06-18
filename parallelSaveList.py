@@ -19,7 +19,7 @@ if __name__ == '__main__':
     for i in range(tDN):
         polyList.append({})
     
-    lexicon=openLexiconFile("lexicon100k.pkl")
+    lexicon=openLexicon("lexicon100k.pkl")
   
     #target is the function
     processes = [Process(target=parallelPolMiniLex,
