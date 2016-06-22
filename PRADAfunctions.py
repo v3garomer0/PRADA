@@ -186,7 +186,7 @@ def getRealStringList4Dict(dectOrder,maxRealList):
     stringList4Dict=str(shortList)
     return stringList4Dict
 
-#for ploting petals
+#for plotting petals
 def plotPetals(x=80,y=35):
     A=10
     polypoints=100
@@ -694,7 +694,21 @@ def plotPolyMiniLex(polyPartMiniLex):
             fig=plot_polygon(poly,fig,fc)
     return fig
 
-def plotPoints(pointsList,fc): #points list would be a miniLex
+#plotting miniLexList
+def plotPolMiniLexList(polMiniLexList):
+    for detectOrder in range(len(polMiniLexList)):
+        plotDetector(plateList,dList)
+        fig=plt.figure()
+        for detectComb in polMiniLexList[detectOrder]:
+            fc=getRandColor()
+            subPolList=polMiniLexList[detectOrder][detectComb]
+            for poly in subPolList:
+                fig=plot_polygon(poly,fig,fc)
+
+    return fig
+
+def plotPoints(pointsList): #points list would be a miniLex
+    fc=getRandColor()
     x=[e[0] for e in pointsList]
     y=[e[1] for e in pointsList]
     plt.plot(x,y,"o",color=fc)
@@ -748,7 +762,7 @@ def plotCertPolyMiniLex(certPolMiniLexDict):
      
 
 ################################################################################
-#ploting in 3D
+#plotting in 3D
 
 def plot2DPolyIn3D(ax,poly,fc,zVal=0.0):
     polyListCoords=list(poly.exterior.coords)
