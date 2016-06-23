@@ -1,9 +1,9 @@
 from multiprocessing import Process, Manager,cpu_count
 from PRADAfunctions import *
 
-def parallelPolMiniLex(lexicon,theList,theIndex):
+def parallelPolMiniLex(lexicon,theList,theIndex,alpha):
     tempMiniLex=getMiniLexicon(lexicon,theIndex+1)
-    tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
+    tempPolMiniLex=getPolygons4MiniLex(tempMiniLex,alpha=alpha)
     if tempPolMiniLex == {}:
         return
     theList[theIndex]=tempPolMiniLex
@@ -20,10 +20,14 @@ if __name__ == '__main__':
         polyList.append({})
     
     lexicon=openLexicon("lexicon100k.pkl")
-  
+    #if number of points=10k use alpha=0.01, or
+    #if number of points=100k use alpha=0.1, or
+    #if number of points=1M use alpha=1.0
+    alpha=1.0
+
     #target is the function
     processes = [Process(target=parallelPolMiniLex,
-                         args=(lexicon,polyList,i)) for i in range(tDN)]
+                         args=(lexicon,polyList,i,alpha)) for i in range(tDN)]
     
     # start the processes
     # for p in processes:

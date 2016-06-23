@@ -9,9 +9,9 @@ plotDetector(plateList,dList)
 #N=1000000
 #
 #saveLexicon(dList,platePolygon,N,file_name="lexicon10kNEc.pkl")
-#lexicon=openLexicon("lexicon100kNEc.pkl")
-#
-#miniLexicon=getMiniLexicon(lexicon,1)
+lexicon=openLexicon("lexicon100kNEc.pkl")
+
+miniLexicon=getMiniLexicon(lexicon,1)
 #for e in miniLexicon:
 #    plotPoints(miniLexicon[e],fc)
 #miniList=miniLexicon["[0]"]
@@ -20,8 +20,8 @@ plotDetector(plateList,dList)
 #miniList=miniLexicon["[0, 8]"]
 #plotPoints(miniList,fc)
 #
-#miniList=miniLexicon["[0, 15]"]
-#plotPoints(miniList,fc)
+miniList=miniLexicon["[8]"]
+plotPoints(miniList,fc)
 
 #plotPetals()
 

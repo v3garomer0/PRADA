@@ -267,6 +267,7 @@ def plotPetals(x=80,y=35):
 
 #Plotting MONDEs plate
 def plotDetector(plateList,dList):
+    fig=plt.figure()
     x=[e[0]for e in plateList]
     y=[e[1] for e in plateList]
     plt.plot(x,y,"y",linewidth=2.0)
@@ -299,6 +300,7 @@ def plotDetector(plateList,dList):
         
         if e[2]=="urc":
             plt.plot([e[0]+1.41,e[0]+10.61],[e[1]+1.41,e[1]+10.61],"k",linewidth=10.0)
+    return fig
 
 #MONDE 3D
 def plotDetector3D(plateList,dList):
@@ -615,7 +617,7 @@ def getClusterList(aList):
 
     return clusterList
 
-def getCluster2Polygon(clusterList,alpha=0.01):
+def getCluster2Polygon(clusterList,alpha=0.1):
     polygonList=[]
 
     for e in clusterList:
@@ -632,7 +634,7 @@ def getCluster2Polygon(clusterList,alpha=0.01):
 
 ###################################################################
 
-def getPolygons4MiniLex(miniLex):
+def getPolygons4MiniLex(miniLex,alpha=0.1):
     polMiniLex={}
 
     for e in miniLex:
@@ -641,19 +643,19 @@ def getPolygons4MiniLex(miniLex):
         if clusterList==False:
             print ("Entered false cond", len(e), e)
             continue
-        clusterList=getCluster2Polygon(clusterList,alpha=0.1)
+        clusterList=getCluster2Polygon(clusterList,alpha=alpha)
         if clusterList != []:
             polMiniLex[e]=clusterList
 
     return polMiniLex
 
-def getPolMiniLexList(lexicon):
+def getPolMiniLexList(lexicon,alpha=0.1):
     polMiniLexList=[]
     
     for i in range(16):
         #print ("i + 1 = ",i + 1)
         tempMiniLex=getMiniLexicon(lexicon,argNo=i+1)
-        tempPolMiniLex=getPolygons4MiniLex(tempMiniLex)
+        tempPolMiniLex=getPolygons4MiniLex(tempMiniLex,alpha)
         polMiniLexList.append(tempPolMiniLex)
     
     return polMiniLexList
@@ -662,7 +664,7 @@ def getPolMiniLexList(lexicon):
 
 #saving file with the list of polygons
 def savePolMiniLexList(lexicon,file_name="polMiniLexList.pkl"):
-    polMiniLexList=getPolMiniLexList(lexicon)
+    polMiniLexList=getPolMiniLexList(lexicon,alpha=0.1)
     
     fileObject=open(file_name,"wb")
     pickle.dump(polMiniLexList,fileObject)
@@ -695,17 +697,26 @@ def plotPolyMiniLex(polyPartMiniLex):
     return fig
 
 #plotting miniLexList
-def plotPolMiniLexList(polMiniLexList):
+def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
     for detectOrder in range(len(polMiniLexList)):
-        plotDetector(plateList,dList)
-        fig=plt.figure()
+        if detectOrder==combOrder:
+            break
+        fig=plotDetector(plateList,dList)
         for detectComb in polMiniLexList[detectOrder]:
+            intList=string2List(detectComb)
+            if detectOfInterest!="none":
+                if detectOfInterest not in intList:
+                    continue
             fc=getRandColor()
             subPolList=polMiniLexList[detectOrder][detectComb]
             for poly in subPolList:
                 fig=plot_polygon(poly,fig,fc)
 
-    return fig
+def string2List(stringDetectComb):
+    intList=[int(u) for u in stringDetectComb[1:-1].split(",")]
+    return intList
+
+#return fig
 
 def plotPoints(pointsList): #points list would be a miniLex
     fc=getRandColor()
@@ -722,17 +733,17 @@ def plotAllMiniLexiconPoints(miniLexicon):
 
 ################################################################################
 #Function for certain number of detectors
-def getCertPolMiniLex(lexicon,orderNo):
+def getCertPolMiniLex(lexicon,orderNo,alpha=0.1):
     
     tempMiniLex=getMiniLexicon(lexicon,orderNo)
-    certPolMiniLexDict=getPolygons4MiniLex(tempMiniLex)
+    certPolMiniLexDict=getPolygons4MiniLex(tempMiniLex,alpha=0.1)
     
     return certPolMiniLexDict
 
 
 #saving dictionary with a certain number of detectors
 def saveCertainPolMiniLexDict(orderNo,lexicon,file_name="CertPolMiniLexDict.pkl"):
-    certPolMiniLexDict=getCertPolMiniLex(lexicon,orderNo)
+    certPolMiniLexDict=getCertPolMiniLex(lexicon,orderNo,alpha=0.1)
     
     fileObject=open(file_name,"wb")
     pickle.dump(certPolMiniLexDict,fileObject)
