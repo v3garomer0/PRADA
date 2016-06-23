@@ -698,6 +698,7 @@ def plotPolyMiniLex(polyPartMiniLex):
 
 def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
     for detectOrder in range(len(polMiniLexList)):
+        fc=getRandColor()
         if detectOrder==combOrder:
             break
         fig=plotDetector(plateList,dList)
@@ -706,7 +707,7 @@ def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
             if detectOfInterest!="none":
                 if detectOfInterest not in intList:
                     continue
-            fc=getRandColor()
+            #fc=getRandColor()
             subPolList=polMiniLexList[detectOrder][detectComb]
             for poly in subPolList:
                 fig=plot_polygon(poly,fig,fc)

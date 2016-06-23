@@ -19,15 +19,16 @@ if __name__ == '__main__':
     for i in range(tDN):
         polyList.append({})
     
-    lexicon=openLexicon("lexicon100k.pkl")
+    lexicon=openLexicon("lexicon1MNEc.pkl")
     #if number of points=10k use alpha=0.01, or
     #if number of points=100k use alpha=0.1, or
     #if number of points=1M use alpha=1.0
-    alpha=1.0
+
+    alpha=[1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
 
     #target is the function
     processes = [Process(target=parallelPolMiniLex,
-                         args=(lexicon,polyList,i,alpha)) for i in range(tDN)]
+                         args=(lexicon,polyList,i,alpha[i])) for i in range(tDN)]
     
     # start the processes
     # for p in processes:
@@ -53,7 +54,7 @@ if __name__ == '__main__':
     # for i in range(1,myNProc):
     #     print (i+1, polyDict[i+1])
 
-    file_name="polMiniLexListParallel.pkl"
+    file_name="polMiniLexListParallel1MNEcSpecialAlpha.pkl"
     fileObject=open(file_name,"wb")
     #Maybe copy polyDict into a simple dictionary
     pickle.dump(list(polyList),fileObject)
