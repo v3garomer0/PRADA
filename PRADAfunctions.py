@@ -696,7 +696,6 @@ def plotPolyMiniLex(polyPartMiniLex):
             fig=plot_polygon(poly,fig,fc)
     return fig
 
-#plotting miniLexList
 def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
     for detectOrder in range(len(polMiniLexList)):
         if detectOrder==combOrder:
@@ -715,8 +714,6 @@ def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
 def string2List(stringDetectComb):
     intList=[int(u) for u in stringDetectComb[1:-1].split(",")]
     return intList
-
-#return fig
 
 def plotPoints(pointsList): #points list would be a miniLex
     fc=getRandColor()
