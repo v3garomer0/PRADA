@@ -117,8 +117,10 @@ orderVal=1
 threshold=30
 print ("Loading exp data")
 rawExpDat=unpickleRealData("fuente15.pkl")
+print ("len(rawExpDat) = ", len(rawExpDat))
 print ("Creating subList")
-expDat=[e[2:] for e in rawExpDat]
+expDat=[e[2:] for e in rawExpDat if e[1] > 50]
+print ("len(expDat) =",len(expDat))
 print ("Getting the data over the threshold")
 discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
 print ("Getting the count dict for plotting")
