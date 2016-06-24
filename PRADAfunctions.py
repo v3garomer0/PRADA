@@ -817,8 +817,7 @@ def getMaxCount(countDict):
     return maxCount
 
 def plotCountDictPolygons(countDict, polyPartMiniLex):
-    fig=plt.figure()
-    plotDetector(plateList,dList)
+    fig=plotDetector(plateList,dList)
     #dont forget to call plt.show()  after the function
     maxCount=getMaxCount(countDict)
     for dectComb in polyPartMiniLex:
