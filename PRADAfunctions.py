@@ -151,6 +151,53 @@ def getSignals(dList,x,y):
 
     return sList
 
+##################################################################
+#Z Part
+def getSignalsZ(dList,x,y,z=0):
+    rTList=getRandTheta(dList,x,y)
+    sZList=[]
+    rThetaPhiList=[]
+    A=10
+    gamma=1.3
+    lamb=210
+    thetaC=pi/6
+    
+    for e in rTList:
+        theta=e[1]
+        phiZ=pi/2-atan(z/e[0])
+        riZ=sqrt(e[0]**2+z**2)
+        rThetaPhiList.append([riZ,theta,phiZ])
+        
+    for e in rThetaPhiList:
+        if thetaC>e[1]>0 or pi>e[1]>pi-thetaC or thetaC>e[2]>0 or pi>e[2]>pi-thetaC:
+            S=0
+        else:
+            S=A*exp(-e[0]/lamb)*sin(pi*(e[2]-thetaC)/(pi-2*thetaC))*sin(pi*(e[1]-thetaC)/(pi-2*thetaC))/e[0]**gamma
+        sZList.append(S)
+    
+    return sZList
+
+def getMaxZList(dList,x,y,z):
+    sZList=getSignalsZ(dList,x,y,z)
+    
+    return sorted(range(len(sZList)), key=lambda k: sZList[k], reverse=True)
+
+def getWeirdZPoints(dList,z,noPoints):
+    weirdZPointsList=[]
+
+    for i in range(noPoints):
+        x,y=getRandomInPlate(platePolygon)
+        normalSignals=getSignals(dList,x,y)
+        zSignals=getSignalsZ(dList,x,y,z)
+        normalOrder=getMaxList(dList,x,y)
+        zOrder=getMaxZList(dList,x,y,z)
+        if normalOrder!=zOrder:
+            weirdZPointsList.append([x,y])
+
+    return weirdZPointsList
+
+#################################################################
+
 #checking if the point is inside the plate
 
 def checkIfInPlate(platePolygon,x,y):
@@ -718,6 +765,7 @@ def string2List(stringDetectComb):
 
 def plotPoints(pointsList): #points list would be a miniLex
     fc=getRandColor()
+    plotDetector(plateList,dList)
     x=[e[0] for e in pointsList]
     y=[e[1] for e in pointsList]
     plt.plot(x,y,"o",color=fc)
