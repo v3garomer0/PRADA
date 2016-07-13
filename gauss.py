@@ -4,7 +4,7 @@ from matplotlib.colors import LogNorm
 from random import gauss
 
 x=[gauss(1, 0.5) for i in range(10000)]
-y=[gauss(2, 0.5) for i in range(10000)]
+y=[gauss(10, 0.5) for i in range(10000)]
 
 plt.hist2d(x,y)
 plt.colorbar()

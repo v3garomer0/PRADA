@@ -24,6 +24,8 @@ import mpl_toolkits.mplot3d.art3d as art3d
 from matplotlib.collections import PolyCollection
 from matplotlib.colors import colorConverter
 
+from random import gauss
+
 #define los puntos iniciales, el numero de puntos, el valor A, la posicion del detector
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     def getR(A,S,ang,gamma):
@@ -150,53 +152,6 @@ def getSignals(dList,x,y):
         sList.append(S)
 
     return sList
-
-##################################################################
-#Z Part
-def getSignalsZ(dList,x,y,z=0):
-    rTList=getRandTheta(dList,x,y)
-    sZList=[]
-    rThetaPhiList=[]
-    A=10
-    gamma=1.3
-    lamb=210
-    thetaC=pi/6
-    
-    for e in rTList:
-        theta=e[1]
-        phiZ=pi/2-atan(z/e[0])
-        riZ=sqrt(e[0]**2+z**2)
-        rThetaPhiList.append([riZ,theta,phiZ])
-        
-    for e in rThetaPhiList:
-        if thetaC>e[1]>0 or pi>e[1]>pi-thetaC or thetaC>e[2]>0 or pi>e[2]>pi-thetaC:
-            S=0
-        else:
-            S=A*exp(-e[0]/lamb)*sin(pi*(e[2]-thetaC)/(pi-2*thetaC))*sin(pi*(e[1]-thetaC)/(pi-2*thetaC))/e[0]**gamma
-        sZList.append(S)
-    
-    return sZList
-
-def getMaxZList(dList,x,y,z):
-    sZList=getSignalsZ(dList,x,y,z)
-    
-    return sorted(range(len(sZList)), key=lambda k: sZList[k], reverse=True)
-
-def getWeirdZPoints(dList,z,noPoints):
-    weirdZPointsList=[]
-
-    for i in range(noPoints):
-        x,y=getRandomInPlate(platePolygon)
-        normalSignals=getSignals(dList,x,y)
-        zSignals=getSignalsZ(dList,x,y,z)
-        normalOrder=getMaxList(dList,x,y)
-        zOrder=getMaxZList(dList,x,y,z)
-        if normalOrder!=zOrder:
-            weirdZPointsList.append([x,y])
-
-    return weirdZPointsList
-
-#################################################################
 
 #checking if the point is inside the plate
 
@@ -898,3 +853,65 @@ def getMiniDiscList(listRow,threshold=50,dectNo=3):
 
 def getMaxListFromData(dataList):
     return sorted(range(len(dataList)), key=lambda k: dataList[k], reverse=True)
+
+##################################################################
+#Z Part
+def getSignalsZ(dList,x,y,z=0):
+    rTList=getRandTheta(dList,x,y)
+    sZList=[]
+    rThetaPhiList=[]
+    A=10
+    gamma=1.3
+    lamb=210
+    thetaC=pi/6
+    
+    for e in rTList:
+        theta=e[1]
+        phiZ=pi/2-atan(z/e[0])
+        riZ=sqrt(e[0]**2+z**2)
+        rThetaPhiList.append([riZ,theta,phiZ])
+    
+    for e in rThetaPhiList:
+        if thetaC>e[1]>0 or pi>e[1]>pi-thetaC or thetaC>e[2]>0 or pi>e[2]>pi-thetaC:
+            S=0
+        else:
+            S=A*exp(-e[0]/lamb)*sin(pi*(e[2]-thetaC)/(pi-2*thetaC))*sin(pi*(e[1]-thetaC)/(pi-2*thetaC))/e[0]**gamma
+        sZList.append(S)
+    
+    return sZList
+
+#def getMaxZList(dList,x,y,z):
+#    sZList=getSignalsZ(dList,x,y,z)
+#    
+#    return sorted(range(len(sZList)), key=lambda k: sZList[k], reverse=True)
+
+def getMaxZList(sZList):
+    maxZList=getMaxRealList(sZList)
+    return maxZList
+
+def getWeirdZPoints(dList,z,noPoints,detOrder):
+    weirdZPointsList=[]
+    
+    for i in range(noPoints):
+        x,y=getRandomInPlate(platePolygon)
+        normalSignals=getSignals(dList,x,y)
+        zSignals=getSignalsZ(dList,x,y,z)
+        normalOrder=getMaxList(dList,x,y)
+        zOrder=getMaxZList(dList,x,y,z)
+        if normalOrder[:detOrder]!=zOrder[:detOrder]:
+            weirdZPointsList.append([x,y])
+
+    return weirdZPointsList
+
+#################################################################
+#Gauss Part
+
+def getRandomGauss(platePolygon,sigma,N):
+    centroidx=random.uniform(0,158.7)
+    centroidy=random.uniform(0,70)
+
+    x=[gauss(centroidx,sigma) for i in range(N)]
+    y=[gauss(centroidy,sigma) for i in range(N)]
+
+    return x,y
+
