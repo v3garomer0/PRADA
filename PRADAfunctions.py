@@ -511,7 +511,7 @@ def convList2Point(Y):
     pointsList=[]
     for e in Y:
         pointsList.append(Point(e))
-        print e
+        print (e)
     return pointsList
 
 def plot_polygon(polygon,fig,fc='#999999'):
@@ -719,11 +719,11 @@ def plotPolyMiniLex(polyPartMiniLex):
     a certain number of detectors
 
     """
-    fig=plt.figure()
-    plotDetector(plateList,dList)
+    fig=plotDetector(plateList,dList)
     #dont forget to call plt.show()  after the function
     for dectComb in polyPartMiniLex:
         fc=getRandColor()
+        print (dectComb)
         for poly in polyPartMiniLex[dectComb]:
             fig=plot_polygon(poly,fig,fc)
     return fig
@@ -843,7 +843,7 @@ def plotPolyMiniLex3D(polyPartMiniLex):
     ax.set_zlim(0, 10)
     #dont forget to call plt.show()  after the function
     for dectComb in polyPartMiniLex:
-        print (dectComb)
+        # print (dectComb)
         fc=getRandColor()
         zVal=random.randint(0,10)
         for poly in polyPartMiniLex[dectComb]:
