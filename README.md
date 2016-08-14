@@ -2,7 +2,7 @@
 Position Reconstruction from Amplitude Detection Algorithm
 (algorithm for MONDE)
 
-In order to run intall the corresponding python packages in your system
+In order to run install the corresponding python packages in your system
 (make sure you have sudo powers):
 
 numpy (python-numpy)
@@ -11,7 +11,7 @@ matplotlib (python-matplotlib)
 
 shapely (python-shapely)
 
-cython (for installing the next package skelearn through pip)
+cython (for installing the next package sklearn through pip)
 
 sklearn (maybe through python pip if it is not in the official of your
 distro repository)
