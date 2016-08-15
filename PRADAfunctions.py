@@ -319,6 +319,8 @@ def plotDetector(plateList,dList):
     fig=plt.figure()
     x=[e[0]for e in plateList]
     y=[e[1] for e in plateList]
+    plt.xlabel('Posicion [cm]')
+    plt.ylabel('Posicion [cm]')
     plt.plot(x,y,"y",linewidth=2.0)
 
 #Generating each photomultiplier tube
@@ -362,6 +364,9 @@ def plotDetector3D(plateList,dList):
     z=0
     ax.plot(x,y,z,"y",linewidth=2.0)
     ax.legend()
+    ax.set_xlabel('Posicion[cm]')
+    ax.set_ylabel('Posicion[cm]')
+    ax.set_zlabel('Posicion[cm]')
     
     #Generating each photomultiplier tube
     for e in dList:
