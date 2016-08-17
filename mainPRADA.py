@@ -1,20 +1,22 @@
 from PRADAfunctions import *
 from realDataStuff import *
 
-#fig=plt.figure()
-#plotDetector(plateList,dList)
+# fig=plt.figure()
+# plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
 #
-#N=1000000
-#
-#saveLexicon(dList,platePolygon,N,file_name="lexicon10kNEc.pkl")
-#lexicon=openLexicon("lexicon100kNEc.pkl")
-#
-#miniLexicon=getMiniLexicon(lexicon,1)
-#for e in miniLexicon:
-#    plotPoints(miniLexicon[e],fc)
-#miniList=miniLexicon["[0]"]
+# N=100000
+
+# saveLexicon(dList,platePolygon,N,file_name="lexicon100kNEc.pkl")
+# lexicon=openLexicon("lexicon100kNEc.pkl")
+
+# miniLexicon=getMiniLexicon(lexicon,1)
+# for e in miniLexicon:
+#    plotPoints(miniLexicon[e])
+# # miniList=miniLexicon["[0]"]
+
+# plt.show()
 #plotPoints(miniList,fc)
 #
 #miniList=miniLexicon["[0, 8]"]
@@ -111,24 +113,24 @@ from realDataStuff import *
 
 ###############################################################
 #
-print ("Opening polMiniLexList")
-polMiniLexList=openPolMiniLexList("polMiniLexListParallel10kNEc.pkl")
-orderVal=1
-threshold=30
-print ("Loading exp data")
-rawExpDat=unpickleRealData("fuente15.pkl")
-print ("len(rawExpDat) = ", len(rawExpDat))
-print ("Creating subList")
-expDat=[e[2:] for e in rawExpDat if e[1] > 50]
-print ("len(expDat) =",len(expDat))
-print ("Getting the data over the threshold")
-discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
-print ("Getting the count dict for plotting")
-countDict=getCountDict(discDetList)
-print ("Getting the right miniPol for plotting the heatmap")
-miniPol=polMiniLexList[orderVal-1]
-print ("FinalLy doing the plot!")
-plotCountDictPolygons(countDict,miniPol)
+# print ("Opening polMiniLexList")
+# polMiniLexList=openPolMiniLexList("polMiniLexListParallel10kNEc.pkl")
+# orderVal=1
+# threshold=30
+# print ("Loading exp data")
+# rawExpDat=unpickleRealData("fuente15.pkl")
+# print ("len(rawExpDat) = ", len(rawExpDat))
+# print ("Creating subList")
+# expDat=[e[2:] for e in rawExpDat if e[1] > 50]
+# print ("len(expDat) =",len(expDat))
+# print ("Getting the data over the threshold")
+# discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
+# print ("Getting the count dict for plotting")
+# countDict=getCountDict(discDetList)
+# print ("Getting the right miniPol for plotting the heatmap")
+# miniPol=polMiniLexList[orderVal-1]
+# print ("FinalLy doing the plot!")
+# plotCountDictPolygons(countDict,miniPol)
 #
 #plt.show()
 
@@ -146,7 +148,7 @@ plotCountDictPolygons(countDict,miniPol)
 #plt.plot(x,y,"o", color="b")
 #plt.plot(xp,yp,"o", color="r")
 
-plt.show()
+# plt.show()
 
 #polyPartMiniLex=getPolyPartMiniLex(1,"polMiniLexList10k.pkl")
 #fig=plt.figure()

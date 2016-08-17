@@ -36,8 +36,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     dang=pi/np
     ang=0
     gamma=2.0
-    
-    
+
     #Para el barrido angular de los detectores de la parte inferior
     if side=="lower":
         for i in range(np):
@@ -45,14 +44,12 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
             points.append((x0+r*cos(ang),y0+r*sin(ang)))
             ang += dang
 
-
     #Para el barrido angular de los detectores de la parte izquierda
     elif side=="left":
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*sin(ang),y0+r*cos(ang)))
             ang += dang
-
 
     #Para el barrido angular de los detectores de la parte derecha
     elif side=="right":
@@ -98,7 +95,6 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     return points
 
-
 #list of the photomultiplier tubes
 dList=[(79.35,0,"lower","on"),
        (49.35,0,"lower","on"),
@@ -117,7 +113,6 @@ dList=[(79.35,0,"lower","on"),
        (124.35,0,"lower","on"),
        (109.35,0,"lower","on")]
 
-
 #coordinates of Mondes plate
 plateList=[(0,5),
        (5,0),
@@ -130,7 +125,6 @@ plateList=[(0,5),
         (0,5)]
 
 platePolygon=Polygon(plateList)
-
 
 def getRandTheta(dList,x,y):
     """Gets a list with r and theta, given a point"""
@@ -194,9 +188,8 @@ def getSignals(dList,x,y):
     return sList
 
 #checking if the point is inside the plate
-
 def checkIfInPlate(platePolygon,x,y):
-    """Proves if a point is within MONDEs plate"""
+    """Tests if a point is within MONDEs plate"""
     point=Point(x,y)
 
     return platePolygon.contains(point)
@@ -215,14 +208,21 @@ def getRandomInPlate(platePolygon):
 
 #generating a list, ordering the max signals
 def getMaxList(dList,x,y):
-    """Gets a list in which the PMTs are sorted from the one with the maximum signal to the one with the minimum signal"""
+    """Gets a list in which the PMTs are sorted from the one with the
+    maximum signal to the one with the minimum signal
+
+    """
     sList=getSignals(dList,x,y)
     
     return sorted(range(len(sList)), key=lambda k: sList[k], reverse=True)
 
 #ordering detectors from real data
 def getMaxRealList(realSList):
-    """Gets a list in which the PMTs are sorted from the one with the maximum signal to the one with the minimum signal, from a list of measured data"""
+    """Gets a list in which the PMTs are sorted from the one with the
+    maximum signal to the one with the minimum signal, from a list of
+    signal data
+
+    """
     maxRealList=sorted(range(len(realSList)), key=lambda k: realSList[k], reverse=True)
     return maxRealList
 
@@ -235,7 +235,11 @@ def getRealStringList4Dict(dectOrder,maxRealList):
 
 #for plotting petals
 def plotPetals(x=80,y=35):
-    """Makes the plot of the polygon petals for each detector, gets the area of intersection and obtains the centroid of the intersected polygon"""
+    """Makes the plot of the polygon petals for each detector, gets the area
+    of intersection and obtains the centroid of the intersected
+    polygon
+
+    """
     A=10
     polypoints=100
     plotDetector(plateList,dList)
@@ -311,11 +315,9 @@ def plotPetals(x=80,y=35):
     
     plt.gca().add_patch(pltPolyIntersect)
 
-     
-
 #Plotting MONDEs plate
 def plotDetector(plateList,dList):
-    """Plots MONDEs Plate in 2D with the respectives PMTs"""
+    """Plots MONDE's Plate in 2D with the respectives PMTs"""
     fig=plt.figure()
     x=[e[0]for e in plateList]
     y=[e[1] for e in plateList]
@@ -323,7 +325,7 @@ def plotDetector(plateList,dList):
     plt.ylabel('Posicion [cm]')
     plt.plot(x,y,"y",linewidth=2.0)
 
-#Generating each photomultiplier tube
+    #Generating each photomultiplier tube
     for e in dList:
         if e[3]=="off":
             continue
@@ -355,7 +357,7 @@ def plotDetector(plateList,dList):
 
 #MONDE 3D
 def plotDetector3D(plateList,dList):
-    """Plots MONDEs Plate in 3D with the respectives PMTs"""
+    """Plots MONDE's Plate in 3D with the respectives PMTs"""
     fig=plt.figure()
     ax=fig.gca(projection='3d')
 
@@ -401,7 +403,10 @@ def plotDetector3D(plateList,dList):
 
 #For proving its correct
 def getPointBack(dList,x,y):
-    """Given a point, it checks if for every r and theta generated, it returns the same given point"""
+    """Given a point, it checks if for every r and theta generated, it
+    returns the same given point
+
+    """
     rTList=getRandTheta(dList,x,y)
     counter=0
     
@@ -447,7 +452,11 @@ def getAngerPosFromPos(dList,x,y):
 
 #Making the dictionary
 def getLexicon(dList,platePolygon,N):
-    """Generates a dictionary using N points, in which each entry is a combination of detectors and it contains the points for that combination"""
+    """Generates a dictionary using N points, in which each entry is a
+    combination of detectors and it contains the points for that
+    combination
+
+    """
     lexicon={}
     xyPoints=[getRandomInPlate(platePolygon) for i in range(N)]
     
@@ -462,7 +471,10 @@ def getLexicon(dList,platePolygon,N):
 
 #Making mini dictionary
 def getMiniLexicon(lexicon,argNo=3):
-    """Creates a mini dictionary from the big dictionary, using only the entries with the desired number of PMTs"""
+    """Creates a mini dictionary from the big dictionary, using only the
+    entries with the desired number of PMTs
+
+    """
     miniLex={}
 
     for e in lexicon:
@@ -504,7 +516,7 @@ def convList2Point(Y):
     pointsList=[]
     for e in Y:
         pointsList.append(Point(e))
-        print e
+        print (e)
     return pointsList
 
 def plot_polygon(polygon,fig,fc='#999999'):
@@ -550,10 +562,10 @@ def alpha_shape(pointList, alpha):
         # in computing an alpha shape.
         return MultiPoint(list(pointList)).convex_hull,False
     def add_edge(edges, edge_points, coords, i, j):
+        """Add a line between the i-th and j-th points, if not in the list
+            already
+
         """
-            Add a line between the i-th and j-th points,
-            if not in the list already
-            """
         if (i, j) in edges or (j, i) in edges:
                 # already added
                 return
@@ -641,7 +653,10 @@ def getCluster2Polygon(clusterList,alpha=0.1):
 ###################################################################
 
 def getPolygons4MiniLex(miniLex,alpha=0.1):
-    """Makes a dictionary of polygons up to a certain number of combination of detectors, using a miniLexicon"""
+    """Makes a dictionary of polygons up to a certain number of combination
+    of detectors, using a miniLexicon
+
+    """
     polMiniLex={}
 
     for e in miniLex:
@@ -657,7 +672,10 @@ def getPolygons4MiniLex(miniLex,alpha=0.1):
     return polMiniLex
 
 def getPolMiniLexList(lexicon,alpha=0.1):
-    """Makes a list of polygons for each combination of PMTs, using a lexicon"""
+    """Makes a list of polygons for each combination of PMTs, using a
+    lexicon
+
+    """
     polMiniLexList=[]
     
     for i in range(16):
@@ -672,7 +690,8 @@ def getPolMiniLexList(lexicon,alpha=0.1):
 
 #saving file with the list of polygons
 def savePolMiniLexList(lexicon,file_name="polMiniLexList.pkl"):
-    """Creates and saves a file with the list of polygons for each combination of PMTs, using a lexicon"""
+    """Creates and saves a file with the list of polygons for each
+    combination of PMTs, using a lexicon"""
     polMiniLexList=getPolMiniLexList(lexicon,alpha=0.1)
     
     fileObject=open(file_name,"wb")
@@ -692,24 +711,33 @@ def openPolMiniLexList(file_name="polMiniLexList.pkl"):
 #############################################################################
 #getting the dictionary element of the list
 def getPolyPartMiniLex(dectAmount=3,polMiniLexList="polMiniLexList.pkl"):
-    """Gets a part of the polMiniLexList which takes into account only a certain number of detectors"""
+    """Gets a part of the polMiniLexList which takes into account only a
+    certain number of detectors
+
+    """
     bigList=openPolMiniLexList(polMiniLexList)
     polyPartMiniLex=bigList[dectAmount-1]
     return polyPartMiniLex
 
 def plotPolyMiniLex(polyPartMiniLex):
-    """Plots the polygons from the list polyPartMiniLex which only considers a certain number of detectors"""
-    fig=plt.figure()
-    plotDetector(plateList,dList)
+    """Plots the polygons from the list polyPartMiniLex which only considers
+    a certain number of detectors
+
+    """
+    fig=plotDetector(plateList,dList)
     #dont forget to call plt.show()  after the function
     for dectComb in polyPartMiniLex:
         fc=getRandColor()
+        print (dectComb)
         for poly in polyPartMiniLex[dectComb]:
             fig=plot_polygon(poly,fig,fc)
     return fig
 
 def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
-    """Plots just the polygons of polMiniLexList which are of interest and with the number of detectors desired"""
+    """Plots just the polygons of polMiniLexList which are of interest and
+    with the number of detectors desired
+
+    """
     for detectOrder in range(len(polMiniLexList)):
         fc=getRandColor()
         if detectOrder==combOrder:
@@ -749,7 +777,10 @@ def plotAllMiniLexiconPoints(miniLexicon):
 ################################################################################
 #Function for certain number of detectors
 def getCertPolMiniLex(lexicon,orderNo,alpha=0.1):
-    """Gets a dictionary with polygons of a particular alpha from the lexicon with a certain number of detectors """
+    """Gets a dictionary with polygons of a particular alpha from the
+    lexicon with a certain number of detectors
+
+    """
     tempMiniLex=getMiniLexicon(lexicon,orderNo)
     certPolMiniLexDict=getPolygons4MiniLex(tempMiniLex,alpha=0.1)
     
@@ -758,7 +789,10 @@ def getCertPolMiniLex(lexicon,orderNo,alpha=0.1):
 
 #saving dictionary with a certain number of detectors
 def saveCertainPolMiniLexDict(orderNo,lexicon,file_name="CertPolMiniLexDict.pkl"):
-    """Creates and saves a file with the dictionary with polygons of a certain alpha and for a particular number of detectors"""
+    """Creates and saves a file with the dictionary with polygons of a
+    certain alpha and for a particular number of detectors
+
+    """
     certPolMiniLexDict=getCertPolMiniLex(lexicon,orderNo,alpha=0.1)
     
     fileObject=open(file_name,"wb")
@@ -767,7 +801,10 @@ def saveCertainPolMiniLexDict(orderNo,lexicon,file_name="CertPolMiniLexDict.pkl"
 
 
 def openCertainPolMiniLexDict(file_name="CertPolMiniLexDict.pkl"):
-    """Opens the file with the dictionary with polygons of a certain alpha and for a particular number of detectors"""
+    """Opens the file with the dictionary with polygons of a certain alpha
+    and for a particular number of detectors
+
+    """
     fileObject=open(file_name,"rb")
     certPolMiniLexDict=pickle.load(fileObject)
     
@@ -776,7 +813,10 @@ def openCertainPolMiniLexDict(file_name="CertPolMiniLexDict.pkl"):
     return certPolMiniLexDict
 
 def plotCertPolyMiniLex(certPolMiniLexDict):
-    """Plots the polygons of the dictionary of polygons with a certain alpha and for a particular number of detectors"""
+    """Plots the polygons of the dictionary of polygons with a certain alpha
+    and for a particular number of detectors
+
+    """
     fig=plt.figure()
     plotDetector(plateList,dList)
     
@@ -786,7 +826,6 @@ def plotCertPolyMiniLex(certPolMiniLexDict):
             fig=plot_polygon(poly,fig,fc)
 
     return fig
-     
 
 ################################################################################
 #plotting in 3D
@@ -800,13 +839,16 @@ def plot2DPolyIn3D(ax,poly,fc,zVal=0.0):
     return ax
 
 def plotPolyMiniLex3D(polyPartMiniLex):
-    """Plots the polygons from the list polyPartMiniLex which only considers a certain number of detectors in 3D"""
+    """Plots the polygons from the list polyPartMiniLex which only considers
+    a certain number of detectors in 3D
+
+    """
 #    fig=plt.figure()
     ax=plotDetector3D(plateList,dList)
     ax.set_zlim(0, 10)
     #dont forget to call plt.show()  after the function
     for dectComb in polyPartMiniLex:
-        print (dectComb)
+        # print (dectComb)
         fc=getRandColor()
         zVal=random.randint(0,10)
         for poly in polyPartMiniLex[dectComb]:
@@ -814,9 +856,11 @@ def plotPolyMiniLex3D(polyPartMiniLex):
 
 ##########################################################
 
-#Given a list of detector combinations, it returns a dictionary with the counts for each combination
 def getCountDict(detectCombList):
-    """Given a list of detector combinations, it returns a dictionary with the counts for each combination"""
+    """Given a list of detector combinations, it returns a dictionary with
+    the counts for each combination
+
+    """
     countDict={}
     for e in detectCombList:
         sE = str(e)
@@ -829,7 +873,10 @@ def getCountDict(detectCombList):
     return countDict
 
 def getCombNotInMapList(countDict, polyPartMiniLex):
-    """Gets a list with the combinations that dont appear in the dictionary countDict"""
+    """Gets a list with the combinations that dont appear in the dictionary
+    countDict
+
+    """
     combNotInMapList=[e for e in countDict if e not in polyPartMiniLex]
     return combNotInMapList
 
@@ -839,7 +886,10 @@ def getMaxCount(countDict):
     return maxCount
 
 def plotCountDictPolygons(countDict, polyPartMiniLex):
-    """Plots a heatmap in accordance with the number of counts each combination of PMTs have"""
+    """Plots a heatmap in accordance with the number of counts each
+    combination of PMTs have
+
+    """
     fig=plotDetector(plateList,dList)
     #dont forget to call plt.show()  after the function
     maxCount=getMaxCount(countDict)
@@ -874,13 +924,19 @@ def getMiniDiscList(listRow,threshold=50,dectNo=3):
     return[]
 
 def getMaxListFromData(dataList):
-    """Gets a list with the detectors sorted from the one with the maximum value to the one with the minimum value"""
+    """Gets a list with the detectors sorted from the one with the maximum
+    value to the one with the minimum value
+
+    """
     return sorted(range(len(dataList)), key=lambda k: dataList[k], reverse=True)
 
 ##################################################################
 #Z Part
 def getSignalsZ(dList,x,y,z=0):
-    """Gives a list with the calculated signals for each PMT, considering the z coordinate"""
+    """Gives a list with the calculated signals for each PMT, considering
+    the z coordinate
+
+    """
     rTList=getRandTheta(dList,x,y)
     sZList=[]
     rThetaPhiList=[]
@@ -910,12 +966,20 @@ def getSignalsZ(dList,x,y,z=0):
 #    return sorted(range(len(sZList)), key=lambda k: sZList[k], reverse=True)
 
 def getMaxZList(sZList):
-    """Gets a list in which the PMTs are sorted from the one with the maximum signal to the one with the minimum signal, considering the z coordinate"""
+    """Gets a list in which the PMTs are sorted from the one with the
+    maximum signal to the one with the minimum signal, considering the z
+    coordinate
+
+    """
     maxZList=getMaxRealList(sZList)
     return maxZList
 
 def getWeirdZPoints(dList,z,noPoints,detOrder):
-    """Gives a list with the points which, for a given point, the order of detectors does not match with the order of the ones considering the z coordinate"""
+    """Gives a list with the points which, for a given point, the order of
+    detectors does not match with the order of the ones considering the
+    z coordinate
+
+    """
     weirdZPointsList=[]
     
     for i in range(noPoints):
