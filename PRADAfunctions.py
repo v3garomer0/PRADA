@@ -35,7 +35,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     
     dang=pi/np
     ang=0
-    gamma=2.0
+    gamma=1.3
 
     #Para el barrido angular de los detectores de la parte inferior
     if side=="lower":
@@ -97,21 +97,21 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
 #list of the photomultiplier tubes
 dList=[(79.35,0,"lower","on"),
-       (49.35,0,"lower","on"),
-       (34.35,0,"lower","on"),
-       (2.5,2.5,"llc","on"),#corner
-       (0,35,"left","on"),
-       (2.5,67.5,"ulc","on"),#corner
-       (34.35,70,"upper","on"),
-       (49.35,70,"upper","on"),
-       (79.35,70,"upper","on"),
-       (109.35,70,"upper","on"),
-       (124.35,70,"upper","on"),
-       (156.35,67.5,"urc","on"),#corner
-       (158.7,35,"right","on"),
-       (156.2,2.5,"lrc","on"),#corner
-       (124.35,0,"lower","on"),
-       (109.35,0,"lower","on")]
+       (49.35,0,"lower","off"),
+       (34.35,0,"lower","off"),
+       (2.5,2.5,"llc","off"),#corner
+       (0,35,"left","off"),
+       (2.5,67.5,"ulc","off"),#corner
+       (34.35,70,"upper","off"),
+       (49.35,70,"upper","off"),
+       (79.35,70,"upper","off"),
+       (109.35,70,"upper","off"),
+       (124.35,70,"upper","off"),
+       (156.35,67.5,"urc","off"),#corner
+       (158.7,35,"right","off"),
+       (156.2,2.5,"lrc","off"),#corner
+       (124.35,0,"lower","off"),
+       (109.35,0,"lower","off")]
 
 #coordinates of Mondes plate
 plateList=[(0,5),
@@ -284,10 +284,10 @@ def plotPetals(x=80,y=35):
         px[i]=[x[0] for x in polyCoords[i]]
         py[i]=[y[1] for y in polyCoords[i]]
 
-        plt.plot(px[i],py[i],'r')
+        plt.plot(px[i],py[i],'ro')
 
-        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
-        plt.gca().add_patch(pltPoly[i])
+#        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
+#        plt.gca().add_patch(pltPoly[i])
 
     interPol=polygons[0]
     counter = 0
@@ -309,11 +309,11 @@ def plotPetals(x=80,y=35):
     pIx=[x[0] for x in interPolList]
     pIy=[y[1] for y in interPolList]
 
-    plt.plot(pIx,pIy,'go')
-
-    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
-    
-    plt.gca().add_patch(pltPolyIntersect)
+#    plt.plot(pIx,pIy,'go')
+#
+#    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
+#    
+#    plt.gca().add_patch(pltPolyIntersect)
 
 #Plotting MONDEs plate
 def plotDetector(plateList,dList):

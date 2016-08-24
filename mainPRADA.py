@@ -9,14 +9,14 @@ from realDataStuff import *
 # N=100000
 
 # saveLexicon(dList,platePolygon,N,file_name="lexicon100kNEc.pkl")
-# lexicon=openLexicon("lexicon100kNEc.pkl")
-
-# miniLexicon=getMiniLexicon(lexicon,1)
-# for e in miniLexicon:
+#lexicon=openLexicon("lexicon100kNEc.pkl")
+#
+#miniLexicon=getMiniLexicon(lexicon,1)
+#for e in miniLexicon:
 #    plotPoints(miniLexicon[e])
-# # miniList=miniLexicon["[0]"]
-
-# plt.show()
+#    miniList=miniLexicon["[0]"]
+#
+#plt.show()
 #plotPoints(miniList,fc)
 #
 #miniList=miniLexicon["[0, 8]"]
@@ -25,7 +25,7 @@ from realDataStuff import *
 #miniList=miniLexicon["[8]"]
 #plotPoints(miniList,fc)
 
-#plotPetals()
+plotPetals()
 
 ############################################
 #POLYGONS BOUNDARIES
