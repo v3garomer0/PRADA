@@ -97,21 +97,21 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
 #list of the photomultiplier tubes
 dList=[(79.35,0,"lower","on"),
-       (49.35,0,"lower","off"),
-       (34.35,0,"lower","off"),
-       (2.5,2.5,"llc","off"),#corner
-       (0,35,"left","off"),
-       (2.5,67.5,"ulc","off"),#corner
-       (34.35,70,"upper","off"),
-       (49.35,70,"upper","off"),
-       (79.35,70,"upper","off"),
-       (109.35,70,"upper","off"),
-       (124.35,70,"upper","off"),
-       (156.35,67.5,"urc","off"),#corner
-       (158.7,35,"right","off"),
-       (156.2,2.5,"lrc","off"),#corner
-       (124.35,0,"lower","off"),
-       (109.35,0,"lower","off")]
+       (49.35,0,"lower","on"),
+       (34.35,0,"lower","on"),
+       (2.5,2.5,"llc","on"),#corner
+       (0,35,"left","on"),
+       (2.5,67.5,"ulc","on"),#corner
+       (34.35,70,"upper","on"),
+       (49.35,70,"upper","on"),
+       (79.35,70,"upper","on"),
+       (109.35,70,"upper","on"),
+       (124.35,70,"upper","on"),
+       (156.35,67.5,"urc","on"),#corner
+       (158.7,35,"right","on"),
+       (156.2,2.5,"lrc","on"),#corner
+       (124.35,0,"lower","on"),
+       (109.35,0,"lower","on")]
 
 #coordinates of Mondes plate
 plateList=[(0,5),
@@ -284,10 +284,10 @@ def plotPetals(x=80,y=35):
         px[i]=[x[0] for x in polyCoords[i]]
         py[i]=[y[1] for y in polyCoords[i]]
 
-        plt.plot(px[i],py[i],'ro')
+#        plt.plot(px[i],py[i],'ro')
 
-#        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
-#        plt.gca().add_patch(pltPoly[i])
+        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
+        plt.gca().add_patch(pltPoly[i])
 
     interPol=polygons[0]
     counter = 0
@@ -311,9 +311,9 @@ def plotPetals(x=80,y=35):
 
 #    plt.plot(pIx,pIy,'go')
 #
-#    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
-#    
-#    plt.gca().add_patch(pltPolyIntersect)
+    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
+
+    plt.gca().add_patch(pltPolyIntersect)
 
 #Plotting MONDEs plate
 def plotDetector(plateList,dList):
@@ -772,7 +772,7 @@ def plotAllMiniLexiconPoints(miniLexicon):
     plotDetector(plateList,dList)
     for e in miniLexicon:
         fc=getRandColor()
-        plotPoints(miniLexicon[e],fc)
+        plotPoints(miniLexicon[e])
 
 ################################################################################
 #Function for certain number of detectors
@@ -855,7 +855,7 @@ def plotPolyMiniLex3D(polyPartMiniLex):
             ax=plot2DPolyIn3D(ax,poly,fc,zVal)
 
 ##########################################################
-
+#HEATMAP
 def getCountDict(detectCombList):
     """Given a list of detector combinations, it returns a dictionary with
     the counts for each combination
@@ -996,13 +996,31 @@ def getWeirdZPoints(dList,z,noPoints,detOrder):
 #################################################################
 #Gauss Part
 
-def getRandomGauss(platePolygon,sigma,N):
+def getRandomGauss(centroidx,centroidy,sigma):
     """Gives a gaussian distribution from a random centroid point"""
-    centroidx=random.uniform(0,158.7)
-    centroidy=random.uniform(0,70)
+    if not checkIfInPlate(platePolygon,centroidx,centroidy):
+        print ("Centroid not in plate")
+        return
 
-    x=[gauss(centroidx,sigma) for i in range(N)]
-    y=[gauss(centroidy,sigma) for i in range(N)]
+    x=gauss(centroidx,sigma)
+    y=gauss(centroidy,sigma)
+    
+    while not checkIfInPlate(platePolygon,x,y):
+        x=gauss(centroidx,sigma)
+        y=gauss(centroidy,sigma)
+    
 
     return x,y
+
+def createGaussSim(centroidx,centroidy,sigma,N,fileName="gaussTest.pkl"):
+    listOfSignals=[]
+    for e in range(N):
+        x,y=getRandomGauss(centroidx,centroidy,sigma)
+        signals=getSignals(dList,x,y)
+        listOfSignals.append(signals)
+        print (signals)
+    fileObject=open(fileName,'wb')
+    pickle.dump(listOfSignals,fileObject)
+    fileObject.close()
+
 

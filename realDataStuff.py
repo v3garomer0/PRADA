@@ -1,5 +1,6 @@
 import csv
 import pickle
+from PRADAfunctions import *
 #Pedro's code
 
 def pickleRealData(txtFileName="data.txt", pklName="data.pkl"):
@@ -23,3 +24,17 @@ def unpickleRealData(pklName="data.pkl"):
     dataInList = pickle.load(pkl_file)
     pkl_file.close()
     return dataInList
+
+#def pickleOnlyMaxDet(txtFileName,pklName,cutCol=0):
+#    aList,bList=[],[]
+#    with open(txtFileName) as tsvfile:
+#        tsvreader = csv.reader(tsvfile, delimiter="\t")
+#        for line in tsvreader:
+#            aList.append(line[:])
+#    for e in aList:
+#        bList.append([int(i) for i in e])
+#
+#    if cutCol!=0
+#    expDat=[e[cutCol:] for e in bList if e[1] > 50]
+
+

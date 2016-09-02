@@ -10,7 +10,7 @@ from realDataStuff import *
 
 # saveLexicon(dList,platePolygon,N,file_name="lexicon100kNEc.pkl")
 #lexicon=openLexicon("lexicon100kNEc.pkl")
-#
+
 #miniLexicon=getMiniLexicon(lexicon,1)
 #for e in miniLexicon:
 #    plotPoints(miniLexicon[e])
@@ -19,13 +19,14 @@ from realDataStuff import *
 #plt.show()
 #plotPoints(miniList,fc)
 #
-#miniList=miniLexicon["[0, 8]"]
-#plotPoints(miniList,fc)
-#
+#miniList=miniLexicon["[0]"]
+
+#plotPoints(miniList)
+
 #miniList=miniLexicon["[8]"]
 #plotPoints(miniList,fc)
-
-plotPetals()
+#plt.show()
+#plotPetals()
 
 ############################################
 #POLYGONS BOUNDARIES
@@ -112,27 +113,27 @@ plotPetals()
 #plot_polygon(polygonList[0],fig)
 
 ###############################################################
-#
-# print ("Opening polMiniLexList")
-# polMiniLexList=openPolMiniLexList("polMiniLexListParallel10kNEc.pkl")
-# orderVal=1
-# threshold=30
-# print ("Loading exp data")
-# rawExpDat=unpickleRealData("fuente15.pkl")
-# print ("len(rawExpDat) = ", len(rawExpDat))
-# print ("Creating subList")
-# expDat=[e[2:] for e in rawExpDat if e[1] > 50]
-# print ("len(expDat) =",len(expDat))
-# print ("Getting the data over the threshold")
-# discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
-# print ("Getting the count dict for plotting")
-# countDict=getCountDict(discDetList)
-# print ("Getting the right miniPol for plotting the heatmap")
-# miniPol=polMiniLexList[orderVal-1]
-# print ("FinalLy doing the plot!")
-# plotCountDictPolygons(countDict,miniPol)
-#
-#plt.show()
+
+print ("Opening polMiniLexList")
+polMiniLexList=openPolMiniLexList("polMiniLexListParallel10kNEc.pkl")
+orderVal=1
+threshold=30
+print ("Loading exp data")
+rawExpDat=unpickleRealData("fuente15.pkl")
+print ("len(rawExpDat) = ", len(rawExpDat))
+print ("Creating subList")
+expDat=[e[2:] for e in rawExpDat if e[1] > 50]
+print ("len(expDat) =",len(expDat))
+print ("Getting the data over the threshold")
+discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
+print ("Getting the count dict for plotting")
+countDict=getCountDict(discDetList)
+print ("Getting the right miniPol for plotting the heatmap")
+miniPol=polMiniLexList[orderVal-1]
+print ("FinalLy doing the plot!")
+plotCountDictPolygons(countDict,miniPol)
+
+plt.show()
 
 #
 #for i in range(16):
