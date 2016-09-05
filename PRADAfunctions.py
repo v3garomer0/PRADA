@@ -994,7 +994,7 @@ def getWeirdZPoints(dList,z,noPoints,detOrder):
     return weirdZPointsList
 
 #################################################################
-#Gauss Part
+#Gaussian Simulation Part
 
 def getRandomGauss(centroidx,centroidy,sigma):
     """Gives a gaussian distribution from a random centroid point"""
