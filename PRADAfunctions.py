@@ -96,22 +96,22 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     return points
 
 #list of the photomultiplier tubes
-dList=[(79.35,0,"lower","on"),
+dList=[(79.35,0,"lower","off"),
        (49.35,0,"lower","on"),
        (34.35,0,"lower","on"),
        (2.5,2.5,"llc","on"),#corner
-       (0,35,"left","on"),
-       (2.5,67.5,"ulc","on"),#corner
-       (34.35,70,"upper","on"),
-       (49.35,70,"upper","on"),
-       (79.35,70,"upper","on"),
-       (109.35,70,"upper","on"),
-       (124.35,70,"upper","on"),
-       (156.35,67.5,"urc","on"),#corner
-       (158.7,35,"right","on"),
-       (156.2,2.5,"lrc","on"),#corner
-       (124.35,0,"lower","on"),
-       (109.35,0,"lower","on")]
+       (0,35,"left","off"),
+       (2.5,67.5,"ulc","off"),#corner
+       (34.35,70,"upper","off"),
+       (49.35,70,"upper","off"),
+       (79.35,70,"upper","off"),
+       (109.35,70,"upper","off"),
+       (124.35,70,"upper","off"),
+       (156.35,67.5,"urc","off"),#corner
+       (158.7,35,"right","off"),
+       (156.2,2.5,"lrc","off"),#corner
+       (124.35,0,"lower","off"),
+       (109.35,0,"lower","off")]
 
 #coordinates of Mondes plate
 plateList=[(0,5),
@@ -170,7 +170,7 @@ def getSignals(dList,x,y):
     """Gets the signals list, given a point"""
     rTList=getRandTheta(dList,x,y)
     sList=[]
-
+    
     A=10
     gamma=1.3
     lamb=210
@@ -289,7 +289,7 @@ def plotPetals(x=80,y=35):
         pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
         plt.gca().add_patch(pltPoly[i])
 
-    interPol=polygons[0]
+        interPol=polygons[i]
     counter = 0
     for p in polygons:
         if dList[counter][3]=="on":

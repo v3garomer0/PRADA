@@ -25,16 +25,5 @@ def unpickleRealData(pklName="data.pkl"):
     pkl_file.close()
     return dataInList
 
-#def pickleOnlyMaxDet(txtFileName,pklName,cutCol=0):
-#    aList,bList=[],[]
-#    with open(txtFileName) as tsvfile:
-#        tsvreader = csv.reader(tsvfile, delimiter="\t")
-#        for line in tsvreader:
-#            aList.append(line[:])
-#    for e in aList:
-#        bList.append([int(i) for i in e])
-#
-#    if cutCol!=0
-#    expDat=[e[cutCol:] for e in bList if e[1] > 50]
 
 

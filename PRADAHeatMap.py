@@ -30,6 +30,8 @@ def PRADAHeatMap(txtfile,polMiniLexList,detectOrder,threshold):
     miniPol=polMiniLexList[detectOrder-1]
     print ("FinalLy doing the plot!")
     plotCountDictPolygons(countDict,miniPol)
+    maxCounts=getMaxCount(countDict)
+    print ("Max Counts= ", maxCounts)
     plt.show()
 
 PRADAHeatMap(txtfile,polMiniLexList,detectOrder,threshold)

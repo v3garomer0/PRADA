@@ -5,16 +5,15 @@ from realDataStuff import *
 # plotDetector(plateList,dList)
 
 #plotDetector(plateList,dList)
-#
-# N=100000
+#N=100000
 
 # saveLexicon(dList,platePolygon,N,file_name="lexicon100kNEc.pkl")
 #lexicon=openLexicon("lexicon100kNEc.pkl")
-
-#miniLexicon=getMiniLexicon(lexicon,1)
+#
+#miniLexicon=getMiniLexicon(lexicon,2)
 #for e in miniLexicon:
 #    plotPoints(miniLexicon[e])
-#    miniList=miniLexicon["[0]"]
+#    miniList=miniLexicon["[0, 8]"]
 #
 #plt.show()
 #plotPoints(miniList,fc)
@@ -23,8 +22,8 @@ from realDataStuff import *
 
 #plotPoints(miniList)
 
-#miniList=miniLexicon["[8]"]
-#plotPoints(miniList,fc)
+#miniList=miniLexicon["[8, 0]"]
+#plotPoints(miniList)
 #plt.show()
 #plotPetals()
 
@@ -61,8 +60,8 @@ from realDataStuff import *
 ############################################################
 #CLUSTERS
 
-#miniLexicon=getMiniLexicon(lexicon,2)
-#Y=miniLexicon["[0, 8]"]
+miniLexicon=getMiniLexicon(lexicon,2)
+Y=miniLexicon["[0, 8]"]
 #
 #clusterList=getClusterList(Y)
 #
@@ -114,26 +113,6 @@ from realDataStuff import *
 
 ###############################################################
 
-print ("Opening polMiniLexList")
-polMiniLexList=openPolMiniLexList("polMiniLexListParallel10kNEc.pkl")
-orderVal=1
-threshold=30
-print ("Loading exp data")
-rawExpDat=unpickleRealData("fuente15.pkl")
-print ("len(rawExpDat) = ", len(rawExpDat))
-print ("Creating subList")
-expDat=[e[2:] for e in rawExpDat if e[1] > 50]
-print ("len(expDat) =",len(expDat))
-print ("Getting the data over the threshold")
-discDetList=getDiscriminateDetectList(expDat,threshold,orderVal)
-print ("Getting the count dict for plotting")
-countDict=getCountDict(discDetList)
-print ("Getting the right miniPol for plotting the heatmap")
-miniPol=polMiniLexList[orderVal-1]
-print ("FinalLy doing the plot!")
-plotCountDictPolygons(countDict,miniPol)
-
-plt.show()
 
 #
 #for i in range(16):
