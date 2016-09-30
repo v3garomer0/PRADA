@@ -26,10 +26,13 @@ from matplotlib.colors import colorConverter
 
 from random import gauss
 
+import plotly.plotly as py
+
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     """Gets the petals points for each PMT"""
     def getR(A,S,ang,gamma):
         """Gets the distance R, according to formula"""
+        print("S = ",S)
         return (A/S*sin(ang))**(1.0/gamma)
     points=[]
     
@@ -96,22 +99,22 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     return points
 
 #list of the photomultiplier tubes
-dList=[(79.35,0,"lower","off"),
+dList=[(79.35,0,"lower","on"),
        (49.35,0,"lower","on"),
        (34.35,0,"lower","on"),
        (2.5,2.5,"llc","on"),#corner
-       (0,35,"left","off"),
-       (2.5,67.5,"ulc","off"),#corner
-       (34.35,70,"upper","off"),
-       (49.35,70,"upper","off"),
-       (79.35,70,"upper","off"),
-       (109.35,70,"upper","off"),
-       (124.35,70,"upper","off"),
-       (156.35,67.5,"urc","off"),#corner
-       (158.7,35,"right","off"),
-       (156.2,2.5,"lrc","off"),#corner
-       (124.35,0,"lower","off"),
-       (109.35,0,"lower","off")]
+       (0,35,"left","on"),
+       (2.5,67.5,"ulc","on"),#corner
+       (34.35,70,"upper","on"),
+       (49.35,70,"upper","on"),
+       (79.35,70,"upper","on"),
+       (109.35,70,"upper","on"),
+       (124.35,70,"upper","on"),
+       (156.35,67.5,"urc","on"),#corner
+       (158.7,35,"right","on"),
+       (156.2,2.5,"lrc","on"),#corner
+       (124.35,0,"lower","on"),
+       (109.35,0,"lower","on")]
 
 #coordinates of Mondes plate
 plateList=[(0,5),
@@ -183,6 +186,7 @@ def getSignals(dList,x,y):
             S=0
         else:
             S=A*exp(-r/lamb)*sin(pi*(theta-thetaC)/(pi-2*thetaC))/r**gamma
+            
         sList.append(S)
 
     return sList
@@ -259,7 +263,9 @@ def plotPetals(x=80,y=35):
     for e in dList:
         S=sList[counter]
         print (counter,S)
-
+        if S==0:
+            dPoints.append(False)
+            continue
         S=S-0.1*S
         dPoints.append(myCurve(e[0],e[1],polypoints,A,S,e[2]))
         polygons.append(0)
@@ -272,7 +278,10 @@ def plotPetals(x=80,y=35):
         counter+=1
 
     for i in range(len(dList)):
-        convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
+        if dPoints[i]==False:
+            convexPoints[i]=False
+        else:
+            convexPoints[i]=list(MultiPoint(dPoints[i]).convex_hull.exterior.coords)
 
         #generating the polygons properly
         polygons[i]=Polygon(convexPoints[i])
@@ -284,7 +293,7 @@ def plotPetals(x=80,y=35):
         px[i]=[x[0] for x in polyCoords[i]]
         py[i]=[y[1] for y in polyCoords[i]]
 
-#        plt.plot(px[i],py[i],'ro')
+        plt.plot(px[i],py[i],'r')
 
         pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
         plt.gca().add_patch(pltPoly[i])
@@ -738,15 +747,16 @@ def plotPolMiniLexList(polMiniLexList,combOrder=1,detectOfInterest="none"):
     with the number of detectors desired
 
     """
+    fc=getRandColor()
     for detectOrder in range(len(polMiniLexList)):
-        fc=getRandColor()
+        #fc=getRandColor()
         if detectOrder==combOrder:
             break
         fig=plotDetector(plateList,dList)
         for detectComb in polMiniLexList[detectOrder]:
             intList=string2List(detectComb)
             if detectOfInterest!="none":
-                if detectOfInterest not in intList:
+                if detectOfInterest != intList[0]:
                     continue
             #fc=getRandColor()
             subPolList=polMiniLexList[detectOrder][detectComb]
@@ -758,21 +768,28 @@ def string2List(stringDetectComb):
     intList=[int(u) for u in stringDetectComb[1:-1].split(",")]
     return intList
 
-def plotPoints(pointsList): #points list would be a miniLex
+def plotPoints(pointsList,fig="None"): #points list would be a miniLex
     """Given a list of coordinates, plots the points of the list"""
     fc=getRandColor()
-    plotDetector(plateList,dList)
+    if fig == "None":
+        fig=plotDetector(plateList,dList)
     x=[e[0] for e in pointsList]
     y=[e[1] for e in pointsList]
     plt.plot(x,y,"o",color=fc)
      
 
-def plotAllMiniLexiconPoints(miniLexicon):
+def plotMiniLexiconPoints(lexicon,combOrder=1,detectOfInterest="None"):
     """Plots the points of a miniLexicon"""
-    plotDetector(plateList,dList)
+    fig=plotDetector(plateList,dList)
+    miniLexicon=getMiniLexicon(lexicon,combOrder)
     for e in miniLexicon:
+        intList=string2List(e)
+        if detectOfInterest!="None":
+            if detectOfInterest != intList[0]:
+                continue
+        subPointsList=miniLexicon[e]
         fc=getRandColor()
-        plotPoints(miniLexicon[e])
+        plotPoints(subPointsList,fig)
 
 ################################################################################
 #Function for certain number of detectors
@@ -987,7 +1004,7 @@ def getWeirdZPoints(dList,z,noPoints,detOrder):
         normalSignals=getSignals(dList,x,y)
         zSignals=getSignalsZ(dList,x,y,z)
         normalOrder=getMaxList(dList,x,y)
-        zOrder=getMaxZList(dList,x,y,z)
+        zOrder=getMaxZList(zSignals)
         if normalOrder[:detOrder]!=zOrder[:detOrder]:
             weirdZPointsList.append([x,y])
 
@@ -1016,6 +1033,7 @@ def createGaussSim(centroidx,centroidy,sigma,N,fileName="gaussTest.pkl"):
     listOfSignals=[]
     for e in range(N):
         x,y=getRandomGauss(centroidx,centroidy,sigma)
+        print (x,y)
         signals=getSignals(dList,x,y)
         listOfSignals.append(signals)
         print (signals)
@@ -1023,4 +1041,110 @@ def createGaussSim(centroidx,centroidy,sigma,N,fileName="gaussTest.pkl"):
     pickle.dump(listOfSignals,fileObject)
     fileObject.close()
 
+###############################################################################
+# Number of Polygons, number of polygons with a certain area, number of regions
+def countPolygons(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    polMiniLexList=openPolMiniLexList(polMiniLexListPkl)
+    polNumList=[]
+    for myDictionary in polMiniLexList:
+        polyCount=0
+        for combination in myDictionary:
+            polyCount+=len(myDictionary[combination])
+        polNumList.append(polyCount)
+    return polNumList
 
+def plotCountPolygons(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    polNumList=countPolygons(polMiniLexListPkl)
+    x=[i+1 for i in range(16)]
+    y=[e for e in polNumList]
+    plt.subplot(111)
+    plt.plot(x,y,'k',x,y,'ro')
+    plt.title("Number of Polygons Generated")
+    plt.xlabel("Combination Order")
+    plt.ylabel("Number of Polygons")
+    plt.grid(True)
+    for a,b in zip(x, y):
+        plt.text(a, b, str(b))
+    plt.show()
+
+def areaPolygons(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl",order=1):
+    polMiniLexList=openPolMiniLexList(polMiniLexListPkl)
+    polAreaList=[]
+    myDictionary=polMiniLexList[order-1]
+    for combination in myDictionary:
+        for myPoly in myDictionary[combination]:
+            areaPol=myPoly.area
+            polAreaList.append(areaPol)
+    return polAreaList
+
+def histAreaList(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl",order=1):
+    polALst=areaPolygons(polMiniLexListPkl,order)
+    plt.hist(polALst)
+    plt.title("Area Histogram")
+    plt.xlabel("Area")
+    plt.ylabel("Number of Polygons")
+    plt.grid(True)
+    fig = plt.gcf()
+    plt.show()
+
+def countRegions(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    polMiniLexList=openPolMiniLexList(polMiniLexListPkl)
+    regNumList=[]
+    regCount=0
+    for myDictionary in polMiniLexList:
+        regCount+=len(myDictionary)
+        regNumList.append(regCount)
+    return regNumList
+
+def plotCountRegions(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    regNumList=countRegions(polMiniLexListPkl)
+    x=[i+1 for i in range(16)]
+    y=[e for e in regNumList]
+    plt.plot(x,y,'k',x,y,'ro')
+    plt.title("Number of Regions Obtained")
+    plt.xlabel("Combination Order")
+    plt.ylabel("Number of Regions")
+    plt.grid(True)
+    for a,b in zip(x, y):
+        plt.text(a, b, str(b))
+    plt.show()
+
+def getMaxArea(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    maxAreaList=[]
+    for i in range(16):
+        areaList=areaPolygons(polMiniLexListPkl,i+1)
+        maxAreaList.append(max(areaList))
+    return maxAreaList
+
+def getMinArea(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    minAreaList=[]
+    for i in range(16):
+        areaList=areaPolygons(polMiniLexListPkl,i+1)
+        minAreaList.append(min(areaList))
+    return minAreaList
+
+def plotMaxArea(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    maxAreaList=getMaxArea(polMiniLexListPkl)
+    x=[i+1 for i in range(16)]
+    y=[e for e in maxAreaList]
+    plt.plot(x,y,'k',x,y,'ro')
+    plt.title("Maximum Area for Each Combination Order")
+    plt.xlabel("Combination Order")
+    plt.ylabel("Maximum Area")
+    plt.grid(True)
+    for a,b in zip(x, y):
+        plt.text(a, b, str(round(b,2)))
+    plt.show()
+
+def plotMinArea(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"):
+    minAreaList=getMinArea(polMiniLexListPkl)
+    x=[i+1 for i in range(16)]
+    y=[e for e in minAreaList]
+    plt.plot(x,y,'k',x,y,'ro')
+    plt.title("Minimum Area for Each Combination Order")
+    plt.xlabel("Combination Order")
+    plt.ylabel("Minimum Area")
+    plt.grid(True)
+    for a,b in zip(x, y):
+        plt.text(a, b, str(round(b,3)))
+    plt.show()

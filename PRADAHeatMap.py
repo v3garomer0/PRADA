@@ -15,12 +15,14 @@ def PRADAHeatMap(txtfile,polMiniLexList,detectOrder,threshold):
     if not os.path.exists(pklName):
         print ("Making pkl file")
         pickleRealData(txtfile,pklName)
-    
+
+
+#    pklName=txtfile
     print ("Loading exp data")
     rawExpDat=unpickleRealData(pklName)
     print ("len(rawExpDat) = ", len(rawExpDat))
-    #print ("Creating subList")
-    #expDat=[e[2:] for e in rawExpDat] #if e[1] > 50]
+    print ("Creating subList")
+#    expDat=[e[2:] for e in rawExpDat] #if e[1] > 50]
     #print ("len(expDat) =",len(expDat))
     print ("Getting the data over the threshold")
     discDetList=getDiscriminateDetectList(rawExpDat,threshold,detectOrder)

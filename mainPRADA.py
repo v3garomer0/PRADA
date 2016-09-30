@@ -1,31 +1,29 @@
 from PRADAfunctions import *
 from realDataStuff import *
 
-# fig=plt.figure()
-# plotDetector(plateList,dList)
+
+
+plotPetals()
+plt.show()
 
 #plotDetector(plateList,dList)
 #N=100000
 
 # saveLexicon(dList,platePolygon,N,file_name="lexicon100kNEc.pkl")
-#lexicon=openLexicon("lexicon100kNEc.pkl")
+#lexicon=openLexicon("lexicon1MNEc.pkl")
 #
-#miniLexicon=getMiniLexicon(lexicon,2)
-#for e in miniLexicon:
-#    plotPoints(miniLexicon[e])
-#    miniList=miniLexicon["[0, 8]"]
-#
-#plt.show()
-#plotPoints(miniList,fc)
-#
+#miniLexicon=getMiniLexicon(lexicon,1)
 #miniList=miniLexicon["[0]"]
-
-#plotPoints(miniList)
-
-#miniList=miniLexicon["[8, 0]"]
+#print(len(miniList))
 #plotPoints(miniList)
 #plt.show()
-#plotPetals()
+
+#plotMiniLexiconPoints(lexicon,16,"None")
+#plt.show()
+
+#polMiniLexList=openPolMiniLexList("polMiniLexListParallel1MNEcSpecialAlpha1.pkl")
+#plotPolMiniLexList(polMiniLexList,16)
+#plt.show()
 
 ############################################
 #POLYGONS BOUNDARIES
@@ -60,8 +58,8 @@ from realDataStuff import *
 ############################################################
 #CLUSTERS
 
-miniLexicon=getMiniLexicon(lexicon,2)
-Y=miniLexicon["[0, 8]"]
+#miniLexicon=getMiniLexicon(lexicon,2)
+#Y=miniLexicon["[0, 8]"]
 #
 #clusterList=getClusterList(Y)
 #
@@ -134,3 +132,8 @@ Y=miniLexicon["[0, 8]"]
 #fig=plt.figure()
 #fig=plotPolyMiniLex(polyPartMiniLex,fig)
 #plot_polygon(polyPartMiniLex["[8, 7, 9]"],fig)
+
+
+
+
+
