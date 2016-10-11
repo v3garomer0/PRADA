@@ -57,5 +57,5 @@ if __name__ == '__main__':
     file_name="polMiniLexListParallel1MNEcSpecialAlpha.pkl"
     fileObject=open(file_name,"wb")
     #Maybe copy polyDict into a simple dictionary
-    pickle.dump(list(polyList),fileObject)
+    pickle.dump(list(polyList),fileObject,2)
     fileObject.close()

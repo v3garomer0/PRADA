@@ -169,7 +169,7 @@ def getRandTheta(dList,x,y):
     return rAndThetaList
 
 #Making a list with the generated signals
-def getSignals(dList,x,y):
+def getSignals(dList,x,y,petalSignals=False):
     """Gets the signals list, given a point"""
     rTList=getRandTheta(dList,x,y)
     sList=[]
@@ -182,7 +182,9 @@ def getSignals(dList,x,y):
     for e in rTList:
         r=e[0]
         theta=e[1]
-        if thetaC>theta>0 or pi>theta>pi-thetaC:
+        if petalSignals:
+            S=(A*sin(theta))/r**gamma
+        elif thetaC>theta>0 or pi>theta>pi-thetaC:
             S=0
         else:
             S=A*exp(-r/lamb)*sin(pi*(theta-thetaC)/(pi-2*thetaC))/r**gamma
@@ -258,7 +260,7 @@ def plotPetals(x=80,y=35):
     
     counter=0
 
-    sList=getSignals(dList,x,y)
+    sList=getSignals(dList,x,y,True)
     
     for e in dList:
         S=sList[counter]
@@ -501,7 +503,7 @@ def saveLexicon(dList,platePolygon,N,file_name="lexicon.pkl"):
     lexicon=getLexicon(dList,platePolygon,N)
     
     fileObject=open(file_name,'wb')
-    pickle.dump(lexicon,fileObject)
+    pickle.dump(lexicon,fileObject,2)
     fileObject.close()
 
 #opening file with the dictionary
@@ -704,7 +706,7 @@ def savePolMiniLexList(lexicon,file_name="polMiniLexList.pkl"):
     polMiniLexList=getPolMiniLexList(lexicon,alpha=0.1)
     
     fileObject=open(file_name,"wb")
-    pickle.dump(polMiniLexList,fileObject)
+    pickle.dump(polMiniLexList,fileObject,2)
     fileObject.close()
 
 #opening file with the list of polygons
@@ -813,7 +815,7 @@ def saveCertainPolMiniLexDict(orderNo,lexicon,file_name="CertPolMiniLexDict.pkl"
     certPolMiniLexDict=getCertPolMiniLex(lexicon,orderNo,alpha=0.1)
     
     fileObject=open(file_name,"wb")
-    pickle.dump(certPolMiniLexDict,fileObject)
+    pickle.dump(certPolMiniLexDict,fileObject,2)
     fileObject.close()
 
 
@@ -1038,7 +1040,7 @@ def createGaussSim(centroidx,centroidy,sigma,N,fileName="gaussTest.pkl"):
         listOfSignals.append(signals)
         print (signals)
     fileObject=open(fileName,'wb')
-    pickle.dump(listOfSignals,fileObject)
+    pickle.dump(listOfSignals,fileObject,2)
     fileObject.close()
 
 ###############################################################################
@@ -1148,3 +1150,89 @@ def plotMinArea(polMiniLexListPkl="polMiniLexListParallel1MNEcSpecialAlpha1.pkl"
     for a,b in zip(x, y):
         plt.text(a, b, str(round(b,3)))
     plt.show()
+
+########################################################################################
+#Getting the position (x,y)
+
+def getAngerWeightAreaPos(polygonList):
+    xList=[]
+    yList=[]
+    AList=[]
+    ATot=0
+    for poly in polygonList:
+        centCoords=list(poly.centroid.coords)
+        x,y=centCoords[0]
+        A=poly.area
+        xList.append(x)
+        yList.append(y)
+        AList.append(A)
+        ATot+=A
+    xProm=0
+    for xi,Ai in zip(xList,AList):
+        xProm+=xi*Ai
+    xProm/=ATot
+    yProm=0
+    for yi,Ai in zip(yList,AList):
+        yProm+=yi*Ai
+    yProm/=ATot
+    return [xProm,yProm]
+
+def getCentroidLex(certPolLexList):
+    certPolCentroidLex={}
+    for certPolList in certPolLexList:
+        if certPolList==[]:
+            continue
+        c=getAngerWeightAreaPos(certPolLexList[certPolList])
+        certPolCentroidLex[certPolList]=c
+    return certPolCentroidLex
+
+def getCentroidLexList(polLexList):
+    centroidPointsLexList=[]
+    for myDict in polLexList:
+        lex=getCentroidLex(myDict)
+        centroidPointsLexList.append(lex)
+    return centroidPointsLexList
+
+def pickleCentroidLexList(polLexList="polMiniLexListParallel1MNEcSpecialAlpha1.pkl",file_name="centroidPointsLexList.pkl"):
+    polLexList=openPolMiniLexList(polLexList)
+    centroidPointsLexList=getCentroidLexList(polLexList)
+
+    fileObject=open(file_name,"wb")
+    pickle.dump(centroidPointsLexList,fileObject,2)
+    fileObject.close()
+
+def openCentroidLexList(file_name="centroidPointsLexList.pkl"):
+    """Opens the file with the list of polygons centroids for each combination of PMTs"""
+    fileObject=open(file_name,"rb")
+    centroidPointsLexList=pickle.load(fileObject)
+    fileObject.close()
+    return centroidPointsLexList
+
+###############################################################################
+#comparing points of anger and prada
+
+def getAngerPosFromSignal(sList,dList):
+    sSum=0
+    for signals in sList:
+        sSum+=signals
+    xP,yP=0,0
+    counter=0
+    for signals in sList:
+        xP+=signals*dList[counter][0]/sSum
+        yP+=signals*dList[counter][1]/sSum
+        counter+=1
+    return (xP,yP)
+
+def getPRADAPosfromSignals(sList,order=3,centroidPointsLexList="centroidPointsLexList.pkl"):
+    centroidPointsLexList=openCentroidLexList(centroidPointsLexList)
+    centroidPointsLexListOrder=centroidPointsLexList[order-1]
+    maxCentroidList=sorted(range(len(sList)), key=lambda k: sList[k], reverse=True)
+    maxCentroidListStr=str(maxCentroidList[0:order])
+    if maxCentroidListStr in centroidPointsLexListOrder:
+        return centroidPointsLexListOrder[maxCentroidListStr]
+
+def printAngerAndPRADAComparison(sList,dList,order=3,centroidPointsLexList="centroidPointsLexList.pkl"):
+    xA,yA=getAngerPosFromSignal(sList,dList)
+    xP,yP=getPRADAPosfromSignals(sList,order,centroidPointsLexList)
+
+    return ((xA,yA),(xP,yP))
