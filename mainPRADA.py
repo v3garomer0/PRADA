@@ -3,14 +3,14 @@ from realDataStuff import *
 
 
 
-plotPetals()
-plt.show()
+#plotPetals()
+#plt.show()
 
 #plotDetector(plateList,dList)
 #N=100000
 
 # saveLexicon(dList,platePolygon,N,file_name="lexicon100kNEc.pkl")
-#lexicon=openLexicon("lexicon1MNEc.pkl")
+lexicon=openLexicon("lexicon1MNEc.pkl")
 #
 #miniLexicon=getMiniLexicon(lexicon,1)
 #miniList=miniLexicon["[0]"]
@@ -18,11 +18,11 @@ plt.show()
 #plotPoints(miniList)
 #plt.show()
 
-#plotMiniLexiconPoints(lexicon,16,"None")
+#plotMiniLexiconPoints(lexicon,1,"None")
 #plt.show()
 
 #polMiniLexList=openPolMiniLexList("polMiniLexListParallel1MNEcSpecialAlpha1.pkl")
-#plotPolMiniLexList(polMiniLexList,16)
+#plotPolMiniLexList(polMiniLexList,3)
 #plt.show()
 
 ############################################

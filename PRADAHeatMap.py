@@ -22,8 +22,8 @@ def PRADAHeatMap(txtfile,polMiniLexList,detectOrder,threshold):
     rawExpDat=unpickleRealData(pklName)
     print ("len(rawExpDat) = ", len(rawExpDat))
     print ("Creating subList")
-#    expDat=[e[2:] for e in rawExpDat] #if e[1] > 50]
-    #print ("len(expDat) =",len(expDat))
+#    expDat=[e[2:17] for e in rawExpDat] #if e[1] > 50]
+#    print ("len(expDat) =",len(expDat))
     print ("Getting the data over the threshold")
     discDetList=getDiscriminateDetectList(rawExpDat,threshold,detectOrder)
     print ("Getting the count dict for plotting")

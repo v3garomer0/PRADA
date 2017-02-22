@@ -28,20 +28,31 @@ from random import gauss
 
 import plotly.plotly as py
 
+from scipy import optimize
+
 def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
     """Gets the petals points for each PMT"""
     def getR(A,S,ang,gamma):
         """Gets the distance R, according to formula"""
-        print("S = ",S)
+#        #print("S = ",S)
+#        def f(r):
+#            #print "f(r)=",f(r)
+#            return S-A*sin(ang)/r**gamma
+#        R=optimize.bisect(f,10e-7,100)
+#        print "ang,R",ang,R
+#        return R
         return (A/S*sin(ang))**(1.0/gamma)
     points=[]
     
     dang=pi/np
-    ang=0
+    ang=0.1
     gamma=1.3
+    lamb=210
+    np-=5
 
     #Para el barrido angular de los detectores de la parte inferior
     if side=="lower":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang),y0+r*sin(ang)))
@@ -49,6 +60,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de la parte izquierda
     elif side=="left":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*sin(ang),y0+r*cos(ang)))
@@ -56,6 +68,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de la parte derecha
     elif side=="right":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0-r*sin(ang),y0+r*cos(ang)))
@@ -63,6 +76,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de la parte superior
     elif side=="upper":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang),y0-r*sin(ang)))
@@ -70,6 +84,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de esquina superior izquierda
     elif side=="ulc":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang-pi/4.),y0-r*sin(ang-pi/4.)))
@@ -77,6 +92,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de esquina superior derecha
     elif side=="urc":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang+pi/4.),y0-r*sin(ang+pi/4.)))
@@ -84,6 +100,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de esquina inferior izquierda
     elif side=="llc":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang-pi/4.),y0+r*sin(ang-pi/4.)))
@@ -91,6 +108,7 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
     #Para el barrido angular de los detectores de esquina inferior derecha
     elif side=="lrc":
+        print "side =",side
         for i in range(np):
             r=getR(A,S,ang,gamma)
             points.append((x0+r*cos(ang+pi/4.),y0+r*sin(ang+pi/4.)))
@@ -100,21 +118,21 @@ def myCurve(x0=0,y0=0,np=50,A=10,S=1,side="lower"):
 
 #list of the photomultiplier tubes
 dList=[(79.35,0,"lower","on"),
-       (49.35,0,"lower","on"),
-       (34.35,0,"lower","on"),
-       (2.5,2.5,"llc","on"),#corner
-       (0,35,"left","on"),
-       (2.5,67.5,"ulc","on"),#corner
-       (34.35,70,"upper","on"),
-       (49.35,70,"upper","on"),
-       (79.35,70,"upper","on"),
-       (109.35,70,"upper","on"),
-       (124.35,70,"upper","on"),
-       (156.35,67.5,"urc","on"),#corner
-       (158.7,35,"right","on"),
-       (156.2,2.5,"lrc","on"),#corner
-       (124.35,0,"lower","on"),
-       (109.35,0,"lower","on")]
+       (49.35,0,"lower","off"),
+       (34.35,0,"lower","off"),
+       (2.5,2.5,"llc","off"),#corner
+       (0,35,"left","off"),
+       (2.5,67.5,"ulc","off"),#corner
+       (34.35,70,"upper","off"),
+       (49.35,70,"upper","off"),
+       (79.35,70,"upper","off"),
+       (109.35,70,"upper","off"),
+       (124.35,70,"upper","off"),
+       (156.35,67.5,"urc","off"),#corner
+       (158.7,35,"right","off"),
+       (156.2,2.5,"lrc","off"),#corner
+       (124.35,0,"lower","off"),
+       (109.35,0,"lower","off")]
 
 #coordinates of Mondes plate
 plateList=[(0,5),
@@ -248,7 +266,7 @@ def plotPetals(x=80,y=35):
     """
     A=10
     polypoints=100
-    plotDetector(plateList,dList)
+    #plotDetector(plateList,dList)
 
     dPoints=[] #detector points
     convexPoints=[]
@@ -268,7 +286,7 @@ def plotPetals(x=80,y=35):
         if S==0:
             dPoints.append(False)
             continue
-        S=S-0.1*S
+        #S=S-0.1*S
         dPoints.append(myCurve(e[0],e[1],polypoints,A,S,e[2]))
         polygons.append(0)
         polyCoords.append(0)
@@ -297,34 +315,34 @@ def plotPetals(x=80,y=35):
 
         plt.plot(px[i],py[i],'r')
 
-        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
-        plt.gca().add_patch(pltPoly[i])
+#        pltPoly[i]=plt.Polygon(polyCoords[i], fc="b")
+#        plt.gca().add_patch(pltPoly[i])
 
-        interPol=polygons[i]
-    counter = 0
-    for p in polygons:
-        if dList[counter][3]=="on":
-#            print ("dList val", dList[counter][3])
-            interPol=interPol.intersection(p)
-        counter+=1
-#        centroidCoord=list(interPol.centroid.coords)[0]
-        interPolList=list(interPol.exterior.coords)
+#        interPol=polygons[i]
+#    counter = 0
+#    for p in polygons:
+#        if dList[counter][3]=="on":
+##            print ("dList val", dList[counter][3])
+#            interPol=interPol.intersection(p)
+#        counter+=1
+##        centroidCoord=list(interPol.centroid.coords)[0]
+#        interPolList=list(interPol.exterior.coords)
+#
+#    centroidCoord=list(interPol.centroid.coords)[0]
+#    print ("Centroid = ",centroidCoord)
+#
+#    AreaPol=interPol.area
+#    
+#    print ("Area Intersection= ",AreaPol)
 
-    centroidCoord=list(interPol.centroid.coords)[0]
-    print ("Centroid = ",centroidCoord)
-
-    AreaPol=interPol.area
-    
-    print ("Area Intersection= ",AreaPol)
-
-    pIx=[x[0] for x in interPolList]
-    pIy=[y[1] for y in interPolList]
+#    pIx=[x[0] for x in interPolList]
+#    pIy=[y[1] for y in interPolList]
 
 #    plt.plot(pIx,pIy,'go')
 #
-    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
+#    pltPolyIntersect = plt.Polygon(interPolList, fc='g')
 
-    plt.gca().add_patch(pltPolyIntersect)
+#    plt.gca().add_patch(pltPolyIntersect)
 
 #Plotting MONDEs plate
 def plotDetector(plateList,dList):
